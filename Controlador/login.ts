@@ -17,12 +17,12 @@ export async function manejadorLogin(ctx: Context) {
       ctx.response.body = "Formato de cuerpo no soportado.";
       return;
     }
-  
-    const { username, password } = credenciales;
+    
+    const { email, password } = credenciales;
     const verificator = new PeticionesAdministrador();
   
-    if (username && password) {
-      const userdata = await verificator.recuperarDatosEntrevistado(username, password);
+    if (email && password) {
+      const userdata = await verificator.recuperarDatosEntrevistado(email, password);
       
       if (userdata) { // Si el usuario existe en la db
         const key = await obtenerTokenAuth();
@@ -50,14 +50,14 @@ export async function manejadorLogin(ctx: Context) {
   }
   
   
-  async function obtenerCredenciales(ctx: Context): Promise<{ username: string | null; password: string | null } | null> {
+  async function obtenerCredenciales(ctx: Context): Promise<{ email: string | null; password: string | null } | null> {
     const result = await ctx.request.body();
   
     if (result.type === "form") {
       const body = await result.value; // Obtiene el valor del cuerpo del formulario
-      const username = body.get("username");
+      const email = body.get("email");
       const password = body.get("password");
-      return { username, password };
+      return { email, password };
     }
   
     return null; // Devuelve null si el formato no es soportado
