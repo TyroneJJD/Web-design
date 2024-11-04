@@ -13,4 +13,8 @@ export async function renderPaginaProtegida(context: Context) {
   context.response.body = html || "Error al renderizar la página";
 }
 
+export async function renderSubidaArchivos(context: Context) {
+  const html = await renderFile("subidaArchivos.html", { user: context.state.user });
+  context.response.body = html || "Error al renderizar la página";
+}
 

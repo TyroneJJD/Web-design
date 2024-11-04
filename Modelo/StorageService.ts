@@ -9,42 +9,32 @@ export class AlmacenamientoArchivos {
     env.FIREBASE_STORAGE_BUCKET +
     `/o`;
 
-  public async uploadFile(
-    rutaArchivo: string,
-    nombreArchivo: string
-  ): Promise<string> {
-    // Leer el archivo desde el sistema de archivos
-    const datosArchivo = await Deno.readFile(rutaArchivo);
-    const nombreCarpeta = "Resumes";
-    const urlDeSubida = `${this.storageBucketUrl}/${encodeURIComponent(
-      nombreCarpeta + "/" + nombreArchivo
-    )}?uploadType=media&name=${nombreArchivo}`;
-
-    const respuestaAPI = await fetch(urlDeSubida, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${env.FIREBASE_API_KEY}`,
-        "Content-Type": "image/jpeg", // Cambia el tipo MIME según el archivo
-      },
-      body: datosArchivo,
-    });
-
-    if (!respuestaAPI.ok) {
-      throw new Error("Error al subir el archivo: " + respuestaAPI.statusText);
+    public async uploadFile(filePath: string, fileName: string): Promise<string> {
+      const datosArchivo = await Deno.readFile(filePath);
+      const nombreCarpeta = "Resumes";
+      const urlDeSubida = `${this.storageBucketUrl}/${encodeURIComponent(
+        nombreCarpeta + "/" + fileName
+      )}?uploadType=media&name=${fileName}`;
+    
+      const respuestaAPI = await fetch(urlDeSubida, {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${env.FIREBASE_API_KEY}`,
+          "Content-Type": "application/octet-stream",
+        },
+        body: datosArchivo,
+      });
+    
+      if (!respuestaAPI.ok) {
+        throw new Error("Error al subir el archivo: " + respuestaAPI.statusText);
+      }
+    
+      const responseBody = await respuestaAPI.json();
+      const tokenArchivo = responseBody.downloadTokens;
+      return `https://firebasestorage.googleapis.com/v0/b/${env.FIREBASE_STORAGE_BUCKET}/o/${encodeURIComponent(
+        nombreCarpeta + "/" + fileName
+      )}?alt=media&token=${tokenArchivo}`;
     }
-
-    const responseBody = await respuestaAPI.json();
-    const tokenArchivo = responseBody.downloadTokens;
-    const urlArchivo = `https://firebasestorage.googleapis.com/v0/b/${
-      env.FIREBASE_STORAGE_BUCKET
-    }/o/${encodeURIComponent(
-      nombreCarpeta + "/" + nombreArchivo
-    )}?alt=media&token=${tokenArchivo}`;
-
-    //console.log("Archivo subido exitosamente:", responseBody);
-    //console.log("URL del archivo:", fileUrl); // Imprimir la URL donde está alojado el archivo
-    return urlArchivo;
-  }
 
   public async descargarArchivo(urlImagen: string, rutaDeGuardado: string) {
     try {
