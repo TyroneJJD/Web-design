@@ -1,5 +1,3 @@
-// MEJORAR ADT
-
 export interface SesionEntrevista {
   idReunion: string;
   horaInicio: Date;
@@ -9,16 +7,24 @@ export interface SesionEntrevista {
   sesionOcupada: boolean;
 }
 
-interface FechaPropia {
-  dia: number;
-  diaSemana: string;
+export interface FechaPropia {
+  numeroDia: number;
+  nombreDiaSemana: string;
 }
 
 export class Agenda {
   private fechaInicio: Date;
   private fechaFin: Date;
 
-  constructor(params: {
+  constructor({
+    dia,
+    mes,
+    anio,
+    horaInicioDisponibilidad,
+    minutoInicioDisponibilidad,
+    horaFinDisponibilidad,
+    minutoFinDisponibilidad,
+  }: {
     dia: number;
     mes: number;
     anio: number;
@@ -27,31 +33,6 @@ export class Agenda {
     horaFinDisponibilidad: number;
     minutoFinDisponibilidad: number;
   }) {
-    const {
-      dia,
-      mes,
-      anio,
-      horaInicioDisponibilidad,
-      minutoInicioDisponibilidad,
-      horaFinDisponibilidad,
-      minutoFinDisponibilidad,
-    } = params;
-
-    if (
-      !this.isDateTimeValid(
-        dia,
-        mes,
-        anio,
-        horaInicioDisponibilidad,
-        minutoInicioDisponibilidad,
-        horaFinDisponibilidad,
-        minutoFinDisponibilidad
-      )
-    ) {
-      throw new Error("Los parámetros proporcionados son inválidos.");
-    }
-
-    // Las reuniones empiezan y terminan el mismo dia.
     this.fechaInicio = new Date(
       anio,
       mes - 1,
@@ -66,49 +47,15 @@ export class Agenda {
       horaFinDisponibilidad,
       minutoFinDisponibilidad
     );
-  }
 
-  private isDateTimeValid(
-    dia: number,
-    mes: number,
-    anio: number,
-    horaInicio: number,
-    minutoInicio: number,
-    horaFin: number,
-    minutoFin: number
-  ): boolean {
-    return (
-      this.esFechaValida(dia, mes, anio) &&
-      this.esHoraValida(horaInicio, minutoInicio) &&
-      this.esHoraValida(horaFin, minutoFin) &&
-      this.validarHorario(horaInicio, minutoInicio, horaFin, minutoFin)
-    );
-  }
-
-  private validarHorario(
-    horaInicio: number,
-    minutoInicio: number,
-    horaFin: number,
-    minutoFin: number
-  ): boolean {
-    return (
-      horaInicio < horaFin ||
-      (horaInicio === horaFin && minutoInicio < minutoFin)
-    );
-  }
-
-  private esFechaValida(dia: number, mes: number, anio: number): boolean {
-    const fecha = new Date(anio, mes - 1, dia);
-    return (
-      anio > 0 &&
-      fecha.getFullYear() === anio &&
-      fecha.getMonth() === mes - 1 &&
-      fecha.getDate() === dia
-    );
-  }
-
-  private esHoraValida(hora: number, minuto: number): boolean {
-    return hora >= 0 && hora <= 23 && minuto >= 0 && minuto <= 59;
+    if (isNaN(this.fechaInicio.getTime()) || isNaN(this.fechaFin.getTime())) {
+      throw new Error("Fecha u hora inválida.");
+    }
+    if (this.fechaInicio >= this.fechaFin) {
+      throw new Error(
+        "La fecha de inicio debe ser anterior a la fecha de fin."
+      );
+    }
   }
 
   public obtenerSesionesDeEntrevista(): SesionEntrevista[] {
@@ -142,7 +89,23 @@ export class Agenda {
     return sesiones;
   }
 
-  public obtenerDiasDelMes(year: number, month: number): FechaPropia[] {
+  private generarIdReunion(): string {
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    return `${this.obtenerDosLetrasAleatorias(
+      letras
+    )}-${this.obtenerDosLetrasAleatorias(
+      letras
+    )}-${this.obtenerDosLetrasAleatorias(letras)}`;
+  }
+
+  private obtenerDosLetrasAleatorias(letras: string): string {
+    return (
+      letras.charAt(Math.floor(Math.random() * letras.length)) +
+      letras.charAt(Math.floor(Math.random() * letras.length))
+    );
+  }
+
+  public obtenerDiasDelMes(): FechaPropia[] {
     const weekdays = [
       "Domingo",
       "Lunes",
@@ -157,31 +120,26 @@ export class Agenda {
     const calendar: FechaPropia[] = [];
 
     // Calcula el número total de días en el mes
-    const daysInMonth = new Date(year, month, 0).getDate();
+    const daysInMonth = new Date(
+      this.fechaInicio.getFullYear(),
+      this.fechaInicio.getMonth(),
+      0
+    ).getDate();
 
     // Recorre cada día del mes
     for (let day = 1; day <= daysInMonth; day++) {
       // Obtiene el día de la semana (0 = Domingo, 6 = Sábado)
-      const date = new Date(year, month - 1, day);
+      const date = new Date(
+        this.fechaInicio.getFullYear(),
+        this.fechaInicio.getMonth() - 1,
+        day
+      );
       const diaSemana = weekdays[date.getDay()];
 
       // Agrega el día al calendario con el tipo FechaPropia
-      calendar.push({ dia: day, diaSemana });
+      calendar.push({ numeroDia: day, nombreDiaSemana: diaSemana });
     }
 
     return calendar;
-  }
-
-  public generarIdReunion(): string {
-    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-    function obtenerDosLetras(): string {
-      return (
-        letras.charAt(Math.floor(Math.random() * letras.length)) +
-        letras.charAt(Math.floor(Math.random() * letras.length))
-      );
-    }
-
-    return `${obtenerDosLetras()}-${obtenerDosLetras()}-${obtenerDosLetras()}`;
   }
 }
