@@ -9,8 +9,8 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
 const env = config();
 
-export class Database {
-  private static instance: Database;
+export class BaseDeDatos {
+  private static instance: BaseDeDatos;
   private client: MongoClient;
   private dbName: string = "PROYECTO_WEB";
 
@@ -20,35 +20,35 @@ export class Database {
       throw new Error("MONGO_URI no está definido en el archivo .env");
     }
     this.client = new MongoClient(uri);
-    this.connect();
+    this.conectarABaseDeDatos();
   }
 
-  public static getInstance(): Database {
-    if (!Database.instance) {
-      Database.instance = new Database();
+  public static obtenerInstancia(): BaseDeDatos {
+    if (!BaseDeDatos.instance) {
+      BaseDeDatos.instance = new BaseDeDatos();
     }
-    return Database.instance;
+    return BaseDeDatos.instance;
   }
 
-  private async connect(): Promise<void> {
+  private async conectarABaseDeDatos(): Promise<void> {
     await this.client.connect();
   }
 
-  public getReferenceToCollection<T extends Document>(
+  public obtenerReferenciaColeccion<T extends Document>(
     name: string
   ): Collection<T> {
     return this.client.db(this.dbName).collection<T>(name);
   }
 
-  public async insertOne<T extends Document>(
+  public async insertarDocumento<T extends Document>(
     collectionName: string,
     document: OptionalUnlessRequiredId<T>
   ): Promise<InsertOneResult<T>> {
-    const collection = this.getReferenceToCollection<T>(collectionName);
+    const collection = this.obtenerReferenciaColeccion<T>(collectionName);
     return await collection.insertOne(document);
   }
 
-  public async close(): Promise<void> {
+  public async cerrarBaseDeDatos(): Promise<void> {
     await this.client.close();
   }
 }

@@ -1,22 +1,24 @@
 import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
 
-interface JobPosting {
-  company: string;
-  role: string;
-  location: string;
-  applicationLink: string;
-  datePosted: string;
+interface ofertaIntership {
+  compania: string;
+  rol: string;
+  locacion: string;
+  linkFuentePublicacion: string;
+  fechaPosteado: string;
 }
 
 export class Scraper {
-  public async obtenerInterships_SimplifyJobs(): Promise<JobPosting[]> {
-    const contenidoObtenido = await this.scrape_SimplifyJobsPage(
+  public async obtenerInterships_SimplifyJobs(): Promise<ofertaIntership[]> {
+    const contenidoObtenido = await this.extraerDatos_SimplifyJobsPage(
       "https://github.com/SimplifyJobs/Summer2025-Internships"
     );
     return this.removerElementosConCamposVacios(contenidoObtenido);
   }
 
-  private async scrape_SimplifyJobsPage(url: string): Promise<JobPosting[]> {
+  private async extraerDatos_SimplifyJobsPage(
+    url: string
+  ): Promise<ofertaIntership[]> {
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -26,7 +28,7 @@ export class Scraper {
       const html = await response.text();
       const $ = cheerio.load(html);
 
-      const jobPostings: JobPosting[] = [];
+      const jobPostings: ofertaIntership[] = [];
       const rows = $("table tr");
 
       // Iterar sobre cada fila, comenzando desde la segunda (si la primera es el encabezado)
@@ -36,12 +38,12 @@ export class Scraper {
 
         const cells = $(row).find("td");
         if (cells.length > 0) {
-          const jobPosting: JobPosting = {
-            company: $(cells[0]).text().trim(),
-            role: $(cells[1]).text().trim(),
-            location: $(cells[2]).text().trim(),
-            applicationLink: $(cells[3]).find("a").attr("href") || "",
-            datePosted: $(cells[4]).text().trim(),
+          const jobPosting: ofertaIntership = {
+            compania: $(cells[0]).text().trim(),
+            rol: $(cells[1]).text().trim(),
+            locacion: $(cells[2]).text().trim(),
+            linkFuentePublicacion: $(cells[3]).find("a").attr("href") || "",
+            fechaPosteado: $(cells[4]).text().trim(),
           };
           jobPostings.push(jobPosting);
         }
@@ -54,14 +56,16 @@ export class Scraper {
     }
   }
 
-  private removerElementosConCamposVacios(jobPostings: JobPosting[]): JobPosting[] {
+  private removerElementosConCamposVacios(
+    jobPostings: ofertaIntership[]
+  ): ofertaIntership[] {
     return jobPostings.filter((posting) => {
       return (
-        posting.company.trim() !== "" &&
-        posting.role.trim() !== "" &&
-        posting.location.trim() !== "" &&
-        posting.applicationLink.trim() !== "" &&
-        posting.datePosted.trim() !== ""
+        posting.compania.trim() !== "" &&
+        posting.rol.trim() !== "" &&
+        posting.locacion.trim() !== "" &&
+        posting.linkFuentePublicacion.trim() !== "" &&
+        posting.fechaPosteado.trim() !== ""
       );
     });
   }

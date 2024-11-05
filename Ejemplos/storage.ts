@@ -1,11 +1,11 @@
-import { AlmacenamientoArchivos } from "../Modelo/StorageService.ts";
+import { AlmacenamientoArchivos } from "../Modelo/AlmacenamientoArchivos.ts";
 
 const storageService = new AlmacenamientoArchivos();
 
 const url = storageService
-  .uploadFile("./imagen.jpg", "ResumePablo")
+  .subirArchivo("./imagen.jpg", "ResumePablo")
   .then(() => console.log("Operación completada"))
-  .catch((error: any) => console.error("Error en la subida:", error));
+  .catch((error: Error) => console.error("Error en la subida:", error));
 console.log(url);
 
 storageService.descargarArchivo(

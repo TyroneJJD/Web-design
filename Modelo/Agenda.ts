@@ -143,8 +143,15 @@ export class Agenda {
   }
 
   public obtenerDiasDelMes(year: number, month: number): FechaPropia[] {
-
-    const weekdays = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    const weekdays = [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado",
+    ];
 
     // Array para almacenar los días del mes
     const calendar: FechaPropia[] = [];
@@ -166,17 +173,15 @@ export class Agenda {
   }
 
   public generarIdReunion(): string {
-    const letras = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const letras = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
     function obtenerDosLetras(): string {
-      return letras.charAt(Math.floor(Math.random() * letras.length)) + letras.charAt(Math.floor(Math.random() * letras.length));
+      return (
+        letras.charAt(Math.floor(Math.random() * letras.length)) +
+        letras.charAt(Math.floor(Math.random() * letras.length))
+      );
     }
 
     return `${obtenerDosLetras()}-${obtenerDosLetras()}-${obtenerDosLetras()}`;
   }
 }
-
-
-
-
-

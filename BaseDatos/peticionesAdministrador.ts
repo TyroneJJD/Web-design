@@ -1,17 +1,13 @@
 import { ObjectId } from "npm:mongodb@6.1.0";
-import { Database } from "./database.ts";
-import type { IEntrevistador } from "../Modelo/Entrevistador.ts";
-import type { IEntrevistado } from "../Modelo/Entrevistado.ts";
-import { Collection } from "npm:mongodb@6.1.0";
+import { BaseDeDatos } from "./database.ts";
+import type { IEntrevistador } from "./peticionesEntrevistador.ts";
+import type { IEntrevistado } from "./peticionesEntrevistado.ts";
 
 export class PeticionesAdministrador {
-  private db: Database;
-  private referenceColeccion: Collection<IEntrevistador>;
+  private db: BaseDeDatos;
 
   constructor() {
-    this.db = Database.getInstance();
-    this.referenceColeccion =
-      this.db.getReferenceToCollection<IEntrevistador>("Entrevistador");
+    this.db = BaseDeDatos.obtenerInstancia();
   }
 
   public async crearNuevoEntrevistador(
@@ -25,7 +21,9 @@ export class PeticionesAdministrador {
       calendarioEntrevistador: entrevistador.calendarioEntrevistador || [],
     };
 
-    const result = await this.referenceColeccion.insertOne(nuevoEntrevistador);
+    const result = await this.db
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
+      .insertOne(nuevoEntrevistador);
     return result.insertedId;
   }
 
@@ -43,7 +41,7 @@ export class PeticionesAdministrador {
     };
 
     const result = await this.db
-      .getReferenceToCollection<IEntrevistado>("Entrevistado")
+      .obtenerReferenciaColeccion<IEntrevistado>("Entrevistado")
       .insertOne(nuevoEntrevistado);
     return result.insertedId;
   }
@@ -57,7 +55,9 @@ export class PeticionesAdministrador {
       correoElectronicoEntrevistador: correoElectronicoEntrevistador,
     };
 
-    const entrevistador = await this.referenceColeccion.findOne(filtro);
+    const entrevistador = await this.db
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
+      .findOne(filtro);
     return entrevistador;
   }
 
@@ -66,7 +66,7 @@ export class PeticionesAdministrador {
     contrasenia: string
   ): Promise<IEntrevistado | null> {
     const user = await this.db
-      .getReferenceToCollection<IEntrevistado>("Entrevistado")
+      .obtenerReferenciaColeccion<IEntrevistado>("Entrevistado")
       .findOne({ correoElectronicoEntrevistado, contrasenia });
     return user;
   }

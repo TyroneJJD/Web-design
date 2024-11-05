@@ -1,19 +1,23 @@
 import { ObjectId } from "npm:mongodb@6.1.0";
-import { Database } from "./database.ts";
-import type { IEntrevistado } from "../Modelo/Entrevistado.ts";
-import { Collection } from "npm:mongodb@6.1.0";
-import { IEntrevistador } from "../Modelo/Entrevistador.ts";
+import { BaseDeDatos } from "./database.ts";
+import { IEntrevistador } from "../BaseDatos/peticionesEntrevistador.ts";
 import { SesionEntrevista } from "../Modelo/Agenda.ts";
 
-//Si les marca un error, ignorenlo
+export interface IEntrevistado {
+  _id?: ObjectId;
+  nombreEntrevistado: string;
+  correoElectronicoEntrevistado: string;
+  carreraUniversitariaEntrevistado: string;
+  semestreCarreraUniversitariaEntrevistado: number;
+  contrasenia: string;
+}
+
+//Si les marca un error en la linea 71, ignorenlo
 export class PeticionesEntrevistado {
-  private db: Database;
-  private referenceColeccion: Collection<IEntrevistado>;
+  private db: BaseDeDatos;
 
   constructor() {
-    this.db = Database.getInstance();
-    this.referenceColeccion =
-      this.db.getReferenceToCollection<IEntrevistado>("Entrevistado");
+    this.db = BaseDeDatos.obtenerInstancia();
   }
 
   public async buscarIdEntrevistador(
@@ -26,7 +30,7 @@ export class PeticionesEntrevistado {
     };
 
     const entrevistador = await this.db
-      .getReferenceToCollection<IEntrevistado>("Entrevistador")
+      .obtenerReferenciaColeccion<IEntrevistado>("Entrevistador")
       .findOne(filtro, {
         projection: { _id: 1 }, // Solo devuelve el campo _id
       });
@@ -39,7 +43,7 @@ export class PeticionesEntrevistado {
   ): Promise<SesionEntrevista[] | null> {
     const filtro: Partial<IEntrevistador> = { _id: idEntrevistador };
     const entrevistador = await this.db
-      .getReferenceToCollection<IEntrevistador>("Entrevistador")
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
       .findOne(filtro);
 
     // Filtrar solo las sesiones donde sesionOcupada es false
@@ -60,7 +64,7 @@ export class PeticionesEntrevistado {
     correoElectronicoEntrevistado: string
   ): Promise<void> {
     await this.db
-      .getReferenceToCollection<IEntrevistador>("Entrevistador")
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
       .updateOne(
         {
           _id: idEntrevistador,
@@ -86,7 +90,9 @@ export class PeticionesEntrevistado {
       correoElectronicoEntrevistado: correoElectronicoEntrevistado,
     };
 
-    const entrevistador = await this.referenceColeccion.findOne(filtro);
+    const entrevistador = await this.db
+      .obtenerReferenciaColeccion<IEntrevistado>("Entrevistado")
+      .findOne(filtro);
     return entrevistador;
   }
 }

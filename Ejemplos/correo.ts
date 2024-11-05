@@ -1,6 +1,6 @@
-import { MailgunService } from "../Modelo/CorreoElectronico.ts";
+import { CorreoElectronico } from "../Modelo/CorreoElectronico.ts";
 
-const mailgunService = new MailgunService();
+const mailgunService = new CorreoElectronico();
 
 mailgunService.enviarCorreoNuevaReunionEntrevistador(
   "pabloten56@hotmail.com",

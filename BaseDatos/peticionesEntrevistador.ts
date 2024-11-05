@@ -1,17 +1,20 @@
 import { ObjectId } from "npm:mongodb@6.1.0";
-import { Database } from "./database.ts";
+import { BaseDeDatos } from "./database.ts";
 import type { SesionEntrevista } from "../Modelo/Agenda.ts";
-import type { IEntrevistador } from "../Modelo/Entrevistador.ts";
-import { Collection } from "npm:mongodb@6.1.0";
+
+export interface IEntrevistador {
+  _id?: ObjectId;
+  nombreEntrevistador: string;
+  correoElectronicoEntrevistador: string;
+  afiliacionEntrevistador: string;
+  calendarioEntrevistador?: SesionEntrevista[];
+}
 
 export class PeticionesEntrevistador {
-  private db: Database;
-  private referenceColeccion: Collection<IEntrevistador>;
+  private db: BaseDeDatos;
 
   constructor() {
-    this.db = Database.getInstance();
-    this.referenceColeccion =
-      this.db.getReferenceToCollection<IEntrevistador>("Entrevistador");
+    this.db = BaseDeDatos.obtenerInstancia();
   }
 
   public async InsertarNuevoEntrevistador(
@@ -25,7 +28,9 @@ export class PeticionesEntrevistador {
       calendarioEntrevistador: entrevistador.calendarioEntrevistador || [],
     };
 
-    const result = await this.referenceColeccion.insertOne(nuevoEntrevistador);
+    const result = await this.db
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
+      .insertOne(nuevoEntrevistador);
     return result.insertedId;
   }
 
@@ -38,7 +43,9 @@ export class PeticionesEntrevistador {
       correoElectronicoEntrevistador: correoElectronicoEntrevistador,
     };
 
-    const entrevistador = await this.referenceColeccion.findOne(filtro);
+    const entrevistador = await this.db
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
+      .findOne(filtro);
     return entrevistador;
   }
 
@@ -47,25 +54,29 @@ export class PeticionesEntrevistador {
     nuevaSesion: SesionEntrevista
   ): Promise<void> {
     // Verificar si la sesión ya existe en `calendarioEntrevistador`
-    const entrevistador = await this.referenceColeccion.findOne({
-      _id: idEntrevistador,
-      calendarioEntrevistador: {
-        $elemMatch: {
-          horaInicio: nuevaSesion.horaInicio,
-          horaFin: nuevaSesion.horaFin,
-          nombreEntrevistado: nuevaSesion.nombreEntrevistado,
-          correoElectronicoEntrevistado:
-            nuevaSesion.correoElectronicoEntrevistado,
+    const entrevistador = await this.db
+      .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
+      .findOne({
+        _id: idEntrevistador,
+        calendarioEntrevistador: {
+          $elemMatch: {
+            horaInicio: nuevaSesion.horaInicio,
+            horaFin: nuevaSesion.horaFin,
+            nombreEntrevistado: nuevaSesion.nombreEntrevistado,
+            correoElectronicoEntrevistado:
+              nuevaSesion.correoElectronicoEntrevistado,
+          },
         },
-      },
-    });
+      });
 
     // Si la sesión no existe, agregarla
     if (!entrevistador) {
-      await this.referenceColeccion.updateOne(
-        { _id: idEntrevistador },
-        { $push: { calendarioEntrevistador: nuevaSesion } }
-      );
+      await this.db
+        .obtenerReferenciaColeccion<IEntrevistador>("Entrevistador")
+        .updateOne(
+          { _id: idEntrevistador },
+          { $push: { calendarioEntrevistador: nuevaSesion } }
+        );
     } else {
       console.log("La sesión ya existe en el calendario.");
     }

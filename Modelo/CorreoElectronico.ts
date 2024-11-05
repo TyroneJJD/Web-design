@@ -3,13 +3,13 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
 const env = config();
 
-interface EmailOptions {
+interface DatosCorreoElectronico {
   destinatario: string;
   temaCorreo: string;
   contenidoHTML: string;
 }
 
-export class MailgunService {
+export class CorreoElectronico {
   private apiKey: string;
   private domain: string;
 
@@ -22,7 +22,7 @@ export class MailgunService {
     destinatario,
     temaCorreo,
     contenidoHTML,
-  }: EmailOptions): Promise<void> {
+  }: DatosCorreoElectronico): Promise<void> {
     const form = new FormData();
     form.append("from", `SUPER_PROYECTO_WEB <mailgun@${this.domain}>`);
     form.append("to", destinatario);
