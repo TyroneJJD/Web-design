@@ -1,6 +1,6 @@
 import { BaseDeDatos } from "./database.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import { ObjectId } from "https://deno.land/x/web_bson@v0.2.5/src/objectid.ts";
+import { ObjectId } from "npm:mongodb@6.1.0";
 
 interface Publicacion {
   titulo: string;
@@ -68,28 +68,31 @@ export class Blog {
     return null; // Devuelve null si el formato no es soportado
   }
 
-  public async obtenerPostPorId(context: Context): Promise<Publicacion | null> {
-    const id = context.request.url.searchParams.get("id");
-
-    if (!id) {
-      context.response.status = 400;
-      context.response.body = { message: "ID not provided" };
-      //return;
+  public async obtenerPostPorId(postId: string): Promise<Publicacion | null> {
+    console.log("Post ID recibido:", postId);
+  
+    // Verifica que el postId sea un ObjectId válido
+    if (!ObjectId.isValid(postId)) {
+      console.error("ID de post inválido:", postId);
+      return null; // Devuelve null si el ID no es válido
     }
-
-    const post = id
-      ? await this.db
-          .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
-          .findOne({ _id: new ObjectId(id) })
-      : null;
-
-    if (post) {
-      context.response.status = 200;
-      context.response.body = post;
-    } else {
-      context.response.status = 404;
-      context.response.body = { message: "Post not found" };
+  
+    try {
+      // Busca el post en la colección "Publicaciones" usando el ObjectId
+      const post = await this.db
+        .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
+        .findOne({ _id: new ObjectId(postId) });
+  
+      if (post) {
+        console.log("Post encontrado:", post);
+        return post; // Devuelve el post si se encuentra
+      } else {
+        console.log("Post no encontrado con ID:", postId);
+        return null; // Devuelve null si no se encuentra el post
+      }
+    } catch (error) {
+      console.error("Error al obtener el post:", error);
+      return null; // Devuelve null si ocurre un error
     }
-    return post;
   }
 }

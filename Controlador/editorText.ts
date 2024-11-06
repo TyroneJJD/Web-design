@@ -7,9 +7,9 @@ export async function mostrarPaginaEditorTexto(context: Context) {
   context.response.body = html || "Error al renderizar la página";
 }
 
-export async function mostrarPublicacion(context: Context) {
+export async function mostrarPublicacion(context: Context, postId: string) {
   const blog = new Blog();
-  const post = await blog.obtenerPostPorId(context);
+  const post = await blog.obtenerPostPorId(postId);
   if (post) {
     context.response.body = `
       <!DOCTYPE html>
@@ -20,7 +20,7 @@ export async function mostrarPublicacion(context: Context) {
         <title>${post.titulo}</title>
       </head>
       <body>
-        <h1>${post.titulo}</h3>
+        <h1>${post.titulo}</h1>
         <h3>${post.autor}</h3>
         <h3>${post.etiquetas}</h3>
         <div>${post.contenido}</div>

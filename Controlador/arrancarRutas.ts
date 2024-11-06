@@ -28,8 +28,9 @@ export function arrancarRutas(router: Router) {
     await blog.guardarPost(contexto);
   })
   router.get("/view-content/:id", async (context) => {
-    await mostrarPublicacion(context);
-  });
+    const postId = context.params.id;
+    await mostrarPublicacion(context, postId);
+});
 
   router.get("/subida", mostrarSubidaArchivos);
   router.post("/subida", async (contexto: Context) => {
