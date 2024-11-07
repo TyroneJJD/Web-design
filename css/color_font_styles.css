@@ -1,0 +1,14 @@
+:root {
+    /* Colores */
+    --background-color: #023047;
+    --buttons-primary-color: #219EBC;
+    --text-color-buttons: #FFFFFF;
+    --titles-color: #FB8500;
+    --text-color: #FFB703;
+    --buttons-secondary-color: #8ECAE6;
+
+    /* Fuentes */
+    --buttons-font: 'Verdana' sans-serif;
+    --body-font: 'Inter', sans-serif;
+    --heading-font: 'Poppins', sans-serif;
+}
