@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="css/color_font_styles.css">
+    <link rel="stylesheet" href="css/common_styles.css">
+    <link rel="stylesheet" href="css/profile_styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="">Inicio</a></li>  
+            <li><a href="">Perfil</a></li>
+            <li><a href="">Agenda</a></li>
+            <li><a href="">Contacto</a></li>
+        </ul>
+    </nav>
+
+    <div class="banner">
+        <img src="images/ejemploBanner.png" alt="banner" id="bannerImage">
+    </div>
+
+    <main>
+        <div id="profileDescription">
+            <div id="profileContainer">
+                <img src="images/ejemploFotoDePerfil.png" alt="Foto de perfil" id="profileImage">
+                <div id="profileContent">
+                    <h2>Juan Daniel Kao Pech</h2>
+                    <p>Estudiante UADY. Coach</p>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <button type="button">Contactar</button>
+                <button type="button" id="bookButton">Agendar Cita</button>
+            </div>
+        </div>
+
+        <div id="contentAboutCoach">
+            <div id="aboutMe">
+                <h2>Sobre Mí</h2>
+
+                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem nostrum inventore totam laboriosam soluta sint asperiores repellendus esse atque assumenda. Consequuntur placeat, illo consectetur eos magni doloribus ipsam unde sapiente.</p>
+            </div>
+
+            <div id="certifications">
+                <h2>Certificaciones</h2>
+
+                <div class="certificationsCards">
+                    <img src="images/ejemploBanner.png" alt="ejemplo">
+                    <p>Nombre de Certificación</p>
+                </div>
+
+                <div class="certificationsCards">
+                    <img src="images/ejemploBanner.png" alt="ejemplo">
+                    <p>Nombre de Certificación</p>
+                </div>
+
+                <div class="certificationsCards">
+                    <img src="images/ejemploBanner.png" alt="ejemplo">
+                    <p>Nombre de Certificación</p>
+                </div>
+
+                <div class="certificationsCards">
+                    <img src="images/ejemploBanner.png" alt="ejemplo">
+                    <p>Nombre de Certificación</p>
+                </div>
+
+                <div class="certificationsCards">
+                    <img src="images/ejemploBanner.png" alt="ejemplo">
+                    <p>Nombre de Certificación</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="modal">
+        <div class="modalContent">
+            <span id="close">&times;</span> 
+            <p>Aquí va el formulario de agenda</p>
+        </div>
+    </div>
+
+    <script src="js/profile._scripts.js"></script>
+</body>
+</html>
