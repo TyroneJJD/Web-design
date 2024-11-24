@@ -9,7 +9,7 @@ export class AlmacenamientoArchivos {
     env.FIREBASE_STORAGE_BUCKET +
     `/o`;
 
-  public async subirArchivo(
+  public async guardarArchivo(
     filePath: string,
     fileName: string
   ): Promise<string> {
@@ -64,7 +64,7 @@ export class AlmacenamientoArchivos {
     try {
       const storageBucketUrl = `https://firebasestorage.googleapis.com/v0/b/${env.FIREBASE_STORAGE_BUCKET}/o`;
 
-      const filePath = this.obtenerRutaDelURL(imageUrl);
+      const filePath = this.obtenerUbicacionArchivo(imageUrl);
       const deleteUrl = `${storageBucketUrl}/${encodeURIComponent(
         filePath
       )}?token=${env.FIREBASE_API_KEY}`;
@@ -86,7 +86,7 @@ export class AlmacenamientoArchivos {
     }
   }
 
-  private obtenerRutaDelURL(url: string): string {
+  private obtenerUbicacionArchivo(url: string): string {
     const baseUrl = `https://firebasestorage.googleapis.com/v0/b/${env.FIREBASE_STORAGE_BUCKET}/o/`;
     if (url.startsWith(baseUrl)) {
       return decodeURIComponent(url.replace(baseUrl, "").split("?")[0]);

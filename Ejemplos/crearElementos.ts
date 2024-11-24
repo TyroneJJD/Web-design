@@ -1,7 +1,7 @@
 
-import { PeticionesAdministrador } from "../BaseDatos/peticionesAdministrador.ts";
+import { OperacionesAdministrador } from "../BaseDatos/operacionesAdministrador.ts";
 
-const admin= new PeticionesAdministrador();
+const admin= new OperacionesAdministrador();
 
 
 await admin.crearNuevoEntrevistador({

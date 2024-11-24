@@ -1,7 +1,6 @@
-// Importar las dependencias necesarias
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
-const env = config();
+
 
 interface DatosCorreoElectronico {
   destinatario: string;
@@ -14,6 +13,7 @@ export class CorreoElectronico {
   private domain: string;
 
   constructor() {
+    const env = config();
     this.apiKey = env.MAILGUN_API_KEY;
     this.domain = env.MAILGUN_DOMAIN;
   }
@@ -55,7 +55,7 @@ export class CorreoElectronico {
     }
   }
 
-  public enviarCorreoNuevaReunionEntrevistador(
+  public enviarCorreoNuevaReunionParaEntrevistador(
     corrreoElectronicoEntrevistador: string,
     nombreEntrevistado: string,
     urlReunion: string
@@ -111,7 +111,7 @@ export class CorreoElectronico {
     });
   }
 
-  public enviarCorreoNuevaReunionEntrevistado(
+  public enviarCorreoNuevaReunionParaEntrevistado(
     corrreoElectronicoEntrevistado: string,
     nombreEntrevistador: string,
     urlReunion: string

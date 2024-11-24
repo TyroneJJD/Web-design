@@ -9,12 +9,12 @@
     href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
   />
   <script src="https://cdn.quilljs.com/1.3.6/quill.js" defer></script>
-  <script src="../javascript/subidaTexto.js" defer></script> <!-- Asegúrate de que esta ruta sea correcta -->
+  <script src="../js/subidaTexto.js" defer></script> <!-- Asegúrate de que esta ruta sea correcta -->
 </head>
 <body>
   <h1>Crear Publicación</h1>
 
-  <form id="postForm" method="post" action="/save-content" enctype="multipart/form-data">
+  <form id="postForm" enctype="multipart/form-data">
     <label for="titulo">Título:</label>
     <input type="text" id="titulo" name="titulo" required />
 

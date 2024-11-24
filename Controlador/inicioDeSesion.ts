@@ -1,6 +1,6 @@
 import { create } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
-import { PeticionesAdministrador } from "../BaseDatos/peticionesAdministrador.ts";
+import { OperacionesAdministrador } from "../BaseDatos/operacionesAdministrador.ts";
 import { renderFile } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 
@@ -10,47 +10,46 @@ export async function mostrarPaginaInicioDeSesion(context: Context) {
   context.response.body = html || "Error al renderizar la página";
 }
 
-export async function manejadorInicioSesion(ctx: Context) {
-  const credenciales = await obtenerDatosFormularioInicioDeSesion(ctx);
+export async function manejadorInicioSesion(context: Context) {
+  const credenciales = await obtenerDatosFormularioInicioDeSesion(context);
 
   if (!credenciales) {
-    ctx.response.status = 400;
-    ctx.response.body = "Formato de cuerpo no soportado.";
+    context.response.status = 400;
+    context.response.body = "Formato de cuerpo no soportado.";
     return;
   }
 
   const { email, password } = credenciales;
-  const verificator = new PeticionesAdministrador();
+  const verificator = new OperacionesAdministrador();
 
   if (email && password) {
-    const userdata = await verificator.recuperarDatosEntrevistado(
+    const userDataExists = await verificator.recuperarDatosEntrevistado(
       email,
       password
     );
 
-    if (userdata) {
-      // Si el usuario existe en la db
+    if (userDataExists) {
       const key = await obtenerTokenAuth();
       const jwt = await create(
         { alg: "HS256", typ: "JWT" },
         {
-          username: userdata.nombreEntrevistado,
-          id: userdata._id,
-          email: userdata.correoElectronicoEntrevistado,
+          username: userDataExists.nombreEntrevistado,
+          id: userDataExists._id,
+          email: userDataExists.correoElectronicoEntrevistado,
           exp: Math.floor(Date.now() / 1000) + 60 * 60,
         },
         key
       );
 
-      ctx.cookies.set("auth_token", jwt, { httpOnly: true, secure: false });
-      ctx.response.redirect("/protected");
+      context.cookies.set("auth_token", jwt, { httpOnly: true, secure: false });
+      context.response.redirect("/protected");
     } else {
-      ctx.response.status = 401;
-      ctx.response.body = "Credenciales incorrectas";
+      context.response.status = 401;
+      context.response.body = "Credenciales incorrectas";
     }
   } else {
-    ctx.response.status = 400;
-    ctx.response.body = "Username and password must not be null.";
+    context.response.status = 400;
+    context.response.body = "Username and password must not be null.";
   }
 }
 

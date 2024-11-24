@@ -14,23 +14,25 @@ import {
   obtenerTokenAuth,
 } from "./inicioDeSesion.ts";
 
-import { mostrarPaginaEditorTexto, mostrarPublicacion } from "./editorText.ts";
-import { Blog } from "../BaseDatos/Blog.ts";
+import {
+  mostrarPaginaEditorTexto,
+  mostrarPublicacion,
+  guardarPublicacion,
+} from "./Blog.ts";
 import { Router, Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { verify } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
 export function arrancarRutas(router: Router) {
   router.get("/", mostrarPaginaInicio);
-  const blog = new Blog();
 
   router.get("/editorTexto", mostrarPaginaEditorTexto);
   router.post("/save-content", async (contexto: Context) => {
-    await blog.guardarPost(contexto);
-  })
+    await guardarPublicacion(contexto);
+  });
+
   router.get("/view-content/:id", async (context) => {
-    const postId = context.params.id;
-    await mostrarPublicacion(context, postId);
-});
+    await mostrarPublicacion(context, context.params.id);
+  });
 
   router.get("/subida", mostrarSubidaArchivos);
   router.post("/subida", async (contexto: Context) => {

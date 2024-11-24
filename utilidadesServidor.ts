@@ -1,7 +1,7 @@
 import { Context, send } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
-export function verificarQueLasVariablesDeEntornoEstenDefinidas(): void {
+export function verificarVariablesDeEntornoDefinidas(): void {
   const env = config();
 
   const variablesRequeridas = [
@@ -40,13 +40,12 @@ function verificarVariableDeEntorno(
   return true;
 }
 
-
-
-export function cargarArchivosEstaticos(prefix: string) {
+export function cargarArchivosEstaticos(prefix: string, carpetaRaiz: string) {
   return async (context: Context, next: () => Promise<unknown>) => {
     if (context.request.url.pathname.startsWith(prefix)) {
-      await send(context, context.request.url.pathname, {
-        root: `${Deno.cwd()}`,
+      const filePath = context.request.url.pathname.substring(prefix.length);
+      await send(context, filePath, {
+        root: carpetaRaiz,
       });
     } else {
       await next();

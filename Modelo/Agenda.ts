@@ -1,15 +1,10 @@
-export interface SesionEntrevista {
+interface SesionEntrevista {
   idReunion: string;
   horaInicio: Date;
   horaFin: Date;
   nombreEntrevistado: string;
   correoElectronicoEntrevistado: string;
   sesionOcupada: boolean;
-}
-
-export interface FechaPropia {
-  numeroDia: number;
-  nombreDiaSemana: string;
 }
 
 export class Agenda {
@@ -105,41 +100,4 @@ export class Agenda {
     );
   }
 
-  public obtenerDiasDelMes(): FechaPropia[] {
-    const weekdays = [
-      "Domingo",
-      "Lunes",
-      "Martes",
-      "Miércoles",
-      "Jueves",
-      "Viernes",
-      "Sábado",
-    ];
-
-    // Array para almacenar los días del mes
-    const calendar: FechaPropia[] = [];
-
-    // Calcula el número total de días en el mes
-    const daysInMonth = new Date(
-      this.fechaInicio.getFullYear(),
-      this.fechaInicio.getMonth(),
-      0
-    ).getDate();
-
-    // Recorre cada día del mes
-    for (let day = 1; day <= daysInMonth; day++) {
-      // Obtiene el día de la semana (0 = Domingo, 6 = Sábado)
-      const date = new Date(
-        this.fechaInicio.getFullYear(),
-        this.fechaInicio.getMonth() - 1,
-        day
-      );
-      const diaSemana = weekdays[date.getDay()];
-
-      // Agrega el día al calendario con el tipo FechaPropia
-      calendar.push({ numeroDia: day, nombreDiaSemana: diaSemana });
-    }
-
-    return calendar;
-  }
 }

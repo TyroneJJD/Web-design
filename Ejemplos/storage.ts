@@ -3,7 +3,7 @@ import { AlmacenamientoArchivos } from "../Modelo/AlmacenamientoArchivos.ts";
 const storageService = new AlmacenamientoArchivos();
 
 const url = storageService
-  .subirArchivo("./imagen.jpg", "ResumePablo")
+  .guardarArchivo("./imagen.jpg", "ResumePablo")
   .then(() => console.log("Operación completada"))
   .catch((error: Error) => console.error("Error en la subida:", error));
 console.log(url);
