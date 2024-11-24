@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two Sums - Editorial</title>
+
+    <link rel="stylesheet" href="../css/SearchEngine/Editoriales._styles.css">
+
+    <script type="text/javascript" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+
+</head>
+
+<body>
+    <div class="titulo-problema"><b>LeetCode - <i>Two Sums</i></b></div>
+
+    <div class="contenedor-encabezado">
+        <div class="encabezado-titulo">Tópicos relacionados:</div>
+        <div class="lista-topicos">
+            <ul>
+                <li>
+                    <a href="#" class="boton boton-topico"><u>Ordenamientos</u></a>
+                </li>
+                <li>
+                    <a href="#" class="boton boton-topico"><u>Dos punteros</u></a>
+                </li>
+            </ul>
+        </div>
+        <a href="https://leetcode.com/problems/two-sum/">
+            <div class="boton boton-problema">
+                Ver problema
+            </div>
+        </a>
+        
+    </div>
+    
+    <div class="contenedor-solucion">
+        <div class="solucion-titulo"><b><u><i>Explicación:</i></u></b></div>
+        <div>
+            <p>La solución más simple que se nos puede ocurrir es iterar sobre todos los pares existentes de
+                elementos dentro de nuestro arreglo y verificar por cada par si su suma corresponde al valor
+                pedido. Sin embargo, la solución anterior resulta muy lenta, por lo tanto debemos de pensar en
+                una forma más eficiente de obtener nuestro resultado.
+            </p>
+            <p>Para poder implementar la solución óptima, primero debemos ordenar nuestro arreglo,
+                esto nos permitirá tener una idea más clara acerca de que elemento podría formar parte
+                de nuestra respuesta o no, y con base a ello tomar decisiones.
+            </p>
+            <p>
+                Una vez ordenado el arreglo, declaramos dos punteros \(l\) y \(r\)  situados al inicio
+                y al final del arreglo respectivamente. De esta manera \(a_l\) corresponde al elemento más 
+                pequeño del arreglo y \(a_r\) corresponde al elemento más grande. Mientras \(l < r \), sumamos
+                los valores asociados a los índices y los comparamos con \(target\), para esto existen tres
+                casos:
+            </p>
+            <p>
+                <ol>
+                    <li>
+                        <p>Si \(a_l + a_r > target\), decrementamos \(r\).</p>
+                    </li>
+                    <li>
+                        <p>Si \(a_l + a_r < target\), incrementamos \(l\).</p>
+                    </li>
+                    <li>
+                        <p>Si \(a_l + a_r = target\), retornamos \(l\) y \(r\).</p>
+                    </li>
+                </ol>
+            </p>
+            <p>Notemos que para implementar la solución, sera necesario guardar nuestros elementos en un 
+                vector de pares, donde el primer componente del par corresponde al valor del elemento y el segundo componente
+                corresponde a su índice asociado, este orden es importante pues la función <i>\(sort\)</i>
+                <i>(por defecto)</i> ordena los elementos con base al primer componente del par. De esta manera, seremos capaces de ordenar
+                los elementos por su valor en el arreglo y recuperar sus índices asociados para
+                devolver nuestra respuesta.
+            </p>
+        </div>
+        <div class="complejidad">
+            <b>Complejidad Temporal:</b> \(O(N \log{n})\)
+        </div>
+        <div class="codigo-contenedor">
+            <pre><code class="lenguaje-cpp">
+#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+#define el "\n"
+#define ll long long
+
+class Solution {
+public:
+    vector&lt;int&gt; twoSum(vector&lt;int&gt;& nums, int target) {
+        vector&lt;pair&lt;int,int&gt;&gt; valor_indice(nums.size());
+        vector&lt;int&gt; respuesta;
+        for(int i = 0; i &lt; nums.size(); ++i){
+            valor_indice[i].first = nums[i];
+            valor_indice[i].second = i;
+        }
+        sort(valor_indice.begin(), valor_indice.end());
+        int l = 0, r = nums.size()-1;
+        while(l &lt; r){
+            int suma_actual = valor_indice[l].first + valor_indice[r].first;
+            if(suma_actual &gt; target){r--; continue;}
+            if(suma_actual &lt; target){l++; continue;}
+            if(suma_actual == target){
+                respuesta.emplace_back(valor_indice[l].second);
+                respuesta.emplace_back(valor_indice[r].second);
+                break;
+            }
+        }
+        return respuesta;
+    }
+};
+            </code></pre>
+    </div>
+    
+</body>
+</html>
