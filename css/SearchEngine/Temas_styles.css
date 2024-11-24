@@ -1,0 +1,118 @@
+body{
+    background-color: #023047;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    color: white;
+    margin:auto;
+}
+
+.contenedor{
+    display:flex;
+}
+
+.contenido{
+    padding:30px;
+}
+
+.barra-lateral{
+    width: 20%;
+    background-color:  #FFB703;
+}
+
+.titulo{
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.descripcion{
+    font-size:17px;
+    margin-bottom: 30px;
+}
+
+.recursos{
+    background-color: white;
+    color: black;
+    margin-bottom: 40px;
+}
+
+.titulo-apartado{
+    background-color: #F2F2F2;
+    padding: 10px;
+    font-size: 20px;
+    color:black;
+}
+
+.link-recurso{
+    font-size: 18px;
+    line-height: 2;
+}
+
+.nota-recursos{
+    padding:4px;
+    background-color: #F2F2F2;
+    font-size: 15px;
+}
+
+.problemas{
+    display:flex;
+    background-color: white;
+    color: black;
+}
+
+.tabla-problemas {
+    border-collapse: collapse; /* Mantener sin espacios entre celdas */
+    width: 100%; /* Asegurar ancho completo */
+    border: none;/* Borde general de la tabla */
+    border-radius: 10px; /* Bordes redondeados */
+    overflow: hidden; /* Asegura que el radio no se "desborde" */
+}
+
+.tabla-problemas th, 
+.tabla-problemas td {
+    padding: 12px 15px; /* Espaciado interno */
+    border:none;
+    text-align: center; /* Alinear contenido a la izquierda */
+}
+
+.tabla-problemas th {
+    font-size: 14px; /* Tamaño del texto */
+}
+
+.tabla-problemas tbody tr:nth-child(odd) {
+    background-color: #f2f2f2; /* Color gris para filas impares */
+}
+
+.tabla-problemas tbody tr:nth-child(even) {
+    background-color: white; /* Color blanco para filas pares */
+}
+
+.link{
+    text-decoration: none;
+    color:blue;
+    font-style: italic;
+    font-size: 17px;
+}
+
+.dificultad-facil {
+    background-color: #28a745; /* Verde */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.dificultad-medio {
+    background-color: #ffc107; /* Naranja */
+    color: black;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+.dificultad-dificil {
+    background-color: #dc3545; /* Rojo */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+

@@ -2,15 +2,17 @@ body{
     margin: 40px;
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5;
+    background-color: #023047;
+    color:white;
+
 }
 
 .titulo-problema{
     font-size: 35px;
-    margin-bottom: 20px;
 }
 
 .contenedor-encabezado{
-    background-color: rgb(238, 236, 236);
+    background-color: #ccc;
     margin-bottom: 10px;
     padding: 20px;
     margin: 30px;
@@ -20,11 +22,16 @@ body{
 
 .encabezado-titulo{
     font-size: 20px;
+    color: black;
 }
 
 .lista-topicos{
     font-size: 18px;
     margin-bottom: 20px;
+}
+
+.no-estilo{
+    text-decoration: none;
 }
 
 .boton{    
@@ -39,24 +46,16 @@ body{
     cursor: pointer;
 }
 
-.boton-problema{
-    margin-top: 30px;
-}
-
-.boton-problema a{
-    text-decoration:none;
-}
-
 .boton-topico:hover {
-    background-color: #FFB703;
+    background-color: #023047;
     color: #fff; /* Cambiar color del texto a blanco */
     transform: scale(1.05); /* Ampliación leve */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
 }
 
 .boton-problema:hover {
-    background-color: #023047;
-    color: #ffffff; /* Cambiar color del texto a blanco */
+    background-color: #FFB703;
+    color: black; /* Cambiar color del texto a blanco */
     transform: scale(1.05); /* Ampliación leve */
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Sombra */
 }
@@ -113,6 +112,7 @@ body{
     overflow: auto;
     width: 50%;
     align-self: center;
+    color:black
 }
 
 pre {
