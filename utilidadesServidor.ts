@@ -15,6 +15,9 @@ export function verificarVariablesDeEntornoDefinidas(): void {
     "FIREBASE_MESSAGING_SENDER_ID",
     "FIREBASE_APP_ID",
     "SECRET_JWT_KEY",
+    "CLIENT_ID",
+    "CLIENT_SECRET",
+    "REDIRECT_URI",
   ];
 
   for (const variable of variablesRequeridas) {

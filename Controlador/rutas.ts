@@ -19,6 +19,8 @@ import {
   mostrarPublicacion,
   guardarPublicacion,
 } from "./Blog.ts";
+
+import { identificacion, generarReunion } from "../Modelo/Reunion.ts";
 import { Router, Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { verify } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
@@ -45,6 +47,9 @@ export function arrancarRutas(router: Router) {
   });
 
   router.get("/protected", verificadorAutenticacion, mostrarPaginaProtegida);
+
+  router.get("/identificarse", identificacion);
+  router.get("/oauth2callback", generarReunion);
 }
 
 const verificadorAutenticacion = async (
