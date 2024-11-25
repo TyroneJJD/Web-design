@@ -38,7 +38,7 @@ export class PeticionesEntrevistado {
     return entrevistador ? entrevistador._id : null;
   }
 
-  public async pedirCalendarioEntrevistador(
+  public async solicitarCalendarioEntrevistador(
     idEntrevistador: ObjectId
   ): Promise<SesionEntrevista[] | null> {
     const filtro: Partial<IEntrevistador> = { _id: idEntrevistador };

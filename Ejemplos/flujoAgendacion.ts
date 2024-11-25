@@ -32,7 +32,7 @@ if (IdBasto) {
 }
 
 if (IdBasto) {
-  const calendarioBasto = await Pablo.pedirCalendarioEntrevistador(IdBasto);
+  const calendarioBasto = await Pablo.solicitarCalendarioEntrevistador(IdBasto);
   console.log(calendarioBasto);
 } else {
   throw new Error("ID del entrevistador no definido");
@@ -50,7 +50,7 @@ if (datosPablo) {
   throw new Error("Datos del entrevistado no definidos");
 }
 
-const calendarioBastoActualizado = await Pablo.pedirCalendarioEntrevistador(
+const calendarioBastoActualizado = await Pablo.solicitarCalendarioEntrevistador(
   IdBasto
 );
 console.log(calendarioBastoActualizado);
