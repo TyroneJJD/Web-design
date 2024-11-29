@@ -1,0 +1,241 @@
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Estilo general del header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8b400;
+    color: white;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Barra de navegación */
+.nav-menu ul {
+    list-style: none;
+    display: flex; /* Mostrar elementos en fila por defecto */
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu ul li a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Botón hamburguesa */
+.menu-toggle {
+    display: none; /* Ocultar el botón por defecto */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+
+    main {
+        flex-direction: column; 
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+    }
+
+    .nav-menu {
+        display: none; /* Ocultar el menú por defecto */
+        position: absolute;
+        top: 60px; /* Asegúrate de que esté debajo del header */
+        left: 0;
+        right: 0;
+        background-color: #f8b400;
+        padding: 10px 0;
+    }
+
+    .nav-menu ul {
+        flex-direction: column; /* Cambiar de fila a columna */
+        align-items: center;
+    }
+
+    .nav-menu.active {
+        display: block; 
+    }
+
+    .foto{
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+#titulo{
+    text-align: center;
+}
+
+#buscador{
+    text-align: center;
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+#buscador_input{
+    transition: .3s;
+    border: 3px solid #f8b400;
+    width: 50%;
+    background-color: white;
+    border-radius: 10px;
+    display: flex; /* Para alinear los elementos horizontalmente */
+    align-items: center;
+}
+
+.icono {
+    margin-top: 2px;
+}
+
+.icono img{
+    width: 50%;
+}
+
+#buscador_input input{
+    width: 90%;
+    height: 25px;
+    border: 0px;
+    outline: none;
+}
+
+#buscador_input:focus-within {
+    transition: .3s;
+    border: 3px solid blue; /* Cambia el color del borde */
+}
+
+/* Cuerpo principal */
+main {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Columna izquierda */
+.perfil {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+.agregar-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+/* Columna derecha */
+.detalles {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.certificados, .resenas {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#contenedor_foto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8b400;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box; /* Incluye el padding y border en el tamaño total */
+    background-image: url(imaege.png);
+    background-size: cover;
+    background-position: center;
+}
+
+/*Div sobre el que flotan los demas*/
+.foto {
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 (círculo perfecto) */
+    width: 100%; /* Se ajusta al ancho del contenedor */
+    max-width: 150px; /* Tamaño máximo */
+    border-radius: 50%;
+    margin-bottom: 18px;
+    margin-top: 20px;
+    position: relative;
+
+}
+
+/*Foto del perfil*/
+#foto_perfil{
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 (círculo perfecto) */
+    width: 100%; /* Se ajusta al ancho del contenedor */
+    max-width: 150px; /* Tamaño máximo */
+    border-radius: 50%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: white;
+    overflow: hidden;
+    position: relative;
+    border: 5px solid white;
+}
+
+.foto img {
+    width: 100%; /* Escala para llenar todo el círculo */
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+    object-position: center; /* Centra la imagen dentro del círculo */
+}
+
+#btn_editar{
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 (círculo perfecto) */
+    background-color: white;
+    width: 30%;
+    border-radius: 100%;
+    position: absolute;
+    bottom: 10%;
+    right: 0;
+    text-align: center;
+    overflow: hidden;
+}
+
+.inputfile {
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+}
+
+.inputfile:hover{
+    cursor: pointer;
+}
+
+#icono_editar{
+    margin-top: 5px;
+}
