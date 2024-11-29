@@ -22,13 +22,13 @@ const router = new Router();
 
 inicializarBlog(router, app);
 inicializarBuscadorInterships(router, app);
-//inicializarLandingPage(router, app);
-//inicializarLogin(router, app);
-//inicializarMiPerfil(router, app);
-//inicializarPaginaInicio(router, app);
-//inicializarPanelAdministrador(router, app);
-//inicializarProblemasProgramacionCompetitiva(router, app);
-//inicializarExplorarEntrevistadores(router, app);
+inicializarLandingPage(router, app);
+inicializarLogin(router, app);
+inicializarMiPerfil(router, app);
+inicializarPaginaInicio(router, app);
+inicializarPanelAdministrador(router, app);
+inicializarProblemasProgramacionCompetitiva(router, app);
+inicializarExplorarEntrevistadores(router, app);
 
 app.use(router.routes());
 app.use(router.allowedMethods());

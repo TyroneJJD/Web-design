@@ -17,7 +17,6 @@ export function inicializarBuscadorInterships(
 ) {
   router.get("/BuscadorInterships", prueba2);
 
-  configure({ views: `${Deno.cwd()}/Secciones/BuscadorInterships/Vista/html` });
   app.use(
     cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
   );
