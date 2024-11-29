@@ -1,0 +1,39 @@
+<!-- correo_nueva_reunion_entrevistador.html -->
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    .container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      background-color: #f9f9f9;
+    }
+    .button {
+      display: inline-block;
+      padding: 10px 15px;
+      margin-top: 10px;
+      background-color: #007bff;
+      color: white;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Reunión programada</h2>
+    <p>Hola,</p>
+    <p><strong>{{nombreEntrevistado}}</strong> ha solicitado una sesión de asesoría contigo.</p>
+    <p>Puedes unirte a la reunión haciendo clic en el siguiente enlace:</p>
+    <a href="{{urlReunion}}" class="button">Unirse a la reunión</a>
+    <p>Si tienes alguna pregunta, no dudes en ponerte en contacto.</p>
+    <p>Saludos,<br>El equipo: Umizumi</p>
+  </div>
+</body>
+</html>
