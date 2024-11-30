@@ -17,6 +17,92 @@ export class ManejadorEntrevistador {
     ) as unknown as Collection<IUsuario>;
   }
 
+  private async obtenerCandidatosRegistradosALaSesion(
+    idEntrevistador: string, 
+    idReunion: string, 
+  ): Promise<ICandidatosRegistrado[] | null> {
+    try {
+      // Buscar al usuario por ID
+      const usuario = await  this.collection.findOne({ _id: new ObjectId(idEntrevistador) });
+  
+      if (!usuario) {
+        throw new Error(`Usuario con ID ${idEntrevistador} no encontrado`);
+      }
+  
+      // Buscar la sesión de entrevista por ID de la reunión en la agenda del usuario
+      const sesion = usuario.agenda.find((sesion) => sesion.idReunion === idReunion);
+  
+      if (!sesion) {
+        throw new Error(`Sesión de entrevista con ID ${idReunion} no encontrada`);
+      }
+  
+      // Retornar los candidatos registrados de la sesión
+      return sesion.candidatosRegistrados;
+    } catch (error) {
+      console.error("Error al obtener los candidatos de la sesión:", error);
+      return null; // Si ocurre un error, retornamos null
+    }
+  }
+
+  public async asignarCandidatoASesion(
+    idSesion: string, // ID de la sesión a actualizar
+    idCandidatoAAsignar: string, // ID del candidato a asignar
+    collection: Collection<ISesionEntrevista> // Colección de sesiones en la base de datos
+  ): Promise<ISesionEntrevista | null> {
+    try {
+      // Buscar la sesión de entrevista por su ID
+      const sesion = await collection.findOne({ idReunion: idSesion });
+
+      if (!sesion) {
+        throw new Error(
+          `Sesión de entrevista con ID ${idSesion} no encontrada`
+        );
+      }
+
+      // Buscar al candidato en la lista de candidatos registrados
+      const candidato = sesion.candidatosRegistrados.find(
+        (candidato) => candidato.idCandidatoAEntrevistar === idCandidatoAAsignar
+      );
+
+      if (!candidato) {
+        throw new Error(
+          `Candidato con ID ${idCandidatoAAsignar} no registrado en la sesión`
+        );
+      }
+
+      // Asignar al candidato como el seleccionado para entrevistar
+      const updateResult = await collection.updateOne(
+        { idReunion: idSesion },
+        {
+          $set: {
+            candidatoSeleccionadoAEntrevistar: candidato,
+            sesionAsignada: true,
+          },
+        }
+      );
+
+      if (updateResult.modifiedCount === 0) {
+        throw new Error(
+          "Error al asignar el candidato a la sesión de entrevista."
+        );
+      }
+
+      // Buscar la sesión actualizada y devolverla
+      const updatedSesion = await collection.findOne({ idReunion: idSesion });
+
+      if (!updatedSesion) {
+        throw new Error(
+          "Error al obtener la sesión de entrevista actualizada."
+        );
+      }
+
+      return updatedSesion;
+    } catch (error) {
+      console.error("Error al asignar candidato a sesión:", error);
+      return null;
+    }
+  }
+
   public async obtenerEntrevistadoPorId(id: string): Promise<IUsuario> {
     const usuario = await this.collection.findOne({ _id: new ObjectId(id) });
     if (!usuario) {
@@ -101,7 +187,7 @@ export class ManejadorEntrevistador {
         horaFin: new Date(finEntrevista),
         candidatosRegistrados: [],
         candidatoSeleccionadoAEntrevistar: {} as ICandidatosRegistrado,
-        sesionOcupada: false,
+        sesionAsignada: false,
       });
 
       const duracionToleranciaEnMinutos = 5 * 60 * 1000;

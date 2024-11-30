@@ -69,7 +69,7 @@ export class ManejadorEntrevistado {
       }
 
       // Verificar si la sesión está ocupada
-      if (sesion.sesionOcupada) {
+      if (sesion.sesionAsignada) {
         throw new Error("La sesión ya está ocupada.");
       }
 

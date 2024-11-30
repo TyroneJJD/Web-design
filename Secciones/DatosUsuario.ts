@@ -25,7 +25,7 @@ export interface ISesionEntrevista {
   horaFin: Date;
   candidatosRegistrados: ICandidatosRegistrado[];
   candidatoSeleccionadoAEntrevistar: ICandidatosRegistrado;
-  sesionOcupada: boolean;
+  sesionAsignada: boolean;
 }
 
 export interface ICandidatosRegistrado {
