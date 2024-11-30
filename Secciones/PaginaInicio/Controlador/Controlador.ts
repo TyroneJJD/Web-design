@@ -12,7 +12,7 @@ import {
 const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PaginaInicio/Vista`;
 
 export function inicializarPaginaInicio(router: Router, app: Application) {
-  router.get("/MiPerfil", prueba2);
+  router.get("/home", renderizarHome);
 
   app.use(
     cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
@@ -20,9 +20,9 @@ export function inicializarPaginaInicio(router: Router, app: Application) {
   app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
 }
 
-async function prueba2(context: Context) {
+async function renderizarHome(context: Context) {
   const html = await renderizarVista(
-    "test.html",
+    "home.html",
     {},
     directorioVistaSeccionActual + `/html`
   );
