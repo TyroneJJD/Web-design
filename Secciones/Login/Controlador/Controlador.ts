@@ -6,7 +6,7 @@ import {
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { IniciarSession } from "../Modelo/IniciarSesion.ts";
 
-export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Login/Vista`;
+export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Login/Vista_Login`;
 
 export function inicializarLogin(router: Router, app: Application) {
   const inicioSesion = new IniciarSession();
@@ -16,10 +16,10 @@ export function inicializarLogin(router: Router, app: Application) {
     await inicioSesion.manejadorInicioSesion(contexto);
   });
 
-  app.use(cargarArchivosEstaticos("/img", directorioVistaSeccionActual + `/img`));
+  app.use(cargarArchivosEstaticos("/img_Login", directorioVistaSeccionActual + `/img_Login`));
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_Login", directorioVistaSeccionActual + `/css_Login`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_Login", directorioVistaSeccionActual + `/js_Login`));
   
 }

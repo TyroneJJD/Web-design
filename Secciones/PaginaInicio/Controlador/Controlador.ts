@@ -1,4 +1,4 @@
-import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+
 import {
   Application,
   Router,
@@ -9,22 +9,22 @@ import {
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PaginaInicio/Vista`;
+const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PaginaInicio/Vista_PaginaInicio`;
 
 export function inicializarPaginaInicio(router: Router, app: Application) {
   router.get("/home", renderizarHome);
 
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_PaginaInicio", directorioVistaSeccionActual + `/css_PaginaInicio`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_PaginaInicio", directorioVistaSeccionActual + `/js_PaginaInicio`));
 }
 
 async function renderizarHome(context: Context) {
   const html = await renderizarVista(
     "home.html",
     {},
-    directorioVistaSeccionActual + `/html`
+    directorioVistaSeccionActual + `/html_PaginaInicio`
   );
   context.response.body = html || "Error al renderizar la página";
 }

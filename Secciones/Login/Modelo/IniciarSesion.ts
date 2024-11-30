@@ -22,7 +22,7 @@ export class IniciarSession {
     const html = await renderizarVista(
       "login.html",
       {},
-      directorioVistaSeccionActual + `/html`
+      directorioVistaSeccionActual + `/html_Login`
     );
     context.response.body = html || "Error al renderizar la página";
   }
