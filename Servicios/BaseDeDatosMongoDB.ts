@@ -1,8 +1,6 @@
 import {
   MongoClient,
   Collection,
-  OptionalUnlessRequiredId,
-  InsertOneResult,
   type Document,
 } from "npm:mongodb@6.1.0";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
@@ -42,6 +40,20 @@ export class BaseDeDatosMongoDB {
 
   public obtenerCliente(): MongoClient {
     return this.client;
+  }
+
+  public async borrarTodosLosDocumentos<T extends Document>(
+    nombreColeccion: string
+  ): Promise<number> {
+    try {
+      const coleccion = this.client.db(this.dbName).collection<T>(nombreColeccion);
+      const resultado = await coleccion.deleteMany({});
+      console.log(`Se eliminaron ${resultado.deletedCount} documentos de la colección "${nombreColeccion}".`);
+      return resultado.deletedCount || 0;
+    } catch (error) {
+      console.error(`Error al borrar documentos de la colección "${nombreColeccion}":`, error);
+      return 0;
+    }
   }
 
   public async cerrarBaseDeDatos(): Promise<void> {

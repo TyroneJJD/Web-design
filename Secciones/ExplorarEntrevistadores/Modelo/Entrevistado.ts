@@ -7,12 +7,12 @@ import {
 } from "../../DatosUsuario.ts";
 
 export class ManejadorEntrevistado {
-  private db: BaseDeDatosMongoDB;
+
   private collection: Collection<IUsuario>;
 
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
+    const db = BaseDeDatosMongoDB.obtenerInstancia();
+    this.collection = db.obtenerReferenciaColeccion<IUsuario>(
       "Usuarios"
     ) as unknown as Collection<IUsuario>;
   }

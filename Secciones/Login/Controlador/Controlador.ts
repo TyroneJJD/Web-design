@@ -1,30 +1,25 @@
-import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 import {
   Application,
   Router,
   Context,
 } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import {
-  cargarArchivosEstaticos,
-  renderizarVista,
-} from "../../../utilidadesServidor.ts";
+import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
+import { IniciarSession } from "../Modelo/IniciarSesion.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Login/Vista`;
+export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Login/Vista`;
 
 export function inicializarLogin(router: Router, app: Application) {
-  router.get("/Login", prueba2);
+  const inicioSesion = new IniciarSession();
 
+  router.get("/login", inicioSesion.mostrarPaginaInicioDeSesion);
+  router.post("/login", async (contexto: Context) => {
+    await inicioSesion.manejadorInicioSesion(contexto);
+  });
+
+  app.use(cargarArchivosEstaticos("/img", directorioVistaSeccionActual + `/img`));
   app.use(
     cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
   );
   app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
-}
-
-async function prueba2(context: Context) {
-  const html = await renderizarVista(
-    "test.html",
-    {},
-    directorioVistaSeccionActual + `/html`
-  );
-  context.response.body = html || "Error al renderizar la página";
+  
 }

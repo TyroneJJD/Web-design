@@ -10,6 +10,7 @@ export interface IUsuario {
 
   universidadUsuario: string;
   carreraUniversitariaUsuario: string;
+  afilicion: string;
 
   esAdministrador: boolean;
   esCoach: boolean;
@@ -17,6 +18,7 @@ export interface IUsuario {
   puedePublicarProblemas: boolean;
 
   agenda: ISesionEntrevista[];
+  bandejaDeEntrada: IMensajesusuario[];
 }
 
 export interface ISesionEntrevista {
@@ -32,4 +34,10 @@ export interface ICandidatosRegistrado {
   idCandidatoAEntrevistar: string;
   nombreCandidatoAEntrevistar: string;
   correoElectronicoCandidatoAEntrevistar: string;
+}
+
+export interface IMensajesusuario {
+  idUsuarioEmisor: string;
+  contenidoMensaje: string;
+  fechaEnvio: Date;
 }

@@ -1,25 +1,8 @@
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
-import { SesionEntrevista } from "../../MiPerfil/Modelo/Agenda.ts";
+import { IUsuario } from "../../DatosUsuario.ts";
 
-export interface IUsuario {
-  _id?: ObjectId;
 
-  nombreUsuario: string;
-  correoElectronicoUsuario: string;
-  contraseniaUsuario: string;
-  fechaNacimientoUsuario: Date;
-
-  universidadUsuario: string;
-  carreraUniversitariaUsuario: string;
-
-  esAdministrador: boolean;
-  esCoach: boolean;
-  puedePublicarEnElBlog: boolean;
-  puedePublicarProblemas: boolean;
-
-  agenda: SesionEntrevista[];
-}
 
 export class modificadorUsuarios {
   private db: BaseDeDatosMongoDB;

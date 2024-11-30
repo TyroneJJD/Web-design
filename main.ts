@@ -20,10 +20,10 @@ const app = new Application();
 
 const router = new Router();
 
+inicializarLogin(router, app);
 inicializarBlog(router, app);
 inicializarBuscadorInterships(router, app);
 inicializarLandingPage(router, app);
-inicializarLogin(router, app);
 inicializarMiPerfil(router, app);
 inicializarPaginaInicio(router, app);
 inicializarPanelAdministrador(router, app);

@@ -1,4 +1,3 @@
-import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 import {
   Application,
   Router,
@@ -8,6 +7,7 @@ import {
   cargarArchivosEstaticos,
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
+import { verificadorAutenticacion, obtenerDatosToken } from "../../../Servicios/Autenticacion.ts";
 
 const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista`;
 
@@ -15,7 +15,7 @@ export function inicializarPanelAdministrador(
   router: Router,
   app: Application
 ) {
-  router.get("/PanelAdministrador", prueba2);
+  router.get("/protected", verificadorAutenticacion, mostrarPaginaProtegida);
 
   app.use(
     cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
@@ -23,11 +23,25 @@ export function inicializarPanelAdministrador(
   app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
 }
 
-async function prueba2(context: Context) {
-  const html = await renderizarVista(
-    "test.html",
-    {},
-    directorioVistaSeccionActual + `/html`
-  );
-  context.response.body = html || "Error al renderizar la página";
+async function mostrarPaginaProtegida(context: Context) {
+  try {
+    const tokenDatos = await obtenerDatosToken(context);
+
+    if (!tokenDatos) {
+      context.response.redirect("/login");
+      return;
+    }
+
+    const html = await renderizarVista(
+      "panelGeneral.html",
+      { user: tokenDatos }, 
+      directorioVistaSeccionActual + `/html`
+    );
+
+    context.response.body = html || "Error al renderizar la página";
+  } catch (error) {
+    console.error("Error al mostrar la página protegida:", error);
+    context.response.status = 500;
+    context.response.body = "Ocurrió un error al procesar la solicitud.";
+  }
 }
