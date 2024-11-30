@@ -8,21 +8,21 @@ import {
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Blog/Vista`;
+const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Blog/Vista_Blog`;
 
 export function inicializarBlog(router: Router, app: Application) {
   router.get("/Blog", prueba1);
 
   app.use(
     cargarArchivosEstaticos(
-      "/Secciones/Blog/Vista/css",
-      directorioVistaSeccionActual + `/css`
+      "/Secciones/Blog/Vista/css_Blog",
+      directorioVistaSeccionActual + `/css_Blog`
     )
   );
   app.use(
     cargarArchivosEstaticos(
-      "/Secciones/Blog/Vista/js",
-      directorioVistaSeccionActual + `/js`
+      "/Secciones/Blog/Vista/js_Blog",
+      directorioVistaSeccionActual + `/js_Blog`
     )
   );
 }
@@ -31,7 +31,7 @@ async function prueba1(context: Context) {
   const html = await renderizarVista(
     "test.html",
     {},
-    directorioVistaSeccionActual + `/html`
+    directorioVistaSeccionActual + `/html_Blog`
   );
   context.response.body = html || "Error al renderizar la página";
 }

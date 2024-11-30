@@ -9,7 +9,7 @@ import {
 } from "../../../utilidadesServidor.ts";
 import { verificadorAutenticacion, obtenerDatosToken } from "../../../Servicios/Autenticacion.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista`;
+const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
 
 export function inicializarPanelAdministrador(
   router: Router,
@@ -18,9 +18,9 @@ export function inicializarPanelAdministrador(
   router.get("/protected", verificadorAutenticacion, mostrarPaginaProtegida);
 
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_PanelAdministrador", directorioVistaSeccionActual + `/css_PanelAdministrador`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_PanelAdministrador", directorioVistaSeccionActual + `/js_PanelAdministrador`));
 }
 
 async function mostrarPaginaProtegida(context: Context) {
@@ -35,7 +35,7 @@ async function mostrarPaginaProtegida(context: Context) {
     const html = await renderizarVista(
       "panelGeneral.html",
       { user: tokenDatos }, 
-      directorioVistaSeccionActual + `/html`
+      directorioVistaSeccionActual + `/html_PanelAdministrador`
     );
 
     context.response.body = html || "Error al renderizar la página";

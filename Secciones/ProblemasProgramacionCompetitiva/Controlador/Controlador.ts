@@ -9,7 +9,7 @@ import {
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/ProblemasProgramacionCompetitiva/Vista`;
+const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/ProblemasProgramacionCompetitiva/Vista_ProblemasProgramacionCompetitiva`;
 
 export function inicializarProblemasProgramacionCompetitiva(
   router: Router,
@@ -18,9 +18,9 @@ export function inicializarProblemasProgramacionCompetitiva(
   router.get("/ProblemasProgramacionCompetitiva", prueba2);
 
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_ProblemasProgramacionCompetitiva", directorioVistaSeccionActual + `/css_ProblemasProgramacionCompetitiva`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_ProblemasProgramacionCompetitiva", directorioVistaSeccionActual + `/js_ProblemasProgramacionCompetitiva`));
 }
 
 async function prueba2(context: Context) {

@@ -9,22 +9,22 @@ import {
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/LandingPage/Vista`;
+const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/LandingPage/Vista_LandingPage`;
 
 export function inicializarLandingPage(router: Router, app: Application) {
   router.get("/LandingPage", prueba2);
 
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_LandingPage", directorioVistaSeccionActual + `/css_LandingPage`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_LandingPage", directorioVistaSeccionActual + `/js_LandingPage`));
 }
 
 async function prueba2(context: Context) {
   const html = await renderizarVista(
     "test.html",
     {},
-    directorioVistaSeccionActual + `/html`
+    directorioVistaSeccionActual + `/html_LandingPage`
   );
   context.response.body = html || "Error al renderizar la página";
 }

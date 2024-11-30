@@ -9,7 +9,7 @@ import {
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/ExplorarEntrevistadores/Vista`;
+const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/ExplorarEntrevistadores/Vista_ExplorarEntrevistadores`;
 
 export function inicializarExplorarEntrevistadores(
   router: Router,
@@ -18,16 +18,16 @@ export function inicializarExplorarEntrevistadores(
   router.get("/ExplorarEntrevistadores", prueba2);
 
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_ExplorarEntrevistadore", directorioVistaSeccionActual + `/css_ExplorarEntrevistadores`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_ExplorarEntrevistadore", directorioVistaSeccionActual + `/js_ExplorarEntrevistadores`));
 }
 
 async function prueba2(context: Context) {
   const html = await renderizarVista(
     "test.html",
     {},
-    directorioVistaSeccionActual + `/html`
+    directorioVistaSeccionActual + `/html_ExplorarEntrevistadores`
   );
   context.response.body = html || "Error al renderizar la página";
 }
