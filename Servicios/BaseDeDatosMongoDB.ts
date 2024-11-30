@@ -40,12 +40,8 @@ export class BaseDeDatosMongoDB {
     return this.client.db(this.dbName).collection<T>(name);
   }
 
-  public async insertarDocumento<T extends Document>(
-    collectionName: string,
-    document: OptionalUnlessRequiredId<T>
-  ): Promise<InsertOneResult<T>> {
-    const collection = this.obtenerReferenciaColeccion<T>(collectionName);
-    return await collection.insertOne(document);
+  public obtenerCliente(): MongoClient {
+    return this.client;
   }
 
   public async cerrarBaseDeDatos(): Promise<void> {
