@@ -1,6 +1,6 @@
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
-import { SesionEntrevista } from "./Agenda.ts";
+import { SesionEntrevista } from "../../MiPerfil/Modelo/Agenda.ts";
 
 export interface IUsuario {
   _id?: ObjectId;
@@ -21,7 +21,7 @@ export interface IUsuario {
   agenda: SesionEntrevista[];
 }
 
-export class ManejadorUsuario {
+export class modificadorUsuarios {
   private db: BaseDeDatosMongoDB;
   private collection: Collection<IUsuario>;
 
@@ -30,19 +30,6 @@ export class ManejadorUsuario {
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
       "Usuarios"
     ) as unknown as Collection<IUsuario>;
-  }
-
-  public async crearNuevoUsuario(
-    usuario: Omit<IUsuario, "_id">
-  ): Promise<IUsuario> {
-    // Por seguridad todo usuario nuevo inicia con permisos desactivados
-    usuario.esAdministrador = false;
-    usuario.esCoach = false;
-    usuario.puedePublicarEnElBlog = false;
-    usuario.puedePublicarProblemas = false;
-
-    const result = await this.collection.insertOne(usuario);
-    return { _id: result, ...usuario };
   }
 
   public async obtenerUsuarioPorId(id: string): Promise<IUsuario> {

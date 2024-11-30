@@ -2,10 +2,10 @@ import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
 import { ObjectId } from "npm:mongodb@6.1.0";
 
 export interface Publicacion {
-  titulo: string;
-  etiquetas: string[];
-  autor: string;
-  contenido: string;
+  tituloPublicacion: string;
+  etiquetasPublicacion: string[];
+  autorPublicacion: string;
+  contenidoPublicacion: string;
 }
 
 export class Blog {
