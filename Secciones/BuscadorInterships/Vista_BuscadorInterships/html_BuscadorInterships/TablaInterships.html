@@ -3,47 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lista de Coaches</title>
+    <title>Lista de Interships</title>
     <link rel="stylesheet" href="../css_BuscadorInterships/TablaIntershiphs_styles.css">
-</head>
-<body>
-    <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tabla de Coaches</title>
 </head>
 <body>
     <p class="titulo"><b>Lista de Interships</b></p>
     <table>
         <thead>
             <tr>
-                <th>Nombre</th>
-                <th>Lugar</th>
-                <th>Empresa</th>
-                <th>Descripción</th>
+                <th>Rol</th>
+                <th>Locación</th>
+                <th>Compañía</th>
+                <th>Fuente</th>
+                <th>Fecha Publicado</th>
             </tr>
         </thead>
         <tbody>
+            <% it.ofertas.forEach(oferta => { %>
             <tr>
-                <td>SWE Intern</td>
-                <td>Guadalajara</td>
-                <td>Uber</td>
-                <td>Descripcion del Intership</td>
+                <td><%= oferta.rol %></td>
+                <td><%= oferta.locacion %></td>
+                <td><%= oferta.compania %></td>
+                <td><a href="<%= oferta.linkFuentePublicacion %>" target="_blank">Ver Publicación</a></td>
+                <td><%= oferta.fechaPosteado %></td>
             </tr>
-            <tr>
-                <td>SWE Intern</td>
-                <td>Guadalajara</td>
-                <td>Uber</td>
-                <td>Descripcion del Intership</td>
-            </tr>
-            <tr>
-                <td>SWE Intern</td>
-                <td>Guadalajara</td>
-                <td>Uber</td>
-                <td>Descripcion del Intership</td>
-            </tr>
+            <% }); %>
         </tbody>
     </table>  
 </body>

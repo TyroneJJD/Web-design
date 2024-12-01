@@ -1,6 +1,9 @@
 import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
 import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
+import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
+import { renderizarVista } from "../../../utilidadesServidor.ts";
+import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
 
 interface IOfertaIntership {
   _id?: ObjectId;
@@ -19,6 +22,11 @@ export class ScraperInterships {
     this.collection = this.db.obtenerReferenciaColeccion<IOfertaIntership>(
       "Interships"
     ) as unknown as Collection<IOfertaIntership>;
+
+    //Por alguna extraña razon si no le pongo esto falla
+    this.obtenerOfertasIntershipsV2 =
+      this.obtenerOfertasIntershipsV2.bind(this);
+    this.visualizarInterships = this.visualizarInterships.bind(this);
   }
 
   public async actualizarOfertasInterships(): Promise<void> {
@@ -29,9 +37,30 @@ export class ScraperInterships {
     });
   }
 
-  public async obtenerOfertasInterships(): Promise<IOfertaIntership[]> {
-    return await this.collection.find({}).toArray();
+  public async visualizarInterships(context: Context) {
+    try {
+      const arregloInterships = await this.obtenerOfertasIntershipsV2();
+      const html = await renderizarVista(
+        "TablaInterships.html",
+        { ofertas: arregloInterships },
+        directorioVistaSeccionActual + `/html_BuscadorInterships`
+      );
+      context.response.body = html || "Error al renderizar la página";
+    } catch (error) {
+      if (error instanceof Error) {
+        context.response.body = `Error: ${error.message}`;
+      } else {
+        context.response.body = "An unknown error occurred";
+      }
+    }
   }
+
+  private async obtenerOfertasIntershipsV2(): Promise<IOfertaIntership[]> {
+    const documentos = await this.collection.aggregate([
+        { $sample: { size: 30 } } // Obtiene 30 documentos aleatorios
+    ]).toArray();
+    return documentos;
+}
 
   private async guardarOfertaIntership(
     ofertaDeIntership: IOfertaIntership
