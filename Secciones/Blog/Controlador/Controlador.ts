@@ -11,25 +11,25 @@ import {
 const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Blog/Vista_Blog`;
 
 export function inicializarBlog(router: Router, app: Application) {
-  router.get("/Blog", prueba1);
+  router.get("/BlogV2", visualizarEditorTexto);
 
   app.use(
     cargarArchivosEstaticos(
-      "/Secciones/Blog/Vista/css_Blog",
+      "/css_Blog",
       directorioVistaSeccionActual + `/css_Blog`
     )
   );
   app.use(
     cargarArchivosEstaticos(
-      "/Secciones/Blog/Vista/js_Blog",
+      "/js_Blog",
       directorioVistaSeccionActual + `/js_Blog`
     )
   );
 }
 
-async function prueba1(context: Context) {
+async function visualizarEditorTexto(context: Context) {
   const html = await renderizarVista(
-    "test.html",
+    "editorTexto.html",
     {},
     directorioVistaSeccionActual + `/html_Blog`
   );
