@@ -56,11 +56,13 @@ export class ScraperInterships {
   }
 
   private async obtenerOfertasIntershipsV2(): Promise<IOfertaIntership[]> {
-    const documentos = await this.collection.aggregate([
-        { $sample: { size: 30 } } // Obtiene 30 documentos aleatorios
-    ]).toArray();
+    const documentos = await this.collection
+      .aggregate([
+        { $sample: { size: 30 } }, // Obtiene 30 documentos aleatorios
+      ])
+      .toArray();
     return documentos;
-}
+  }
 
   private async guardarOfertaIntership(
     ofertaDeIntership: IOfertaIntership
