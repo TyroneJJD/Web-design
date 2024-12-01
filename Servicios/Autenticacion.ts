@@ -25,6 +25,35 @@ export const verificadorAutenticacion = async (
   }
 };
 
+export const verificarSiEsCoach = async (
+  ctx: Context,
+  next: () => Promise<unknown>
+) => {
+  const token = await ctx.cookies.get("auth_token");
+
+  if (token) {
+    const key = await obtenerTokenAuth();
+
+    try {
+      const payload = await verify(token, key);
+
+      if (payload.isCoach === true) {
+        ctx.state.user = payload;
+        await next();
+      } else {
+        ctx.response.status = 403;
+        ctx.response.body = "Acceso denegado. No eres un Coach.";
+      }
+    } catch (error) {
+      console.error("Error al verificar el token:", error);
+      ctx.response.status = 401;
+      ctx.response.body = "Token inválido o expirado";
+    }
+  } else {
+    ctx.response.redirect("/login");
+  }
+};
+
 async function obtenerTokenAuth() {
   const env = config();
   return await crypto.subtle.importKey(
