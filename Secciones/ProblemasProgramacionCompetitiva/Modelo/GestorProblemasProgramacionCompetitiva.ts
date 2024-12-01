@@ -1,6 +1,7 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
+import { BaseDeDatosMySQL } from "../../../Servicios/BaseDeDatosMySQL.ts";
 
 interface IProblemaCompetitiva {
   nombreProblema: string;
@@ -11,33 +12,57 @@ interface IProblemaCompetitiva {
 }
 
 export class GestorProblemasProgramacionCompetitiva {
+  constructor() {
+    this.consultarProblemas = this.consultarProblemas.bind(this);
+    this.BuscadorProblemasProgramacionCompetitiva =
+      this.BuscadorProblemasProgramacionCompetitiva.bind(this);
+  }
+  private async consultarProblemas(): Promise<IProblemaCompetitiva[]> {
+    const db = BaseDeDatosMySQL.obtenerInstancia();
+
+    const selectQuery = `
+      SELECT 
+    p.Clave, 
+    p.Nombre, 
+    p.Plataforma, 
+    p.Enlace, 
+    p.Dificultad, 
+    GROUP_CONCAT(pc.NombreCategoria) AS Categorias
+    FROM 
+        Problemas p
+    LEFT JOIN 
+        Problemas_Cat pc
+    ON 
+        p.Clave = pc.ClaveProblema
+    GROUP BY 
+        p.Clave
+    ORDER BY 
+        p.FechaCreacion DESC
+    LIMIT 3;
+      `;
+
+    try {
+      const resultados = await db.ejecutarConsulta(selectQuery);
+
+      const problemas: IProblemaCompetitiva[] = (resultados as any[]).map(
+        (fila) => ({
+          nombreProblema: fila.Nombre,
+          plataformaProblema: fila.Plataforma,
+          dificultadProblema: fila.Dificultad,
+          categoriasProblema: fila.Categorias ? fila.Categorias.split(",") : [],
+          urlProblema: fila.Enlace,
+        })
+      );
+
+      return problemas;
+    } catch (error) {
+      console.error("Error al consultar los problemas:", error);
+      return [];
+    }
+  }
+
   public async BuscadorProblemasProgramacionCompetitiva(context: Context) {
-    // Datos de prueba para los problemas
-    const problemas: IProblemaCompetitiva[] = [
-      {
-        nombreProblema: "Two SumXXXXX",
-        plataformaProblema: "LeetCode",
-        dificultadProblema: "Fácil",
-        categoriasProblema: ["Two pointers", "Sortings"],
-        urlProblema: "https://leetcode.com/problems/two-sum",
-      },
-      {
-        nombreProblema:
-          "Largest Combination With Bitwise AND Greater Than ZeroXXXX",
-        plataformaProblema: "LeetCodeXXXXX",
-        dificultadProblema: "Medio",
-        categoriasProblema: ["Bit Manipulation"],
-        urlProblema:
-          "https://leetcode.com/problems/largest-combination-with-bitwise-and-greater-than-zero",
-      },
-      {
-        nombreProblema: "Subarray Sum Equals KXXXX",
-        plataformaProblema: "LeetCode",
-        dificultadProblema: "Medio",
-        categoriasProblema: ["Prefix Sum", "Data Structures"],
-        urlProblema: "https://leetcode.com/problems/subarray-sum-equals-k",
-      },
-    ];
+    const problemas = await this.consultarProblemas();
 
     const html = await renderizarVista(
       "Buscador.html",
