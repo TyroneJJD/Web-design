@@ -1,0 +1,150 @@
+/* Columna izquierda */
+.perfil {
+    flex: 1;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+
+#guardar_btn {
+    background-color: green;
+
+}
+
+#cancelar_btn {
+    background-color: red;
+}
+
+button{
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+/* Columna derecha */
+.detalles {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.links, .resenas {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#contenedor_foto {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f8b400;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box; /* Incluye el padding y border en el tamaño total */
+    background-size: cover;
+    background-position: center;
+}
+
+/*Div sobre el que flotan los demas*/
+.foto {
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 (círculo perfecto) */
+    width: 100%; /* Se ajusta al ancho del contenedor */
+    max-width: 150px; /* Tamaño máximo */
+    border-radius: 50%;
+    margin-bottom: 18px;
+    margin-top: 20px;
+    position: relative;
+
+}
+
+/*Foto del perfil*/
+#contenedor_foto_perfil{
+    aspect-ratio: 1 / 1; /* Mantiene la proporción 1:1 (círculo perfecto) */
+    width: 100%; /* Se ajusta al ancho del contenedor */
+    max-width: 150px; /* Tamaño máximo */
+    border-radius: 50%;
+    margin-bottom: 20px;
+    margin-top: 20px;
+    background-color: white;
+    overflow: hidden;
+    position: relative;
+    border: 5px solid white;
+}
+
+.foto img {
+    width: 100%; /* Escala para llenar todo el círculo */
+    height: 100%;
+    object-fit: cover; /* Ajusta la imagen sin deformarla */
+    object-position: center; /* Centra la imagen dentro del círculo */
+}
+
+.inputfile {
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: 1;
+    width: 50px;
+    height: 50px;
+}
+
+.inputfile:hover{
+    cursor: pointer;
+}
+
+#icono_editar{
+    margin-top: 5px;
+}
+
+#btn_editar:hover{
+    cursor: pointer;
+}
+
+#contenedor_selector_imagen{
+    text-align: center;
+    margin-top: 20px;
+}
+
+#cambiar_background_btn{
+    background-color: rgb(101, 101, 218);
+}
+
+#cambiar_perfil_btn{
+    background-color: #c21eeb;
+}
+
+
+.red_social{
+    margin: 10px;
+    font-size: medium;
+    width: 80%;
+    height: 30px;
+}
+
+.sobre_mi{
+    margin: 10px;
+    margin: 10px;
+    font-size: medium;
+    width: 80%;
+    height: 30px;
+}
+
+#sobre_mi{
+    width: 80%;
+    height: 120px;
+    resize: none; /* Evita que el usuario pueda redimensionar el textarea */
+    font-size: medium;
+}
+
+#links_inputs{
+    text-align: center;
+}
+
+#info_personal_inputs{
+    text-align: center;
+}

@@ -1,0 +1,131 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Estilo general del header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8b400;
+    color: white;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Barra de navegación */
+.nav-menu ul {
+    list-style: none;
+    display: flex; /* Mostrar elementos en fila por defecto */
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu ul li a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Botón hamburguesa */
+.menu-toggle {
+    display: none; /* Ocultar el botón por defecto */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+
+    main {
+        flex-direction: column; 
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+    }
+
+    .nav-menu {
+        display: none; /* Ocultar el menú por defecto */
+        position: absolute;
+        top: 60px; /* Asegúrate de que esté debajo del header */
+        left: 0;
+        right: 0;
+        background-color: #f8b400;
+        padding: 10px 0;
+    }
+
+    .nav-menu ul {
+        flex-direction: column; /* Cambiar de fila a columna */
+        align-items: center;
+    }
+
+    .nav-menu.active {
+        display: block; 
+    }
+
+}
+
+/* Estilo general del modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para flotar sobre la página */
+    top: 0;
+    left: 0;
+    width: 100%; /* Cubre todo el ancho */
+    height: 100%; /* Cubre toda la altura */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1000; /* Asegura que esté encima de todo */
+}
+
+/* Contenido del modal */
+.modal-content {
+    background: #fff; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
+    max-height: 400px;
+    overflow: auto;
+}
+
+/* Botón de cierre */
+.close-button {
+    position: relative;
+    font-size: 1.5em;
+    color: #333;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+
+/* Cuerpo principal */
+main {
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+#home{
+    cursor: pointer;
+}
