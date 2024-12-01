@@ -69,6 +69,7 @@ export class IniciarSession {
 
     const { email, password } = credenciales;
 
+
     if (email && password) {
       const userDataExists = await this.obtenerUsuarioPorCredenciales(
         email,
@@ -98,7 +99,7 @@ export class IniciarSession {
           httpOnly: true,
           secure: false,
         });
-        context.response.redirect("/protected");
+        context.response.redirect("/home");
       } else {
         context.response.status = 401;
         context.response.body = "Credenciales incorrectas";

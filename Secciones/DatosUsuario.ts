@@ -8,7 +8,7 @@ export interface IUsuario {
   correoElectronicoUsuario: string; // Reservado
   contraseniaUsuario: string; // Reservado
 
-
+  quiereSerCoach: boolean; // Reservado
   esAdministrador: boolean; // Reservado
   esCoach: boolean; // Reservado
   puedePublicarEnElBlog: boolean; // Reservado

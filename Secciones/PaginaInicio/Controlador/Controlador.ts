@@ -8,11 +8,12 @@ import {
   cargarArchivosEstaticos,
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
+import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
 
 const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PaginaInicio/Vista_PaginaInicio`;
 
 export function inicializarPaginaInicio(router: Router, app: Application) {
-  router.get("/home", renderizarHome);
+  router.get("/home", verificadorAutenticacion, renderizarHome);
 
   app.use(
     cargarArchivosEstaticos("/css_PaginaInicio", directorioVistaSeccionActual + `/css_PaginaInicio`)

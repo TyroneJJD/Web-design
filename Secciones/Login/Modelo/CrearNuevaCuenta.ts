@@ -48,45 +48,49 @@ export class crearNuevaCuenta {
   }
 
   public async manejadorCreacionUsuario(context: Context) {
-    // Obtener el parámetro 'tipo' de la URL
     const url = new URL(context.request.url);
-    const tipo = url.searchParams.get("tipo"); // Ejemplo: 'trainee' o 'coach'
+    const tipo = url.searchParams.get("tipo");
 
-    // Validar el parámetro 'tipo'
     if (tipo !== "coach" && tipo !== "trainee") {
       context.response.status = 400;
       context.response.body = {
         message: "El parámetro 'tipo' es inválido.",
       };
-      return;
+      context.response.headers.set("Location", "/login");
     }
+    const quiereSerCoach = tipo === "coach";
 
-    // Verificar si la solicitud es de tipo POST (envío de formulario)
     if (context.request.hasBody) {
       const body = await context.request.body({ type: "form" }).value;
 
-      // Obtener los datos del formulario
       const nombre = body.get("nombre") || "";
       const apellido = body.get("apellido") || "";
       const correo = body.get("correo") || "";
       const contrasena = body.get("contrasena") || "";
 
-      // Realizar validaciones, si es necesario
       if (!nombre || !apellido || !correo || !contrasena) {
         context.response.status = 400;
         context.response.body = { message: "Todos los campos son requeridos." };
-        return;
+        context.response.headers.set("Location", "/login");
       }
 
-      console.log(nombre, apellido, correo, contrasena, tipo);
+      const nuevoUsuario: Omit<IUsuario, "_id"> = {
+        nombreUsuario: nombre,
+        correoElectronicoUsuario: correo,
+        apellidoUsuario: apellido,
+        contraseniaUsuario: contrasena,
 
-      // Aquí puedes agregar la lógica para guardar los datos en una base de datos
-      // Ejemplo: crear un nuevo usuario en la base de datos (se omite la implementación de la DB)
-      // const usuarioCreado = await crearUsuarioEnBaseDeDatos(nombre, apellido, correo, contrasena, tipo);
-
-      // Si se crea correctamente, redirigimos al usuario a '/home'
-      context.response.status = 303; // 303 See Other (redirección)
-      context.response.headers.set("Location", "/home");
+        quiereSerCoach: quiereSerCoach,
+        esAdministrador: false,
+        esCoach: false,
+        puedePublicarEnElBlog: false,
+        puedePublicarProblemas: false,
+        agenda: [],
+        bandejaDeEntrada: [],
+      };
+      this.crearNuevoUsuario(nuevoUsuario);
+      context.response.status = 303;
+      context.response.headers.set("Location", "/login");
       return;
     }
   }
