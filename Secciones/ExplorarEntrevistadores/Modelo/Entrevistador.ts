@@ -1,5 +1,12 @@
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
+import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
+import {
+  Context,
+} from "https://deno.land/x/oak@v12.4.0/mod.ts";
+import {
+  renderizarVista,
+} from "../../../utilidadesServidor.ts";
 import {
   IUsuario,
   ISesionEntrevista,
@@ -15,7 +22,27 @@ export class ManejadorEntrevistador {
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
       "Usuarios"
     ) as unknown as Collection<IUsuario>;
+    this.obtenerEntrevistadores =
+      this.obtenerEntrevistadores.bind(this);
+    this.visualizarExplorarEntrevistadores = this.visualizarExplorarEntrevistadores.bind(this);
   }
+
+  private async obtenerEntrevistadores(): Promise<IUsuario[]> {
+    const entrevistadores = await this.collection.find({ esCoach: true }).toArray();
+    return entrevistadores;
+  }
+
+  public async visualizarExplorarEntrevistadores(context: Context) {
+    const entrevistadores = await this.obtenerEntrevistadores();
+  
+    const html = await renderizarVista(
+      "explorar.html",
+      {  coaches: entrevistadores }, // Asegúrate de que 'coaches' se pasa como una propiedad
+      directorioVistaSeccionActual + `/html_ExplorarEntrevistadores`
+    );
+    
+    context.response.body = html || "Error al renderizar la página";
+}
 
   private async obtenerCandidatosRegistradosALaSesion(
     idEntrevistador: string, 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,31 +18,18 @@
     <div class="encabezado-explorar">Explorar Coaches</div>
 
     <div class="contenedor-coaches">
-
-        <div class="tarjeta-coach" onclick="window.location.href='perfil_coach_1.html'">
-            <div class="foto-perfil">
-                <img src="https://via.placeholder.com/120" alt="Foto de Coach 1">
+        <% it.coaches.forEach(coach => { %>
+            <div class="tarjeta-coach" onclick="window.location.href='/perfil_coach/<%= coach._id %>'">
+                <div class="foto-perfil">
+                    <img src="<%= coach.direccionURLFotoPerfil %>" alt="Foto de <%= coach.nombreUsuario %>">
+                </div>
+                <h3><%= coach.nombreUsuario %></h3>
+                <p><%= coach.titularUsuario %></p>
+                <p><a href="/perfil_coach/<%= coach._id %>">Ver perfil</a></p>
             </div>
-            <h3>Coach 1</h3>
-            <p><a href="perfil_coach_1.html">Ver perfil</a></p>
-        </div>
-
-        <div class="tarjeta-coach" onclick="window.location.href='perfil_coach_2.html'">
-            <div class="foto-perfil">
-                <img src="https://via.placeholder.com/120" alt="Foto de Coach 2">
-            </div>
-            <h3>Coach 2</h3>
-            <p><a href="perfil_coach_2.html">Ver perfil</a></p>
-        </div>
-
-        <div class="tarjeta-coach" onclick="window.location.href='perfil_coach_3.html'">
-            <div class="foto-perfil">
-                <img src="https://via.placeholder.com/120" alt="Foto de Coach 3">
-            </div>
-            <h3>Coach 3</h3>
-            <p><a href="perfil_coach_3.html">Ver perfil</a></p>
-        </div>
+        <% }); %>
     </div>
+    
 
 </body>
 </html>
