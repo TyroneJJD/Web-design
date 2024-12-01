@@ -8,6 +8,11 @@ export interface IUsuario {
   correoElectronicoUsuario: string; // Reservado
   contraseniaUsuario: string; // Reservado
 
+  titularUsuario: string; // Reservado
+  descripcionUsuario: string; // Reservado
+  linksUsuario: ILinksUsuario; // Reservado
+  reseniasUsuario: IReseniasUsuario[]; // Reservado
+
   quiereSerCoach: boolean; // Reservado
   esAdministrador: boolean; // Reservado
   esCoach: boolean; // Reservado
@@ -37,4 +42,16 @@ export interface IMensajesusuario {
   idUsuarioEmisor: string;
   contenidoMensaje: string;
   fechaEnvio: Date;
+}
+
+export interface ILinksUsuario{
+  linkLinkendin: string;
+  linkGithub: string;
+  linkPortafolioPersonal: string;
+}
+
+export interface IReseniasUsuario {
+  nombreUsuarioResenador: string;
+  contenidoResenia: string;
+  calificacionResenia: number;
 }

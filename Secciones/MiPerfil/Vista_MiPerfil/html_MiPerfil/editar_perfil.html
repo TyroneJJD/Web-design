@@ -6,7 +6,6 @@
     <title>Mi Proyecto</title>
     <link rel="stylesheet" href="../css_MiPerfil/basic_style.css">
     <link rel="stylesheet" href="../css_MiPerfil/editar_style.css">
-
 </head>
 <body>
 
@@ -25,17 +24,16 @@
         </nav>
     </header>
 
-        <!-- Modal -->
+    <!-- Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
             <h2>Avisos</h2>
-
             <div id="avisos_contenedor">
-            <p>Este es el contenido del modal de avisos.</p>
-            <p>Este es el contenido del modal de avisos.</p>
-            <p>Este es el contenido del modal de avisos.</p>
-            <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
             </div>
         </div>
     </div>
@@ -46,60 +44,102 @@
         <section class="perfil">
             <div id="contenedor_foto">
                 <div class="foto">
-
                     <div id="contenedor_foto_perfil">
                         <img src="perfil.png" alt="Foto de perfil" id="foto_perfil">
                     </div>
-                    
                 </div>
-
             </div>
             
             <div id="contenedor_selector_imagen">
-
                 <div>
                     <button id="cambiar_background_btn">Cambiar Background</button>
                     <input type="file" id="backgroung_img" accept="image/*" style="display: none;">
-
-                    <button id="cambiar_perfil_btn">Cambiar imágen de perfil</button>
+                    <button id="cambiar_perfil_btn">Cambiar imagen de perfil</button>
                     <input type="file" id="perfil_img" accept="image/*" style="display: none;">
-
                 </div>
-                
             </div>
 
-            <h1 id="nombre_usuario">Juan Daniel Kao Pech</h1>
+            <h1 id="nombre_usuario"><%= it.usuario.nombreUsuario %></h1>
 
-            <div id="info_personal_inputs">
-                <div>
-                    <input type="text" class="sobre_mi" id="rol" maxlength="20" placeholder="Coach">
+            <!-- Formulario para editar datos -->
+            <form id="formulario_editar_perfil" action="/editarDatosPerfil" method="POST">
+                <div id="info_personal_inputs">
+                    <div>
+                        <input 
+                            type="text" 
+                            name="rol" 
+                            id="rol" 
+                            maxlength="20" 
+                            value="<%= it.usuario.titularUsuario %>"
+                            required
+                        >
+                    </div>
+                    <div>
+                        <textarea 
+                            name="sobre_mi" 
+                            id="sobre_mi" 
+                            maxlength="150" 
+                            rows="5" 
+                            cols="33"
+                            required><%= it.usuario.descripcionUsuario %></textarea>
+                    </div>
                 </div>
-                <div>
-                    <textarea lass="sobre_mi" id="sobre_mi" maxlength="150" placeholder="sobre mi" rows="5" cols="33"></textarea>
+
+                <p class="puntuacion">Esto será calculado en base a algo</p>
+
+                <!-- Links de redes sociales -->
+                <div id="links_inputs">
+                    <input 
+                        type="text" 
+                        name="linkLinkedin" 
+                        class="red_social" 
+                        value="<%= it.usuario.linksUsuario.linkLinkendin %>"
+                    >
+                    <br>
+                    <input 
+                        type="text" 
+                        name="linkGithub" 
+                        class="red_social" 
+                        value="<%= it.usuario.linksUsuario.linkGithub %>"
+                    >
+                    <br>
+                    <input 
+                        type="text" 
+                        name="linkPortafolio" 
+                        class="red_social" 
+                        value="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>"
+                    >
                 </div>
 
-            </div>
-
-            <p class="puntuacion">Esto sera calculado en base a algo</p>
-            <button id="guardar_btn">Guardar</button>
-            <button id="cancelar_btn">Cancelar</button>
+                <!-- Botones para guardar o cancelar -->
+                <button type="submit" id="guardar_btn">Guardar</button>
+                <button type="button" id="cancelar_btn">Cancelar</button>
+            </form>
         </section>
 
         <!-- Columna derecha -->
         <section class="detalles">
             <div class="links">
                 <h3>Links</h3>
-
                 <div id="links_inputs">
-
-                    <input type="text" class="red_social" placeholder="Ingresa la URL de tu perfil">
+                    <input 
+                        type="text" 
+                        class="red_social" 
+                        value="<%= it.usuario.linksUsuario.linkLinkendin %>"
+                    >
                     <br>
-                    <input type="text" class="red_social" placeholder="Ingresa la URL de tu perfil">
+                    <input 
+                        type="text" 
+                        class="red_social" 
+                        value="<%= it.usuario.linksUsuario.linkGithub %>"
+                    >
                     <br>
-                    <input type="text" class="red_social" placeholder="Ingresa la URL de tu perfil">
-
+                    <input 
+                        type="text" 
+                        class="red_social" 
+                        value="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>"
+                    >
                 </div>
-
             </div>
             <div class="resenas">
                 <h3>Reseñas</h3>

@@ -79,3 +79,20 @@ export const obtenerDatosToken = async (ctx: Context): Promise<any> => {
   }
   return null; // Si no hay token, retornar null
 };
+
+export const obtenerIdUsuario = async (ctx: Context): Promise<string | null> => {
+  const token = await ctx.cookies.get("auth_token");
+  if (token) {
+    try {
+      const key = await obtenerTokenAuth();
+      const payload = await verify(token, key);
+      return (payload as { _id: string })._id; // Retornar el ID del usuario
+    } catch (error) {
+      console.error("Error al verificar el token:", error);
+      return null;
+    }
+  }
+  return null; // Si no hay token, retornar null
+};
+
+
