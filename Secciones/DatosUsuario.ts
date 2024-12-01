@@ -19,6 +19,9 @@ export interface IUsuario {
   puedePublicarEnElBlog: boolean; // Reservado
   puedePublicarProblemas: boolean; // Reservado
 
+  direccionURLFotoPerfil: string; // Reservado
+  direccionURLFotoBackground: string; // Reservado
+
   agenda: ISesionEntrevista[]; // Reservado
   bandejaDeEntrada: IMensajesusuario[]; // Reservado
 }

@@ -62,6 +62,31 @@ export class ManejadorArchivos {
     }
   }
 
+  public async obtenerImagen(urlImagen: string): Promise<string | null> {
+    try {
+      const respuesta = await fetch(urlImagen);
+  
+      if (!respuesta.ok) {
+        throw new Error(`Error al descargar la imagen: ${respuesta.statusText}`);
+      }
+  
+      const imageData = new Uint8Array(await respuesta.arrayBuffer());
+  
+      // Convertir los datos de la imagen a Base64
+      const base64String = btoa(
+        String.fromCharCode(...imageData)
+      );
+  
+      // Devolver la cadena Base64 junto con el prefijo de tipo MIME
+      const contentType = respuesta.headers.get("Content-Type") || "image/png";
+      return `data:${contentType};base64,${base64String}`;
+    } catch (error) {
+      console.error("Error al obtener la imagen:", error);
+      return null;
+    }
+  }
+  
+
   public async eliminarArchivo(imageUrl: string) {
     try {
       const storageBucketUrl = `https://firebasestorage.googleapis.com/v0/b/${env.FIREBASE_STORAGE_BUCKET}/o`;

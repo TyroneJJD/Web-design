@@ -42,10 +42,12 @@
     <main id="main-content">
         <!-- Columna izquierda -->
         <section class="perfil">
-            <div id="contenedor_foto">
+            <div id="contenedor_foto" style="background-image: url('<%= it.usuario.direccionURLFotoBackground %>');">
+
                 <div class="foto">
                     <div id="contenedor_foto_perfil">
-                        <img src="perfil.png" alt="Foto de perfil" id="foto_perfil">
+                        <img src="<%= it.usuario.direccionURLFotoPerfil %>" 
+                        alt="Foto de perfil" id="foto_perfil">
                     </div>
                 </div>
             </div>
