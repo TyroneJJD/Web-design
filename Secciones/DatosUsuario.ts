@@ -3,22 +3,19 @@ import { ObjectId } from "npm:mongodb@6.1.0";
 export interface IUsuario {
   _id?: ObjectId;
 
-  nombreUsuario: string;
-  correoElectronicoUsuario: string;
-  contraseniaUsuario: string;
-  fechaNacimientoUsuario: Date;
+  nombreUsuario: string; // Reservado
+  apellidoUsuario: string; // Reservado
+  correoElectronicoUsuario: string; // Reservado
+  contraseniaUsuario: string; // Reservado
 
-  universidadUsuario: string;
-  carreraUniversitariaUsuario: string;
-  afilicion: string;
 
-  esAdministrador: boolean;
-  esCoach: boolean;
-  puedePublicarEnElBlog: boolean;
-  puedePublicarProblemas: boolean;
+  esAdministrador: boolean; // Reservado
+  esCoach: boolean; // Reservado
+  puedePublicarEnElBlog: boolean; // Reservado
+  puedePublicarProblemas: boolean; // Reservado
 
-  agenda: ISesionEntrevista[];
-  bandejaDeEntrada: IMensajesusuario[];
+  agenda: ISesionEntrevista[]; // Reservado
+  bandejaDeEntrada: IMensajesusuario[]; // Reservado
 }
 
 export interface ISesionEntrevista {

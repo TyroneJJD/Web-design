@@ -12,13 +12,22 @@ import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Co
 import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
 import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
 
-import { verificarVariablesDeEntornoDefinidas } from "./utilidadesServidor.ts";
+import {
+  verificarVariablesDeEntornoDefinidas,
+  cargarArchivosEstaticos,
+} from "./utilidadesServidor.ts";
 
 verificarVariablesDeEntornoDefinidas();
 
 const app = new Application();
-
 const router = new Router();
+
+app.use(
+  cargarArchivosEstaticos(
+    "/css_global/",
+    "./Secciones/ColorYFuente/css_General"
+  )
+);
 
 inicializarPaginaInicio(router, app);
 inicializarLogin(router, app);

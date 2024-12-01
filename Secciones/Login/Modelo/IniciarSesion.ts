@@ -84,11 +84,6 @@ export class IniciarSession {
             nombreUsuario: userDataExists.nombreUsuario,
             correoElectronicoUsuario: userDataExists.correoElectronicoUsuario,
 
-            universidadUsuario: userDataExists.universidadUsuario,
-            carreraUniversitariaUsuario:
-              userDataExists.carreraUniversitariaUsuario,
-            afilicion: userDataExists.afilicion,
-
             esAdministrador: userDataExists.esAdministrador,
             esCoach: userDataExists.esCoach,
             puedePublicarEnElBlog: userDataExists.puedePublicarEnElBlog,

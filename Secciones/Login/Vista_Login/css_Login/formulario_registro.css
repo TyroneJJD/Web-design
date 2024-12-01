@@ -1,5 +1,7 @@
-@import url('../../../Color\ y\ Fuente/color.css');
-@import url('../../../Color\ y\ Fuente/fuentes.css');
+
+@import url('/css_global/color.css');
+@import url('/css_global/fuentes.css');
+
 
 * {
     margin: 0;
