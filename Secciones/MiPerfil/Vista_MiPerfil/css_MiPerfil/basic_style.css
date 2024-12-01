@@ -105,6 +105,11 @@ header .logo {
     max-width: 500px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
     max-height: 400px;
+}
+
+
+#avisos_contenedor{
+    max-height: 280px;
     overflow: auto;
 }
 

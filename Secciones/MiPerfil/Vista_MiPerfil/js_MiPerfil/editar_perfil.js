@@ -9,8 +9,6 @@ const perfilInput = document.getElementById('perfil_img');
 const elementoConBackground = document.getElementById('contenedor_foto');
 const elementoFoto = document.getElementById('foto_perfil');
 
-const regex = /^(https?:\/\/)?[\w-]+(\.[\w-]+)+([\w-./?%&=#]+)?$/;
-
 var imagenBackground = "";
 var imagenPerfil = "";
 
@@ -81,7 +79,7 @@ GuardarBtn.addEventListener("click",() => {
         infoPerfil.sobreMi = document.getElementById('sobre_mi').value;
 
         document.querySelectorAll('red_social').forEach(input => {
-        links.push(input.value);
+            links.push(input.value);
         });
 
         infoPerfil.links = links;
@@ -101,29 +99,19 @@ function EsInfoValida(){
 }
 
 function EsRolValido(){
-    console.log("EsRol")
 
-    let texto = document.getElementById("rol").value.trim();
-    
-
-    if(texto.length > 20){
+    if(document.getElementById("rol").value.trim().length > 20){
         return false;
     }
 
-    console.log("EsRol")
     return (texto !== "");
 }    
 
 function EsDescripcionValida(){
-    console.log("EsDesc")
 
-    let texto = document.getElementById("sobre_mi").value.trim();
-
-    if(texto.length > 150){
+    if(document.getElementById("sobre_mi").value.trim().length > 150){
         return false;
     }
-
-    console.log("EsDesc")
 
     return texto !== "";
 }    
@@ -135,9 +123,8 @@ function SonLinksValidos(){
     document.querySelectorAll('.red_social').forEach(input => {
         if(input.value !== ""){
             try{
-                let A = new URL(input.value.trim());
-                console.log(A)
-            } catch (e) {
+                new URL(input.value.trim());
+            } catch {
                 result = false;
                 input.focus();
             }
@@ -184,6 +171,7 @@ function EsImagenValida(img){
 }
 
 function CargaFotoPerfil(){
+    
 
 }
 
