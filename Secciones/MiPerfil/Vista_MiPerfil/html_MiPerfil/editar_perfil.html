@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Proyecto</title>
+    <link rel="stylesheet" href="../css_MiPerfil/basic_style.css">
+    <link rel="stylesheet" href="../css_MiPerfil/editar_style.css">
+
+</head>
+<body>
+
+    <header>
+        <div class="logo" id="home">Nombre Proyecto</div>
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+        <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <h2>Avisos</h2>
+            <p>Este es el contenido del modal de avisos.</p>
+        </div>
+    </div>
+    
+    <!-- Cuerpo principal -->
+    <main id="main-content">
+        <!-- Columna izquierda -->
+        <section class="perfil">
+            <div id="contenedor_foto">
+                <div class="foto">
+
+                    <div id="contenedor_foto_perfil">
+                        <img src="perfil.png" alt="Foto de perfil" id="foto_perfil">
+                    </div>
+                    
+                </div>
+
+            </div>
+            
+            <div id="contenedor_selector_imagen">
+
+                <div>
+                    <button id="cambiar_background_btn">Cambiar Background</button>
+                    <input type="file" id="backgroung_img" accept="image/*" style="display: none;">
+
+                    <button id="cambiar_perfil_btn">Cambiar imágen de perfil</button>
+                    <input type="file" id="perfil_img" accept="image/*" style="display: none;">
+
+                </div>
+                
+            </div>
+
+            <h1 id="nombre_usuario">Juan Daniel Kao Pech</h1>
+
+            <div id="info_personal_inputs">
+                <div>
+                    <input type="text" class="sobre_mi" id="rol" maxlength="20" placeholder="Coach">
+                </div>
+                <div>
+                    <textarea lass="sobre_mi" id="sobre_mi" maxlength="150" placeholder="sobre mi" rows="5" cols="33"></textarea>
+                </div>
+
+            </div>
+
+            <p class="puntuacion">Esto sera calculado en base a algo</p>
+            <button id="guardar_btn">Guardar</button>
+            <button id="cancelar_btn">Cancelar</button>
+        </section>
+
+        <!-- Columna derecha -->
+        <section class="detalles">
+            <div class="links">
+                <h3>Links</h3>
+
+                <div id="links_inputs">
+
+                    <input type="text" class="red_social" placeholder="Ingresa la URL de tu perfil">
+                    <br>
+                    <input type="text" class="red_social" placeholder="Ingresa la URL de tu perfil">
+                    <br>
+                    <input type="text" class="red_social" placeholder="Ingresa la URL de tu perfil">
+
+                </div>
+
+            </div>
+            <div class="resenas">
+                <h3>Reseñas</h3>
+                <ul id="lista_reseñas">
+                    <li></li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js_MiPerfil/basic.js"></script>
+    <script src="../js_MiPerfil/editar_perfil.js"></script>
+
+</body>
+</html>
