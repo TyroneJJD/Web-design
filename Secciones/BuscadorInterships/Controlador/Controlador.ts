@@ -18,9 +18,9 @@ export function inicializarBuscadorInterships(
   router.get("/BuscadorInterships", prueba2);
 
   app.use(
-    cargarArchivosEstaticos("/css", directorioVistaSeccionActual + `/css`)
+    cargarArchivosEstaticos("/css_BuscadorInterships", directorioVistaSeccionActual + `/css_BuscadorInterships`)
   );
-  app.use(cargarArchivosEstaticos("/js", directorioVistaSeccionActual + `/js`));
+  app.use(cargarArchivosEstaticos("/js_BuscadorInterships", directorioVistaSeccionActual + `/js_BuscadorInterships`));
 }
 
 async function prueba2(context: Context) {

@@ -20,6 +20,9 @@ export function inicializarLogin(router: Router, app: Application) {
   const nuevaCuenta = new crearNuevaCuenta();
   router.get("/tipoUsuario", nuevaCuenta.mostrarPaginaRegistro);
   router.get("/registro", nuevaCuenta.mostrarPaginaFormularioRegistro);
+  router.post("/registro", async (contexto: Context) => {
+    await nuevaCuenta.manejadorCreacionUsuario(contexto);
+  });
   
 
   app.use(cargarArchivosEstaticos("/img_Login", directorioVistaSeccionActual + `/img_Login`));
