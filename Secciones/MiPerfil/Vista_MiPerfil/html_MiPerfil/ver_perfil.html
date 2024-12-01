@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Proyecto</title>
+    <link rel="stylesheet" href="../css_MiPerfil/basic_style.css">
+    <link rel="stylesheet" href="../css_MiPerfil/ver_style.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo" id="home">Nombre Proyecto</div>
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <h2>Avisos</h2>
+            <div id="avisos_contenedor">
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+            </div>
+        </div>
+    </div>
+    
+    <main>
+        <!-- Columna izquierda -->
+        <section class="perfil">
+            <div id="contenedor_foto">
+                <div class="foto">
+
+                    <div id="foto_perfil">
+                        <img src="perfil.png" alt="Foto de perfil">
+                    </div>
+
+                    <div id="btn_editar">
+                        <img src="editar.png" alt="Foto de perfil">
+                    </div>
+                    <!--Este boton solo debe de aparecer si es tu perfil el que estas viendo-->
+                    
+                </div>
+            </div>
+            <h1>Juan Daniel Kao Pech</h1>
+            <h2 class="sobre_mi" id="rol">Coach. RH en Verato</h2>
+            <p class="sobre_mi" id="sobre_mi">"Lorem ipsum dolor sit amet, consectetur adipiscing elit..."</p>
+            <p class="puntuacion">Puntuación: 4.5</p>
+
+            <button class="agregar-btn">Agendar</button>
+
+        </section>
+
+        <!-- Columna derecha -->
+        <section class="detalles">
+            <div class="certificados">
+                <h3>Links</h3>
+                <ul id="mis_redes">
+                    <li class="red_social">
+                        <div class="elemento">
+                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200327230544/g4gicon.png" width="50" alt="">
+                            <span>GeeksforGeeks</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="resenas">
+                <h3>Reseñas</h3>
+                <p>Pablo Ernesto Baeza Lara: Buen coach 👌</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="../js_MiPerfil/basic.js"></script>
+
+</body>
+</html>
