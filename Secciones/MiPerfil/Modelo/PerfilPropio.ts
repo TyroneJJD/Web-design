@@ -18,7 +18,7 @@ export class PerfilPropio {
 
     this.obtenerUsuarioPorId = this.obtenerUsuarioPorId.bind(this);
     this.mostrarPaginaEditarMiPerfil =
-      this.mostrarPaginaEditarMiPerfil.bind(this);
+    this.mostrarPaginaEditarMiPerfil.bind(this);
     this.editarDatosPerfil = this.editarDatosPerfil.bind(this);
   }
 
