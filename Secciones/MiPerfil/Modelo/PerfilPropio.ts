@@ -6,6 +6,7 @@ import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { IUsuario } from "../../DatosUsuario.ts";
 import { ObjectId } from "npm:bson@^6.0";
 import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
+import { ManejadorArchivos } from "../../../Servicios/ManejadorArchivos.ts";
 
 export class PerfilPropio {
   private collection: Collection<IUsuario>;
@@ -59,7 +60,7 @@ export class PerfilPropio {
         return;
       }
 
-      const body = context.request.body({ type: "form" });
+      const body = context.request.body({ type: "json" });
       const formData = await body.value;
 
       const titularUsuario = formData.get("rol");
@@ -67,8 +68,9 @@ export class PerfilPropio {
       const linkLinkendin = formData.get("linkLinkedin");
       const linkGithub = formData.get("linkGithub");
       const linkPortafolioPersonal = formData.get("linkPortafolio");
+      const imagenPerfil = formData.get("imagenPerfil");
+      const imagenBackground = formData.get("imagenBackground");
 
-      // Asumimos que el ID del usuario está en los headers o cookies
       const idUsuario = await obtenerIdUsuario(context);
 
       if (!idUsuario) {
@@ -76,6 +78,9 @@ export class PerfilPropio {
         context.response.body = { error: "ID de usuario no proporcionado" };
         return;
       }
+      const manejadorArchivos = new ManejadorArchivos();
+      const urlNuevaFotoPerfil = await manejadorArchivos.guardarFotoDePerfil(imagenPerfil, idUsuario);
+      const urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDePerfil(imagenBackground, idUsuario);
 
       const result = await this.collection.updateOne(
         { _id: new ObjectId(idUsuario) },
@@ -88,6 +93,8 @@ export class PerfilPropio {
               linkGithub: linkGithub ?? "",
               linkPortafolioPersonal: linkPortafolioPersonal ?? "",
             },
+            direccionURLFotoPerfil: urlNuevaFotoPerfil ?? "",
+            direccionURLFotoBackground: urlNuevaFotoBackground ?? "", 
           },
         }
       );
@@ -109,6 +116,5 @@ export class PerfilPropio {
     }
   }
 
-  public async editarImagenDePerfil(context: Context) {}
-  public async editarBackgroundDePerfil(context: Context) {}
+ 
 }

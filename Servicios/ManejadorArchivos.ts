@@ -121,4 +121,78 @@ export class ManejadorArchivos {
       throw new Error("URL proporcionada no es válida.");
     }
   }
+
+  public async guardarFotoDePerfil(
+    archivoJSON: { fileName: string; base64: string },
+    idUsuario: string
+  ): Promise<string> {
+    const { fileName, base64 } = archivoJSON;
+    const nombreCarpeta = "FotosPerfil";
+  
+    const datosArchivo = new Uint8Array(
+      atob(base64).split("").map((char) => char.charCodeAt(0))
+    );
+  
+    const urlDeSubida = `${this.storageBucketUrl}/${encodeURIComponent(
+      nombreCarpeta + "/" + idUsuario
+    )}?uploadType=media&name=${idUsuario}`;
+  
+    const respuestaAPI = await fetch(urlDeSubida, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.FIREBASE_API_KEY}`,
+        "Content-Type": "application/octet-stream",
+      },
+      body: datosArchivo,
+    });
+  
+    if (!respuestaAPI.ok) {
+      throw new Error("Error al subir el archivo: " + respuestaAPI.statusText);
+    }
+  
+    const responseBody = await respuestaAPI.json();
+    const tokenArchivo = responseBody.downloadTokens;
+  
+    return `https://firebasestorage.googleapis.com/v0/b/${
+      env.FIREBASE_STORAGE_BUCKET
+    }/o/${encodeURIComponent(nombreCarpeta + "/" + fileName)}?alt=media&token=${tokenArchivo}`;
+  }
+
+
+  public async guardarFotoDeBackground(
+    archivoJSON: { fileName: string; base64: string },
+    idUsuario: string
+  ): Promise<string> {
+    const { fileName, base64 } = archivoJSON;
+    const nombreCarpeta = "FotosBackground";
+  
+    const datosArchivo = new Uint8Array(
+      atob(base64).split("").map((char) => char.charCodeAt(0))
+    );
+  
+    const urlDeSubida = `${this.storageBucketUrl}/${encodeURIComponent(
+      nombreCarpeta + "/" + idUsuario
+    )}?uploadType=media&name=${idUsuario}`;
+  
+    const respuestaAPI = await fetch(urlDeSubida, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${env.FIREBASE_API_KEY}`,
+        "Content-Type": "application/octet-stream",
+      },
+      body: datosArchivo,
+    });
+  
+    if (!respuestaAPI.ok) {
+      throw new Error("Error al subir el archivo: " + respuestaAPI.statusText);
+    }
+  
+    const responseBody = await respuestaAPI.json();
+    const tokenArchivo = responseBody.downloadTokens;
+  
+    return `https://firebasestorage.googleapis.com/v0/b/${
+      env.FIREBASE_STORAGE_BUCKET
+    }/o/${encodeURIComponent(nombreCarpeta + "/" + fileName)}?alt=media&token=${tokenArchivo}`;
+  }
+  
 }

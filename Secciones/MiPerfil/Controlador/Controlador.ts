@@ -10,8 +10,6 @@ export function inicializarMiPerfil(router: Router, app: Application) {
   router.get("/verEditarDatosPerfil", miPerfil.mostrarPaginaEditarMiPerfil);
 
   router.post("/editarDatosPerfil", miPerfil.editarDatosPerfil);
-  router.post("/editarImagenDePerfil", miPerfil.editarImagenDePerfil);
-  router.post("/editarBackgroundDePerfil", miPerfil.editarBackgroundDePerfil);
 
   app.use(
     cargarArchivosEstaticos(
