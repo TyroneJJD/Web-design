@@ -4,7 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Nombre por definir</title>
+    
     <link rel="stylesheet" href="../css_Login/login.css" />
+    <link rel="stylesheet" href="/css_global/toast.css" />
+
+    <script src="/js_global/toast.js" defer></script>
   </head>
   <body>
     <div class="contenedor_principal">
@@ -38,10 +42,15 @@
 
           <button type="submit">Login</button>
 
-          <p>Nuevo aqui? <a href="/TipoUsuario" id="registrar">Registrate</a></p>
+          <p>
+            Nuevo aqui? <a href="/TipoUsuario" id="registrar">Registrate</a>
+          </p>
         </form>
       </div>
     </div>
+
+    <div id="toast-container"></div>
+
   </body>
 </html>
 

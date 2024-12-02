@@ -90,7 +90,11 @@ export class crearNuevaCuenta {
       };
       this.crearNuevoUsuario(nuevoUsuario);
       context.response.status = 303;
-      context.response.headers.set("Location", "/login");
+      context.response.status = 303;
+      context.response.headers.set(
+        "Location",
+        `/login?toast=Usuario creado exitosamente&type=success`
+      );
       return;
     }
   }

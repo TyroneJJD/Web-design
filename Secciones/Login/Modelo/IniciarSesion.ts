@@ -99,16 +99,32 @@ export class IniciarSession {
           httpOnly: true,
           secure: false,
         });
-        context.response.redirect("/home");
+
+        //------------------------------------
+        context.cookies.set("toast", JSON.stringify({
+          message: "Usuario creado exitosamente",
+          type: "success",
+        }), { httpOnly: false, path: "/" });
+    
+        context.response.status = 303;
+        context.response.headers.set("Location", "/home");
+        return;
+        //------------------------------------
       } else {
         context.response.status = 401;
         context.response.body = "Credenciales incorrectas";
-        context.response.redirect("/login");
+        context.response.headers.set(
+          "Location",
+          `/login`
+        );
       }
     } else {
       context.response.status = 400;
       context.response.body = "Username and password must not be null.";
-      context.response.redirect("/login");
+      context.response.headers.set(
+        "Location",
+        `/login`
+      );
     }
   }
 

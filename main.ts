@@ -30,6 +30,13 @@ app.use(
   )
 );
 
+app.use(
+  cargarArchivosEstaticos(
+    "/js_global/",
+    "./Secciones/ColorYFuente/js_General"
+  )
+);
+
 inicializarPaginaInicio(router, app);
 inicializarLogin(router, app);
 inicializarBlog(router, app);
