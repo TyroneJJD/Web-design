@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nombre Proyecto</title>
+    <link rel="stylesheet" href="../css_LandingPage/estilos.index.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="nav">
+            <h1 class="logo">Nombre Proyecto</h1>
+            <ul class="nav-links">
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="vision_mision.html#vision">Visión</a></li>
+                <li><a href="vision_mision.html#mision">Misión</a></li>
+                <li><a href="../../../Login/Vista_Login/html_Login/login.html">Iniciar Sesión</a></li>
+            </ul>
+        </nav>
+        <div class="hero">
+            <h2>Bienvenido a [Nombre del Proyecto]</h2>
+            <p>El espacio para compartir y ganar experiencia para Internships</p>
+            <button class="cta-button" onclick="moverASeccionServicios('servicios')">Ver Más</button>
+        </div>
+    </header>
+
+    <section id="servicios" class="servicios">
+        <h2>¿Qué ofrecemos?</h2>
+        <div class="servicio">
+            <i class="servicio-icono">🌐</i>
+            <h3>Ampliar tu Red de Contactos</h3>
+            <p>Ofrecemos la oportunidad de conectarte con <i>coaches</i> del área de RH y programación para que te guíen por tu paso para conseguir una <i>internship.</i></p>
+        </div>
+        <div class="servicio">
+            <i class="servicio-icono">📚</i>
+            <h3>Temas para Programación Competitiva</h3>
+            <p>La mejor forma de sobresalir en tu <i>resume</i> es con un buen <i>background</i>, conocimientos y experiencia en concursos de Programación Competitiva son un buen <i>plus</i>.</p>
+        </div>
+        <div class="servicio">
+            <i class="servicio-icono">✨</i>
+            <h3>Compartir con la Comunidad</h3>
+            <p>Ingresando al sistema, ya sea como <i>coach</i> o <i>trainee</i>, pueden compartir tu experiencia o conocimientos al resto de la comunidad.</p>
+        </div>
+    </section>
+
+    <section id="contacto" class="contacto">
+        <h2>¿Quieres Colaborar en la Página? Contáctanos</h2>
+        <p>El formulario no está en funcionamiento por el momento</p>
+        <form id="formularioContacto">
+            <input type="text" name="nombre" placeholder="Ingresa tu nombre" required>
+            <input type="email" name="correo" placeholder="Ingresa tu correo" required>
+            <textarea name="message" rows="5" placeholder="Mensaje" required></textarea>
+            <button type="submit" hidden>Enviar</button>
+        </form>
+    </section>
+
+    <footer class="piePagina">
+        <p>&copy; 2024 [PROYECTO]. Derechos Reservados.</p>
+        <ul class="redesSociales">
+            <li><a href="#">Facebook</a></li>
+            <li><a href="#">Twitter</a></li>
+            <li><a href="#">Instagram</a></li>
+        </ul>
+    </footer>
+    <script src="../js_LandingPage/script_index.js"></script>
+</body>
+</html>
