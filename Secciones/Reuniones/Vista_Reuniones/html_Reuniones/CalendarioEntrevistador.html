@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../css_Reuniones/ReservacionEntrenador_styles.css">
-    <script src="../js_Reuniones/ReservacionEntrenador.js" defer></script>
+    <link rel="stylesheet" href="../css_Reuniones/CalendarioEntrevistador_styles.css">
+    <script src="../js_Reuniones/CalendarioEntrevistador.js" defer></script>
     <title>Agendar Cita</title>
 </head>
 <body>
@@ -39,106 +39,116 @@
     </div>
 
     <!-- Modal de reservacion -->
-     <div id="modal-cita" class="modal-cita">
+    <div id="modal-cita" class="modal-cita">
         <div class="modal-cita-content">
             <div class="modal-cita-header">
-                <h2>Detalles de la Reunión</h2>
+                <h2>Solicitudes</h2>
                 <span class="close-button" id="cerrar-modal-cita">&times;</span>
             </div>
             <div class="modal-cita-body">
-                <form id="reunion-form">
-                    <div class="form-group">
-                        <label for="tipo-reunion">Tipo de Reunión</label>
-                        <select id="tipo-reunion" name="tipo-reunion">
-                            <option value="tecnica">Entrevista Técnica</option>
-                            <option value="comportamiento">Entrevista de Comportamiento</option>
-                            <option value="revision">Revisión de Resume/CV</option>
-                        </select>
+                <div class="lista-solicitudes">
+                    <!-- Ejemplo de solicitudes -->
+                    <div class="solicitud" data-id="1">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-1" value="1">
+                        <label for="solicitud-1">
+                            <a href="/perfil/juan-perez" target="_blank" class="enlace-perfil">
+                                <strong>Juan Pérez</strong>
+                            </a>
+                            - Entrevista técnica
+                        </label>
                     </div>
-                    <div class="form-group">
-                        <label for="motivo">Motivo de la Reunión</label>
-                        <input type="text" id="motivo" name="motivo" placeholder="Escribe el motivo">
+                    <div class="solicitud" data-id="2">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-2" value="2">
+                        <label for="solicitud-2">
+                            <a href="/perfil/maria-lopez" target="_blank" class="enlace-perfil">
+                                <strong>Maria López</strong>
+                            </a>
+                            - Revisión de CV
+                        </label>
                     </div>
-                    <div class="form-group">
-                        <label for="archivo-resume">Cargar Resume (opcional)</label>
-                        <input type="file" id="archivo-resume" name="archivo-resume">
+                    <div class="solicitud" data-id="3">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-3" value="3">
+                        <label for="solicitud-3">
+                            <a href="/perfil/pedro-gonzalez" target="_blank" class="enlace-perfil">
+                                <strong>Pedro González</strong>
+                            </a>
+                            - Entrevista de comportamiento
+                        </label>
                     </div>
-                    <div class="form-group">
-                        <label for="comentarios">Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe tus comentarios aquí"></textarea>
+                    <div class="solicitud" data-id="4">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-4" value="4">
+                        <label for="solicitud-4">
+                            <a href="/perfil/ana-ramirez" target="_blank" class="enlace-perfil">
+                                <strong>Ana Ramírez</strong>
+                            </a>
+                            - Entrevista técnica
+                        </label>
                     </div>
-                </form>
+                    <div class="solicitud" data-id="5">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-5" value="5">
+                        <label for="solicitud-5">
+                            <a href="/perfil/jose-ramon" target="_blank" class="enlace-perfil">
+                                <strong>José Ramón</strong>
+                            </a>
+                            - Revisión de CV
+                        </label>
+                    </div>
+                    <div class="solicitud" data-id="6">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-6" value="6">
+                        <label for="solicitud-6">
+                            <a href="/perfil/sofia-ortiz" target="_blank" class="enlace-perfil">
+                                <strong>Sofía Ortiz</strong>
+                            </a>
+                            - Entrevista de comportamiento
+                        </label>
+                    </div>
+                    <div class="solicitud" data-id="7">
+                        <input type="radio" name="seleccion-solicitud" id="solicitud-7" value="7">
+                        <label for="solicitud-7">
+                            <a href="/perfil/raul-ramirez" target="_blank" class="enlace-perfil">
+                                <strong>Raúl Ramírez</strong>
+                            </a>
+                            - Entrevista técnica
+                        </label>
+                    </div>
+                </div>
             </div>
             <div class="modal-cita-footer">
                 <button class="cancel" id="cancelar-cita">Cancelar</button>
+                <button class="delete" id="eliminar-cita">Eliminar</button>
                 <button class="accept" id="aceptar-cita">Aceptar</button>
             </div>
         </div>
     </div>
 
-    <!-- Modal de horario pendiente -->
-    <div id="modal-cita-pendiente" class="modal-cita-pendiente">
-        <div class="modal-cita-pendiente-content">
-            <div class="modal-cita-pendiente-header">
-                <h2>Detalles de la Reunión</h2>
-                <span class="close-button" id="cerrar-modal-cita-pendiente">&times;</span>
-            </div>
-            <div class="modal-cita-pendiente-body">
-                <form id="reunion-form">
-                    <div class="form-group">
-                        <label for="tipo-reunion">Tipo de Reunión</label>
-                        <select id="tipo-reunion" name="tipo-reunion">
-                            <option value="tecnica">Entrevista Técnica</option>
-                            <option value="comportamiento">Entrevista de Comportamiento</option>
-                            <option value="revision">Revisión de Resume/CV</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="motivo">Motivo de la Reunión</label>
-                        <input type="text" id="motivo" name="motivo" placeholder="Motivo escrito previamente">
-                    </div>
-                    <div class="form-group">
-                        <label for="archivo-resume">Cargar Resume (opcional)</label>
-                        <input type="file" id="archivo-resume" name="archivo-resume">
-                    </div>
-                    <div class="form-group">
-                        <label for="comentarios">Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios escritos previamente"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-cita-pendiente-footer">
-                <button class="cancel" id="cancelar-cita-pendiente">Cancelar</button>
-                <button class="delete" id="eliminar-cita-pendiente">Eliminar</button>
-                <button class="accept" id="aceptar-cita-pendiente">Aceptar</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal de horario confirmado -->
+    <!-- Modal de horario ocupado -->
     <div id="modal-cita-confirmado" class="modal-cita-confirmado">
         <div class="modal-cita-confirmado-content">
             <div class="modal-cita-confirmado-header">
-                <h2>Detalles de la Reunión</h2>
+                <h2>Información Reunión</h2>
                 <span class="close-button" id="cerrar-modal-cita-confirmado">&times;</span>
             </div>
             <div class="modal-cita-confirmado-body">
                 <form id="reunion-form">
                     <div class="form-group">
+                        <label for="nombre-trainee">Trainee</label>
+                        <input type="text" id="nombre-trainee" name="nombre-trainee" placeholder="Nombre del Trainee" readonly>
+                    </div>
+                    <div class="form-group">
                         <label for="tipo-reunion">Tipo de Reunión</label>
-                        <input type="text" id="tipo" name="tipo" placeholder="Tipo elegido previamente no editable" readonly>
+                        <input type="text" id="tipo" name="tipo" placeholder="Tipo elegido por el trainee" readonly>
                     </div>
                     <div class="form-group">
                         <label for="motivo">Motivo de la Reunión</label>
-                        <input type="text" id="motivo" name="motivo" placeholder="Motivo escrito previamente no editable" readonly>
+                        <input type="text" id="motivo" name="motivo" placeholder="Motivo elegido por el trainee" readonly>
                     </div>
                     <div class="form-group">
-                        <label for="archivo-resume">Cargar Resume (opcional)</label>
-                        <input type="file" id="archivo-resume" name="archivo-resume">
+                        <label for="archivo-resume">Resume</label>
+                        <a href="#" id="descargar-resume" download>Descargar Resume</a>
                     </div>
                     <div class="form-group">
                         <label for="comentarios">Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios escritos previamente no editable" readonly></textarea>
+                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios del trainee" readonly></textarea>
                     </div>
                 </form>
             </div>
@@ -146,27 +156,6 @@
                 <button class="cancel" id="cancelar-cita-confirmado">Cancelar</button>
                 <button class="delete" id="eliminar-cita-confirmado">Eliminar</button>
                 <button class="accept" id="aceptar-cita-confirmado">Aceptar</button>
-            </div>
-        </div>
-    </div>     
-
-    <!-- Modal de horario ocupado -->
-    <div id="modal-cita-ocupado" class="modal-cita-ocupado">
-        <div class="modal-cita-ocupado-content">
-            <div class="modal-cita-ocupado-header">
-                <h2>Información Reunión</h2>
-                <span class="close-button" id="cerrar-modal-cita-ocupado">&times;</span>
-            </div>
-            <div class="modal-cita-confirmado-body">
-                <form id="reunion-form">
-                    <div class="form-group">
-                        <label for="tipo-reunion">Este horario ya ha sido confirmado para otra persona, si la otra persona cancela la reunión hay posibilidades de que te acepten a ti</label>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-cita-ocupado-footer">
-                <button class="cancel" id="cancelar-cita-ocupado">Cancelar</button>
-                <button class="accept" id="aceptar-cita-ocupado">Aceptar</button>
             </div>
         </div>
     </div>     
@@ -190,6 +179,7 @@
                 <div class="dias-semana">
                     <div class="dia-columna">
                         <h4>Domingo</h4>
+                        <h4>27</h4>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
@@ -211,13 +201,14 @@
                     </div>
                     <div class="dia-columna">
                         <h4>Lunes</h4>
+                        <h4>28</h4>
                         <div class="horario">
                             <span>9:00 AM</span>
                             <div class="solicitudes">
                                 👤 x <span>3</span>
                             </div>
                         </div>
-                        <div class="horario_pendiente">
+                        <div class="horario">
                             <span>10:30 AM</span>
                             <div class="solicitudes">
                                 👤 x <span>1</span>
@@ -232,6 +223,7 @@
                     </div>
                     <div class="dia-columna">
                         <h4>Martes</h4>
+                        <h4>29</h4>
                         <div class="horario">
                             <span>9:00 AM</span>
                             <div class="solicitudes">
@@ -253,7 +245,8 @@
                     </div>
                     <div class="dia-columna">
                         <h4>Miércoles</h4>
-                        <div class="horario_ocupado">
+                        <h4>30</h4>
+                        <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
                                 👤 x <span>1</span>
@@ -274,6 +267,7 @@
                     </div>
                     <div class="dia-columna">
                         <h4>Jueves</h4>
+                        <h4>01</h4>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
@@ -295,6 +289,7 @@
                     </div>
                     <div class="dia-columna">
                         <h4>Viernes</h4>
+                        <h4>02</h4>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
@@ -316,6 +311,7 @@
                     </div>
                     <div class="dia-columna">
                         <h4>Sabado</h4>
+                        <h4>03</h4>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
