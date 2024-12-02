@@ -14,6 +14,11 @@ export function inicializarProblemasProgramacionCompetitiva(
     gestorProblemas.BuscadorProblemasProgramacionCompetitiva
   );
 
+  router.get(
+    "/ProblemasProgramacionCompetitiva2",
+    gestorProblemas.BuscadorProblemasProgramacionCompetitivaEspecifico
+  );
+
   app.use(
     cargarArchivosEstaticos(
       "/css_ProblemasProgramacionCompetitiva",
