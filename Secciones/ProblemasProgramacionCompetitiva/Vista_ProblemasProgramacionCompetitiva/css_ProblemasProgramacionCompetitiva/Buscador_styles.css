@@ -110,7 +110,13 @@ main {
 }
 
 .link-problema {
-    --hover: black;
+    --hover: var(--naranja);
+}
+
+.link-problema a{
+    color: white;
+    padding: 5px;
+    text-decoration: none;
 }
 
 .tema:hover, .tema:focus {
