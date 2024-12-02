@@ -1,0 +1,341 @@
+* {
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Estilo general del header */
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 38px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8b400;
+    color: white;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Barra de navegación */
+.nav-menu ul {
+    list-style: none;
+    display: flex; /* Mostrar elementos en fila por defecto */
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu ul li a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Botón hamburguesa */
+.menu-toggle {
+    display: none; /* Ocultar el botón por defecto */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+
+    main {
+        flex-direction: column; 
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+    }
+
+    .nav-menu {
+        opacity: 0; /* Ocultar el menú por defecto */
+        position: absolute;
+        top: 58px; /* Asegúrate de que esté debajo del header */
+        left: 0;
+        right: 0;
+        background-color: #f8b400;
+        border-bottom: solid 5px gray;
+        padding: 10px 0;
+        z-index: 1000;
+        border-radius: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+    }
+
+    .nav-menu ul {
+        flex-direction: column; /* Cambiar de fila a columna */
+        align-items: center;
+    }
+
+    .nav-menu ul li:hover{
+        font-weight: bold;
+        transition: all 0.1s ease-in;
+        font-size: larger;
+    }
+
+    .nav-menu.active {
+        transition: all 0.2s ease-in-out; /* Controla la velocidad de la animación */
+        opacity: 1; 
+    }
+
+}
+
+/* Estilo general del modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para flotar sobre la página */
+    top: 0;
+    left: 0;
+    width: 100%; /* Cubre todo el ancho */
+    height: 100%; /* Cubre toda la altura */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1001; /* Asegura que esté encima de todo */
+}
+
+/* Contenido del modal */
+.modal-content {
+    background: #fff; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
+    max-height: 400px;
+}
+
+
+#avisos_contenedor{
+    max-height: 280px;
+    overflow: auto;
+}
+
+/* Botón de cierre */
+.close-button {
+    position: relative;
+    font-size: 1.5em;
+    color: #333;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+
+/* Cuerpo principal */
+main {
+    display:flexbox;
+    padding: 20px;
+    gap: 20px;
+}
+
+#home{
+    cursor: pointer;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.perfil-coach {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.perfil-coach img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 2px solid #000000;
+    object-fit: cover;
+}
+
+.perfil-coach h2 {
+    margin: 10px 0 5px;
+    font-size: 24px;
+    color: #333;
+}
+
+.perfil-coach p {
+    font-size: 16px;
+    color: #555;
+    text-align: center;
+    max-width: 800px;
+}
+
+.calendario-container {
+    margin: 20px;
+}
+
+.semana-navegacion {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.semana-navegacion button {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: none;
+    background-color: #304878;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.semana-navegacion button:hover {
+    background-color: #181848;
+}
+
+.dias-semana {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 10px;
+}
+
+.dia-columna {
+    background: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.dia-columna h4 {
+    margin: 10px 0;
+    font-size: 18px;
+    color: #333;
+}
+
+.horario {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #304878;
+    color: white;
+    margin: 5px 0;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.horario:hover {
+    background: #181848;
+}
+
+.solicitudes {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 14px;
+    color: #ddd;
+}
+
+.solicitudes span {
+    font-size: 16px;
+    color: white;
+}
+
+.modal-cita {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-cita-content {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    width: 400px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.modal-cita-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-cita-header h2 {
+    margin: 0;
+}
+
+.modal-cita-body {
+    margin-top: 20px;
+}
+
+.modal-cita-footer {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.modal-cita-footer button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.modal-cita-footer .cancel {
+    background-color: #ccc;
+}
+
+.modal-cita-footer .accept {
+    background-color: #304878;
+    color: white;
+}
+
+.modal-cita-footer button:hover {
+    opacity: 0.9;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
