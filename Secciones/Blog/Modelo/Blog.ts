@@ -3,13 +3,18 @@ import { ObjectId } from "npm:mongodb@6.1.0";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import {configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+import {
+  obtenerNombresUsuario,
+  obtenerApellidoUsuario,
+} from "../../../Servicios/Autenticacion.ts";
 
 export interface Publicacion {
   tituloPublicacion: string;
   etiquetasPublicacion: string[];
   autorPublicacion: string;
   contenidoPublicacion: string;
+  fechaPublicacion: string;
 }
 
 export class Blog {
@@ -19,9 +24,11 @@ export class Blog {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.guardarPost = this.guardarPost.bind(this);
     this.guardarPublicacion = this.guardarPublicacion.bind(this);
-    this.visualizarLecturaPublicacionBlog = this.visualizarLecturaPublicacionBlog.bind(this);
+    this.visualizarLecturaPublicacionBlog =
+      this.visualizarLecturaPublicacionBlog.bind(this);
     this.obtenerPublicacionesBlog = this.obtenerPublicacionesBlog.bind(this);
-    this.visualizarPublicacionesBlog = this.visualizarPublicacionesBlog.bind(this);
+    this.visualizarPublicacionesBlog =
+      this.visualizarPublicacionesBlog.bind(this);
   }
 
   public async guardarPublicacion(context: Context) {
@@ -35,8 +42,20 @@ export class Blog {
     const tituloPublicacion = body.fields.titulo || "";
     const etiquetasPublicacion =
       body.fields.etiquetas?.split(",").map((tag: string) => tag.trim()) || [];
-    const autorPublicacion = body.fields.autor || "";
+
+    const nombreAutor = await obtenerNombresUsuario(context);
+    const apellidoAutor = await obtenerApellidoUsuario(context);  //Falla en esta línea
+    const autorPublicacion = nombreAutor + " " + apellidoAutor || "";
+    console.log("Autor de la publicación:", autorPublicacion);
+    console.log("Etiquetas de la publicación:", apellidoAutor);
+
     const contenidoPublicacion = body.fields.contenido || "";
+
+    const fecha = new Date();
+    const dia = String(fecha.getDate()).padStart(2, "0");
+    const mes = String(fecha.getMonth() + 1).padStart(2, "0"); // Los meses empiezan en 0
+    const anio = fecha.getFullYear();
+    const fechaPublicacion = `${dia}/${mes}/${anio}`;
 
     if (contenidoPublicacion.length === 0 || contenidoPublicacion === "") {
       context.response.status = 400;
@@ -49,6 +68,7 @@ export class Blog {
       tituloPublicacion,
       etiquetasPublicacion,
       autorPublicacion,
+      fechaPublicacion,
       contenidoPublicacion,
     };
 
@@ -61,7 +81,10 @@ export class Blog {
       .insertOne(newPost);
   }
 
-  public async visualizarLecturaPublicacionBlog(context: Context, postId: string) {
+  public async visualizarLecturaPublicacionBlog(
+    context: Context,
+    postId: string
+  ) {
     const post = await this.obtenerPostPorId(postId);
     if (post == null) {
       context.response.status = 500;
@@ -71,7 +94,7 @@ export class Blog {
     configure({ autoEscape: false });
     const html = await renderizarVista(
       "lecturaPublicacionBlog.html",
-      {publicacion: post},
+      { publicacion: post },
       directorioVistaSeccionActual + `/html_Blog`
     );
     context.response.body = html || "Error al renderizar la página";
@@ -99,8 +122,6 @@ export class Blog {
     );
     context.response.body = html || "Error al renderizar la página";
   }
-
-  
 
   public async visualizarEditorTexto(context: Context) {
     const html = await renderizarVista(
