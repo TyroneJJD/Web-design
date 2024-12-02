@@ -1,17 +1,13 @@
-import {
-  Application,
-  Router,
-  Context,
-} from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import {
-  cargarArchivosEstaticos,
-  renderizarVista,
-} from "../../../utilidadesServidor.ts";
+import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
+import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
+import { Blog } from "../Modelo/Blog.ts";
 
-const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Blog/Vista_Blog`;
+export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Blog/Vista_Blog`;
 
 export function inicializarBlog(router: Router, app: Application) {
-  router.get("/BlogV2", visualizarEditorTexto);
+  const blog = new Blog();
+  router.get("/BlogV2", blog.visualizarEditorTexto);
+  router.post("/save-content", blog.guardarPublicacion);
 
   app.use(
     cargarArchivosEstaticos(
@@ -25,13 +21,4 @@ export function inicializarBlog(router: Router, app: Application) {
       directorioVistaSeccionActual + `/js_Blog`
     )
   );
-}
-
-async function visualizarEditorTexto(context: Context) {
-  const html = await renderizarVista(
-    "editorTexto.html",
-    {},
-    directorioVistaSeccionActual + `/html_Blog`
-  );
-  context.response.body = html || "Error al renderizar la página";
 }
