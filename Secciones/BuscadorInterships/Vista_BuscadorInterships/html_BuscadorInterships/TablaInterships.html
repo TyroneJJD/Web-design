@@ -1,46 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Interships</title>
-    <link rel="stylesheet" href="../css_BuscadorInterships/TablaIntershiphs_styles.css">
     <script src="../js_BuscadorInterships/BuscadorInterships.js"></script>
+    <link rel="stylesheet" href="/css_global/navbar.css" />
+    <script src="/js_global/navbar.js" defer></script>
+    <link rel="stylesheet" href="../css_BuscadorInterships/TablaInterships_styles.css">
+
 </head>
 <body>
-    <div class="buscador">
-        <input 
-          type="text" 
-          placeholder="Buscar..." 
-          class="input-buscar" 
-          id="buscarProblema"
-        />
-        <button class="btn-buscar" onclick="buscarInterships()">
-          🔍
-        </button>
-      </div>
-    <p class="titulo"><b>Lista de Interships</b></p>
-    <table>
-        <thead>
-            <tr>
-                <th>Rol</th>
-                <th>Locación</th>
-                <th>Compañía</th>
-                <th>Fuente</th>
-                <th>Fecha Publicado</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% it.ofertas.forEach(oferta => { %>
-            <tr>
-                <td><%= oferta.rol %></td>
-                <td><%= oferta.locacion %></td>
-                <td><%= oferta.compania %></td>
-                <td><a href="<%= oferta.linkFuentePublicacion %>" target="_blank">Ver Publicación</a></td>
-                <td><%= oferta.fechaPosteado %></td>
-            </tr>
-            <% }); %>
-        </tbody>
-    </table>  
+
+    <header>
+        <div class="logo" id="home">Nombre Proyecto</div>
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
+        </nav>
+    </header>
+    
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <h2>Avisos</h2>
+            <div id="avisos_contenedor">
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-content">
+        <div class="buscador">
+            <input 
+            type="text" 
+            placeholder="Buscar..." 
+            class="input-buscar" 
+            id="buscarProblema"
+            />
+            <button class="btn-buscar" onclick="buscarInterships()">
+            🔍
+            </button>
+        </div>
+
+        <p class="titulo"><b>Lista de Interships</b></p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Rol</th>
+                    <th>Locación</th>
+                    <th>Compañía</th>
+                    <th>Fuente</th>
+                    <th>Fecha Publicado</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% it.ofertas.forEach(oferta => { %>
+                <tr>
+                    <td><%= oferta.rol %></td>
+                    <td><%= oferta.locacion %></td>
+                    <td><%= oferta.compania %></td>
+                    <td><a href="<%= oferta.linkFuentePublicacion %>" target="_blank">Ver Publicación</a></td>
+                    <td><%= oferta.fechaPosteado %></td>
+                </tr>
+                <% }); %>
+            </tbody>
+        </table>  
+    </main>
+
 </body>
 </html>

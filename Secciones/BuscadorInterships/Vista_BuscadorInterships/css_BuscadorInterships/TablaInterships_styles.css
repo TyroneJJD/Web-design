@@ -1,0 +1,99 @@
+:root {
+    --color-negro: #000000;
+    --azul-cielo: #7890a8;
+    --azul-medio: #304878;
+    --azul-rey: #181848;
+    --naranja: #f0a818;
+}
+
+body{
+    background-color: var(--azul-rey);
+}
+
+main {
+    display:flex;
+    flex-direction: column;
+    margin: 10px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.buscador {
+    display: flex;
+    margin: 5px;
+    flex-wrap: wrap;
+}
+
+.input-buscar {
+    background-color: #f2f2f2;
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid black;
+    border-radius: 15px 0 0 15px;
+    outline: none;
+    width: 100%;
+    max-width: 600px;
+}
+
+.btn-buscar {
+    padding: 10px;
+    background-color: #007bff;
+    border: 1px solid black;
+    border-radius: 0 15px 15px 0;
+    color: #fff;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-buscar:hover {
+    background-color: #0056b3;
+}
+
+.titulo{
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: white;
+    font-style: italic;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+td{
+    font-size: 17px;
+}
+
+th {
+    background-color: var(--naranja);
+    color: var(--color-negro);
+    font-size: 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    
+    table {
+        font-size: 14px;
+    }
+
+    .input-buscar {
+        width: 50%;
+    }
+}
