@@ -15,7 +15,7 @@ export function inicializarProblemasProgramacionCompetitiva(
   );
 
   router.get(
-    "/ProblemasProgramacionCompetitiva2",
+    "/ProblemasProgramacionCompetitivaEspecifico",
     gestorProblemas.BuscadorProblemasProgramacionCompetitivaEspecifico
   );
 
