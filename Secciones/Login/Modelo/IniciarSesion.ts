@@ -83,6 +83,7 @@ export class IniciarSession {
           {
             _id: userDataExists._id,
             nombreUsuario: userDataExists.nombreUsuario,
+            apellidoUsuario: userDataExists.apellidoUsuario,
             correoElectronicoUsuario: userDataExists.correoElectronicoUsuario,
 
             esAdministrador: userDataExists.esAdministrador,
