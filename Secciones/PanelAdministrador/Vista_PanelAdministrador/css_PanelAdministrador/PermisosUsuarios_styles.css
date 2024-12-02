@@ -1,0 +1,110 @@
+:root {
+    --color-negro: #000000;
+    --azul-cielo: #7890a8;
+    --azul-medio: #304878;
+    --azul-rey: #181848;
+    --naranja: #f0a818;
+}
+
+body {
+    margin: 20px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-color: var(--azul-rey);
+}
+
+.titulo{
+    font-size: 30px;
+    margin-bottom: 20px;
+    color: white;
+    font-style: italic;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #f9f9f9;
+}
+
+th, td {
+    padding: 12px;
+    text-align: center;
+}
+
+td{
+    font-size: 17px;
+}
+
+th {
+    background-color: var(--naranja);
+    color: var(--color-negro);
+    font-size: 20px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+    background-color: #ffffff;
+}
+
+.btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-profile {
+    background-color: #0078d4;
+    color: white;
+}
+
+.btn-profile:hover {
+    
+    background-color: #005a9e;
+}
+
+.btn-accept {
+    background-color: #4caf50;
+    color: white;
+}
+
+.btn-accept:hover {
+    background-color: #45a049;
+}
+
+.btn-reject {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.btn-reject:hover {
+    background-color: #b71c1c;
+}
+
+.checkbox-container {
+    display:flexbox;
+    align-items:center;
+    gap: 5px;
+}
+
+.checkbox-container input {
+    cursor: pointer;
+}
+
+.checkbox-container label {
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    table {
+        font-size: 14px;
+    }
+    .btn {
+        padding: 6px 10px;
+    }
+}
