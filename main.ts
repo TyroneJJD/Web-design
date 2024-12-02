@@ -11,6 +11,7 @@ import { inicializarPaginaInicio } from "./Secciones/PaginaInicio/Controlador/Co
 import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Controlador/Controlador.ts";
 import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
 import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
+import { inicializarReuniones } from "./Secciones/Reuniones/Controlador/Controlador.ts";
 
 import {
   verificarVariablesDeEntornoDefinidas,
@@ -46,6 +47,7 @@ inicializarMiPerfil(router, app);
 inicializarPanelAdministrador(router, app);
 inicializarProblemasProgramacionCompetitiva(router, app);
 inicializarExplorarEntrevistadores(router, app);
+inicializarReuniones(router, app);
 
 //app.use(paginaNoEncontrada());
 app.use(router.routes());

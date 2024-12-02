@@ -21,24 +21,6 @@ export interface IUsuario {
 
   direccionURLFotoPerfil: string; // Reservado
   direccionURLFotoBackground: string; // Reservado
-
-  agenda: ISesionEntrevista[]; // Reservado
-  bandejaDeEntrada: IMensajesusuario[]; // Reservado
-}
-
-export interface ISesionEntrevista {
-  idReunion: string;
-  horaInicio: Date;
-  horaFin: Date;
-  candidatosRegistrados: ICandidatosRegistrado[];
-  candidatoSeleccionadoAEntrevistar: ICandidatosRegistrado;
-  sesionAsignada: boolean;
-}
-
-export interface ICandidatosRegistrado {
-  idCandidatoAEntrevistar: string;
-  nombreCandidatoAEntrevistar: string;
-  correoElectronicoCandidatoAEntrevistar: string;
 }
 
 export interface IMensajesusuario {
@@ -47,7 +29,7 @@ export interface IMensajesusuario {
   fechaEnvio: Date;
 }
 
-export interface ILinksUsuario{
+export interface ILinksUsuario {
   linkLinkendin: string;
   linkGithub: string;
   linkPortafolioPersonal: string;
