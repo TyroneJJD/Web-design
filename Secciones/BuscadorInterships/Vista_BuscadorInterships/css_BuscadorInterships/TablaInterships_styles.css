@@ -21,6 +21,7 @@ main {
     display: flex;
     margin: 5px;
     flex-wrap: wrap;
+    justify-content: center;
 }
 
 .input-buscar {
@@ -94,6 +95,6 @@ tr:nth-child(odd) {
     }
 
     .input-buscar {
-        width: 50%;
+        width: 60%;
     }
 }
