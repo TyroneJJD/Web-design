@@ -5,15 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css_ProblemasProgramacionCompetitiva/Buscador_styles.css">
     <title>Buscador</title>
+    <script src="../js_ProblemasProgramacionCompetitiva/Buscador.js"></script>
 </head>
 <body>
 
     <div class="buscador">
-        <input type="text" placeholder="Buscar..." class="input-buscar">
-        <button class="btn-buscar">
-            🔍
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          class="input-buscar" 
+          id="buscarProblema"
+        />
+        <button class="btn-buscar" onclick="buscarProblema()">
+          🔍
         </button>
-    </div>
+      </div>
+      
+      
 
     <div class="encabezado-problemas">Problemas Diarios</div>
 
