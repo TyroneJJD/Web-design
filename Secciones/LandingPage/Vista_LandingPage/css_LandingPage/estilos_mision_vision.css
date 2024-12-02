@@ -1,5 +1,5 @@
-@import url('../../../ColorYFuente/css_General/color.css');
-@import url('../../../ColorYFuente/css_General/fuentes.css');
+@import url('/css_global/color.css');
+@import url('/css_global/fuentes.css');
 
 body {
     font-family: Arial, sans-serif;
