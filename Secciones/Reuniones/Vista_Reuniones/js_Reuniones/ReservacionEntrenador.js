@@ -43,10 +43,12 @@ menuToggle.addEventListener('click', () => {
   navMenu.classList.toggle('active');
 });
 
+// Logica para modal de horario default
+
 const horarios = document.querySelectorAll('.horario');
 const modalcita = document.getElementById('modal-cita');
 const closeModalCita = document.getElementById('cerrar-modal-cita');
-const cancelModalCita = document.getElementById('cancelar');
+const cancelModalCita = document.getElementById('cancelar-cita');
 
 // Abrir modal al seleccionar horario
 horarios.forEach(horario => {
@@ -71,3 +73,92 @@ window.addEventListener('click', (e) => {
     }
 });
 
+// Logica para modal de horario pendiente
+
+const horariosPendientes = document.querySelectorAll('.horario_pendiente');
+const modalcitaPendiente = document.getElementById('modal-cita-pendiente');
+const closeModalCitaPendiente = document.getElementById('cerrar-modal-cita-pendiente');
+const cancelModalCitaPendiente = document.getElementById('cancelar-cita-pendiente');
+
+// Abrir modal al seleccionar horario
+horariosPendientes.forEach(horario => {
+    horario.addEventListener('click', () => {
+        modalcitaPendiente.style.display = 'flex';
+    });
+});
+
+// Cerrar modal
+closeModalCitaPendiente.addEventListener('click', () => {
+    modalcitaPendiente.style.display = 'none';
+});
+
+cancelModalCitaPendiente.addEventListener('click', () => {
+    modalcitaPendiente.style.display = 'none';
+});
+
+// Opcional: Cerrar modal al hacer clic fuera del contenido
+window.addEventListener('click', (e) => {
+    if (e.target === modalcitaPendiente) {
+        modalcitaPendiente.style.display = 'none';
+    }
+});
+
+// Logica para modal de horario confirmado
+
+const horariosConfirmados = document.querySelectorAll('.horario_confirmado');
+const modalcitaConfirmada = document.getElementById('modal-cita-confirmado');
+const closeModalCitaConfirmada = document.getElementById('cerrar-modal-cita-confirmado');
+const cancelModalCitaConfirmada = document.getElementById('cancelar-cita-confirmado');
+
+// Abrir modal al seleccionar horario
+horariosConfirmados.forEach(horario => {
+    horario.addEventListener('click', () => {
+        modalcitaConfirmada.style.display = 'flex';
+    });
+});
+
+// Cerrar modal
+closeModalCitaConfirmada.addEventListener('click', () => {
+    modalcitaConfirmada.style.display = 'none';
+});
+
+cancelModalCitaConfirmada.addEventListener('click', () => {
+    modalcitaConfirmada.style.display = 'none';
+});
+
+// Opcional: Cerrar modal al hacer clic fuera del contenido
+window.addEventListener('click', (e) => {
+    if (e.target === modalcitaConfirmada) {
+        modalcitaConfirmada.style.display = 'none';
+    }
+});
+
+// Logica para modal de horario ocupado
+
+const horariosOcupados = document.querySelectorAll('.horario_ocupado');
+const modalcitaOcupada = document.getElementById('modal-cita-ocupado');
+const closeModalCitaOcupada = document.getElementById('cerrar-modal-cita-ocupado');
+const cancelModalCitaOcupada = document.getElementById('cancelar-cita-ocupado');
+
+// Abrir modal al seleccionar horario
+horariosOcupados.forEach(horario => {
+    horario.addEventListener('click', () => {
+        modalcitaOcupada.style.display = 'flex';
+    });
+});
+
+// Cerrar modal
+closeModalCitaOcupada.addEventListener('click', () => {
+    modalcitaOcupada.style.display = 'none';
+});
+
+cancelModalCitaOcupada.addEventListener('click', () => {
+    modalcitaOcupada.style.display = 'none';
+});
+
+// Opcional: Cerrar modal al hacer clic fuera del contenido
+window.addEventListener('click', (e) => {
+    if (e.target === modalcitaOcupada) {
+        modalcitaOcupada.style.display = 'none';
+    }
+});
