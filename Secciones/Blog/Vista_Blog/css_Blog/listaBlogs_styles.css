@@ -7,6 +7,7 @@
     --gris-claro: #f0f0f0;
     --gris-oscuro: #333333;
     --borde-redondeado: 8px;
+    --boton-hover: #ffcc00;
 }
 
 main {
@@ -24,113 +25,110 @@ main {
     font-size: 35px;
     font-style: italic;
     font-weight: bold;
-    margin: auto;
+    margin-bottom: 15px;
     color: black;
     text-align: center;
 }
 
-#postForm {
-    padding: 20px;
-    width: 100%;
-    max-width: 700px;
+.contenedor-blogs {
     display: flex;
     flex-direction: column;
+    width: 90%;
+    max-width: 800px;
+    align-items: center;
+    gap: 20px;
+}
+
+.blog {
+    width: 100%;
+    border: 1px solid var(--gris-oscuro);
+    border-radius: var(--borde-redondeado);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 15px;
+}
+
+.titulo-blog {
+    background-color: var(--naranja);
+    text-align: center;
+    font-size: 23px;
+    color: black;
+    padding: 15px 10px;
+    font-weight: bold;
+}
+
+.contenido-blog {
+    display: flex;
+    justify-content: space-between;
+    background-color: var(--azul-rey);
+    padding: 15px;
     gap: 15px;
-    border-radius: var(--borde-redondeado);
 }
 
-#postForm label {
-    font-weight: bold;
-    color: var(--azul-rey);
-}
-
-#postForm input[type="text"] {
-    width: 100%;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    border: 1px solid var(--azul-cielo);
-    border-radius: var(--borde-redondeado);
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-#postForm input[type="text"]:focus {
-    border-color: var(--azul-rey);
-    outline: none;
-}
-
-#editor {
-    border: 1px solid var(--azul-cielo);
-    border-radius: var(--borde-redondeado);
-    padding: 10px;
-    background-color: white;
-    width: 100%;
-    height: 300px;
-}
-
-#saveButton {
-    padding: 10px;
-    font-size: 16px;
-    font-weight: bold;
+.contenido-blog div {
     color: white;
+    font-size: 18px;
+    line-height: 1.6;
+}
+
+.boton-leer {
+    text-align: right;
+    align-self: end;
+}
+
+.boton-leer button {
     background-color: var(--naranja);
     border: none;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 10px 20px;
     border-radius: var(--borde-redondeado);
     cursor: pointer;
-    transition: background-color 0.3s ease;
-    width: 100%;
+    transition: all 0.3s ease;
 }
 
-#saveButton:hover {
-    background-color: var(--azul-cielo);
+.boton-leer button:hover {
+    background-color: var(--boton-hover);
+    transform: scale(1.05);
 }
 
-/* Responsividad */
-@media (max-width: 768px) {
-    #postForm {
-        padding: 15px;
+@media screen and (max-width: 768px) {
+    .contenedor-blogs {
+        width: 95%;
     }
 
     .titulo {
         font-size: 28px;
     }
 
-    #postForm input[type="text"] {
-        font-size: 14px;
+    .contenido-blog {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
-    #editor {
-        height: 250px;
-    }
-
-    #saveButton {
-        font-size: 14px;
-        padding: 8px;
+    .boton-leer {
+        text-align: left;
     }
 }
 
-@media (max-width: 480px) {
+@media screen and (max-width: 480px) {
     .titulo {
         font-size: 24px;
     }
 
-    #postForm {
+    .titulo-blog {
+        font-size: 20px;
         padding: 10px;
     }
 
-    #postForm input[type="text"] {
-        font-size: 12px;
-    }
-
-    #editor {
-        height: 200px;
-    }
-
-    #saveButton {
-        font-size: 12px;
-        padding: 6px;
+    .boton-leer button {
+        padding: 8px 16px;
+        font-size: 14px;
     }
 }
+
+/*Final pagina */
 
 * {
     font-family: Arial, sans-serif;
@@ -230,7 +228,6 @@ header .logo {
 
 }
 
-/* Estilo general del modal */
 .modal {
     display: none; /* Oculto por defecto */
     position: fixed; /* Posición fija para flotar sobre la página */
@@ -270,7 +267,6 @@ header .logo {
     border: none;
     background: none;
 }
-
 
 /* Cuerpo principal */
 main {

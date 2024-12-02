@@ -1,3 +1,4 @@
+/* Estilos generales y variables */
 :root {
     --color-negro: #000000;
     --azul-cielo: #7890a8;
@@ -6,7 +7,7 @@
     --naranja: #f0a818;
 }
 
-body{
+main {
     font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
     margin: 40px;
 }
@@ -15,16 +16,18 @@ body{
     display: flex;
     justify-content: center;
     margin: 20px 0;
+    flex-wrap: wrap;
 }
 
 .input-buscar {
-    background-color:  #f2f2f2;
+    background-color: #f2f2f2;
     padding: 10px;
     font-size: 16px;
     border: 2px solid black;
     border-radius: 15px 0 0 15px;
     outline: none;
-    width: 1000px;
+    width: 100%;
+    max-width: 600px;
 }
 
 .btn-buscar {
@@ -44,62 +47,66 @@ body{
     background-color: #0056b3;
 }
 
-.encabezado-problemas{
-    display:flex;
+.encabezado-problemas {
+    display: flex;
     justify-content: center;
     font-size: 30px;
     padding: 10px;
     color: black;
 }
 
-.contenedor-problemas{
-    display:flex;
-    justify-content: space-around;
+.contenedor-problemas {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
     margin: 35px;
+    gap: 20px;
+}
+
+.problema {
+    background-color: var(--azul-medio);
+    width: 100%;
+    max-width: 370px;
+    color: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin:20px;
 }
 
 .titulo-problema {
-    font-size: 25px;  
+    font-size: 25px;
     text-align: center;
     padding: 5px;
     color: black;
     background-color: var(--naranja);
 }
 
-.problema{
-    background-color: var(--azul-medio);
-    width:370px;
-    color: white;
-}
-
-.descripcion-problema{
-    display:flex;
+.descripcion-problema {
+    display: flex;
     flex-direction: column;
     font-size: 19px;
-    padding:15px;
+    padding: 15px;
 }
 
-.descripcion-problema div{
+.descripcion-problema div {
     line-height: 1.5;
     display: flex;
     flex-wrap: wrap;
-    margin-top: 2px;
-    margin-bottom: 2px;
-    margin-left: 2px;
-    margin-right: 2px;
-}
-
-.tema{
-    background-color: rgb(238, 231, 231);
-    padding: 4px;
-    border-radius: 50px;
-    color:black;
+    margin: 2px;
 }
 
 .tema {
-    --hover: rgb(238, 231, 231); 
+    background-color: rgb(238, 231, 231);
+    padding: 4px;
+    border-radius: 50px;
+    color: black;
 }
-  
+
+.tema {
+    --hover: rgb(238, 231, 231);
+}
+
 .link-problema {
     --hover: black;
 }
@@ -107,23 +114,217 @@ body{
 .tema:hover, .tema:focus {
     animation: pulse 1s;
     box-shadow: 0 0 0 2em transparent;
-    cursor:pointer;
+    cursor: pointer;
 }
-  
+
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 var(--hover); }
     100% { box-shadow: 0 0 0 2em transparent; }
 }
-  
 
 .link-problema:hover, .link-problema:focus {
     box-shadow: 0 0.5em 0.5em -0.4em var(--hover);
     transform: translateY(-0.25em);
-    color:white;
-    cursor:pointer;
+    color: white;
+    cursor: pointer;
 }
 
 .tema, .link-problema {
     transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
-  
+
+@media (max-width: 600px) {
+    body {
+        margin: 20px;
+    }
+
+    .input-buscar {
+        width: 50%;
+    }
+
+    .encabezado-problemas {
+        font-size: 24px;
+    }
+
+    .titulo-problema {
+        font-size: 20px;
+    }
+
+    .descripcion-problema {
+        font-size: 16px;
+    }
+
+    .contenedor-problemas {
+        margin: 15px;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+
+    .input-buscar{
+        width:70%;
+    }
+
+    .contenedor-problemas {
+        justify-content: space-evenly;
+    }
+
+    .titulo-problema {
+        font-size: 22px;
+    }
+
+    .descripcion-problema {
+        font-size: 18px;
+    }
+}
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo general */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f0f0;
+}
+
+/* Estilo general del header */
+header {
+    display: flex;
+    justify-content: space-between;
+    height: 38px;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8b400;
+    color: white;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+/* Barra de navegación */
+.nav-menu ul {
+    list-style: none;
+    display: flex; /* Mostrar elementos en fila por defecto */
+    gap: 15px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-menu ul li a {
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Botón hamburguesa */
+.menu-toggle {
+    display: none; /* Ocultar el botón por defecto */
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+}
+
+/* Estilos responsivos para pantallas pequeñas */
+@media (max-width: 768px) {
+
+    main {
+        flex-direction: column; 
+    }
+
+    .menu-toggle {
+        display: block; /* Mostrar el botón hamburguesa */
+    }
+
+    .nav-menu {
+        opacity: 0; /* Ocultar el menú por defecto */
+        position: absolute;
+        top: 58px; /* Asegúrate de que esté debajo del header */
+        left: 0;
+        right: 0;
+        background-color: #f8b400;
+        border-bottom: solid 5px gray;
+        padding: 10px 0;
+        z-index: 1000;
+        border-radius: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+
+    }
+
+    .nav-menu ul {
+        flex-direction: column; /* Cambiar de fila a columna */
+        align-items: center;
+    }
+
+    .nav-menu ul li:hover{
+        font-weight: bold;
+        transition: all 0.1s ease-in;
+        font-size: larger;
+    }
+
+    .nav-menu.active {
+        transition: all 0.2s ease-in-out; /* Controla la velocidad de la animación */
+        opacity: 1; 
+    }
+
+}
+
+/* Estilo general del modal */
+.modal {
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para flotar sobre la página */
+    top: 0;
+    left: 0;
+    width: 100%; /* Cubre todo el ancho */
+    height: 100%; /* Cubre toda la altura */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1001; /* Asegura que esté encima de todo */
+}
+
+/* Contenido del modal */
+.modal-content {
+    background: #fff; /* Fondo blanco */
+    padding: 20px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 500px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar */
+    max-height: 400px;
+}
+
+
+#avisos_contenedor{
+    max-height: 280px;
+    overflow: auto;
+}
+
+/* Botón de cierre */
+.close-button {
+    position: relative;
+    font-size: 1.5em;
+    color: #333;
+    cursor: pointer;
+    border: none;
+    background: none;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+}
+
+#home{
+    cursor: pointer;
+}
+

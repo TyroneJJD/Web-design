@@ -1,0 +1,55 @@
+@import url("../../../ColorYFuente/css_General/color.css");
+@import url("../../../ColorYFuente/css_General/fuentes.css");
+
+body {
+    color: var(--color-negro);
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    font-family: var(--fuente-secundaria);
+}
+
+#titulo, #contenidoPublicacion{
+    padding: 3%;
+}
+
+h1 {
+    text-align: center;
+    font-family: var(--fuente-principal);
+}
+
+#descripcionPublicacion {
+    padding-left: 3%;
+}
+
+@media screen and (max-width: 768px) {
+    #descripcionPublicacion {
+        padding: 1.5rem 3%;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    #contenidoPublicacion {
+        padding: 2%;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    #descripcionPublicacion {
+        font-size: 0.85rem;
+    }
+
+    #contenidoPublicacion {
+        font-size: 0.85rem;
+        padding: 5%;
+    }
+}

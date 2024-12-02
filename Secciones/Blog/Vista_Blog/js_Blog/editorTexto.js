@@ -1,3 +1,4 @@
+// Inicializar Quill
 const quill = new Quill("#editor", {
   theme: "snow",
   placeholder: "Escribe el contenido aquí...",
@@ -10,7 +11,7 @@ const quill = new Quill("#editor", {
       [{ script: "sub" }, { script: "super" }], // Superíndice y subíndice
       [{ color: [] }, { background: [] }], // Colores de texto y fondo
       [{ align: [] }], // Alineación
-      ["link", "image"] // Links, imágenes, videos
+      ["link", "image"], // Links e imágenes
     ],
     syntax: true, // Activar resaltado de sintaxis
   },
@@ -31,7 +32,7 @@ function guardarPublicacion(event) {
       body: formData,
     });
 
-    console.log("Publicación enviada correctamente");
+    alert("Publicación guardada correctamente");
     globalThis.location.href = "/";
   } catch (error) {
     console.error("Error al enviar la publicación:", error);

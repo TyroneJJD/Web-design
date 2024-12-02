@@ -9,42 +9,75 @@
 </head>
 <body>
 
-    <div class="buscador">
-        <input 
-          type="text" 
-          placeholder="Buscar..." 
-          class="input-buscar" 
-          id="buscarProblema"
-        />
-        <button class="btn-buscar" onclick="buscarProblema()">
-          🔍
-        </button>
-      </div>
-      
-      
+  <header>
+    <div class="logo" id="home">Nombre Proyecto</div>
+    <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+    <nav class="nav-menu">
+        <ul>
+            <li><a href="#interns">Interns</a></li>
+            <li><a href="#perfil">Mi Perfil</a></li>
+            <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+            <li><a href="#explorar">Explorar</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#problemas">Problemas</a></li>
+        </ul>
+    </nav>
+  </header>
 
-    <div class="encabezado-problemas">Problemas Diarios</div>
-
-    <div class="contenedor-problemas">
-        <% it.problemas.forEach(problema => { %>
-            <div class="problema">
-                <div class="titulo-problema"> <i><%= problema.nombreProblema %></i> </div>
-                <div class="descripcion-problema">
-                    <div class="plataforma">Plataforma: <%= problema.plataformaProblema %> </div>
-                    <div class="dificultad">Dificultad: <%= problema.dificultadProblema %></div>
-                    <div class="subtitulo">Categorías: </div>
-                    <div class="topicos">
-                        <% problema.categoriasProblema.forEach(categoria => { %>
-                            <div class="tema"> <i><%= categoria %></i> </div>
-                        <% }); %>
-                    </div>
-                    <div class="link-problema">
-                        <a href="<%= problema.urlProblema %>" target="_blank">Ver problema</a>
-                    </div>
-                </div>
-            </div>
-        <% }); %>
+  <!-- Modal -->
+  <div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+        <h2>Avisos</h2>
+        <div id="avisos_contenedor">
+            <p>Este es el contenido del modal de avisos.</p>
+            <p>Este es el contenido del modal de avisos.</p>
+            <p>Este es el contenido del modal de avisos.</p>
+            <p>Este es el contenido del modal de avisos.</p>
+        </div>
     </div>
+  </div>
+
+  <main id="main-content">
+
+    <div class="buscador">
+      <input 
+        type="text" 
+        placeholder="Buscar..." 
+        class="input-buscar" 
+        id="buscarProblema"
+      />
+      <button class="btn-buscar" onclick="buscarProblema()">
+        🔍
+      </button>
+    </div>
+  
+    <div class="encabezado-problemas">Problemas Diarios</div>
+  
+    <div class="contenedor-problemas">
+      <% it.problemas.forEach(problema => { %>
+        <div class="problema">
+          <div class="titulo-problema"> <i><%= problema.nombreProblema %></i> </div>
+            <div class="descripcion-problema">
+              <div class="plataforma">Plataforma: <%= problema.plataformaProblema %> </div>
+              <div class="dificultad">Dificultad: <%= problema.dificultadProblema %></div>
+              <div class="subtitulo">Categorías: </div>
+              <div class="topicos">
+                <% problema.categoriasProblema.forEach(categoria => { %>
+                  <div class="tema"> <i><%= categoria %></i> </div>
+                <% }); %>
+              </div>
+              <div class="link-problema">
+                <a href="<%= problema.urlProblema %>" target="_blank">Ver problema</a>
+              </div>
+            </div>
+        </div>
+      <% }); %>
+    </div>
+
+  </main>
+
+  <script src="../js/basic.js"></script>
 
 </body>
 </html>
