@@ -73,36 +73,6 @@ window.addEventListener('click', (e) => {
     }
 });
 
-// Logica para modal de horario pendiente
-
-const horariosPendientes = document.querySelectorAll('.horario_pendiente');
-const modalcitaPendiente = document.getElementById('modal-cita-pendiente');
-const closeModalCitaPendiente = document.getElementById('cerrar-modal-cita-pendiente');
-const cancelModalCitaPendiente = document.getElementById('cancelar-cita-pendiente');
-
-// Abrir modal al seleccionar horario
-horariosPendientes.forEach(horario => {
-    horario.addEventListener('click', () => {
-        modalcitaPendiente.style.display = 'flex';
-    });
-});
-
-// Cerrar modal
-closeModalCitaPendiente.addEventListener('click', () => {
-    modalcitaPendiente.style.display = 'none';
-});
-
-cancelModalCitaPendiente.addEventListener('click', () => {
-    modalcitaPendiente.style.display = 'none';
-});
-
-// Opcional: Cerrar modal al hacer clic fuera del contenido
-window.addEventListener('click', (e) => {
-    if (e.target === modalcitaPendiente) {
-        modalcitaPendiente.style.display = 'none';
-    }
-});
-
 // Logica para modal de horario confirmado
 
 const horariosConfirmados = document.querySelectorAll('.horario_confirmado');
@@ -130,35 +100,5 @@ cancelModalCitaConfirmada.addEventListener('click', () => {
 window.addEventListener('click', (e) => {
     if (e.target === modalcitaConfirmada) {
         modalcitaConfirmada.style.display = 'none';
-    }
-});
-
-// Logica para modal de horario ocupado
-
-const horariosOcupados = document.querySelectorAll('.horario_ocupado');
-const modalcitaOcupada = document.getElementById('modal-cita-ocupado');
-const closeModalCitaOcupada = document.getElementById('cerrar-modal-cita-ocupado');
-const cancelModalCitaOcupada = document.getElementById('cancelar-cita-ocupado');
-
-// Abrir modal al seleccionar horario
-horariosOcupados.forEach(horario => {
-    horario.addEventListener('click', () => {
-        modalcitaOcupada.style.display = 'flex';
-    });
-});
-
-// Cerrar modal
-closeModalCitaOcupada.addEventListener('click', () => {
-    modalcitaOcupada.style.display = 'none';
-});
-
-cancelModalCitaOcupada.addEventListener('click', () => {
-    modalcitaOcupada.style.display = 'none';
-});
-
-// Opcional: Cerrar modal al hacer clic fuera del contenido
-window.addEventListener('click', (e) => {
-    if (e.target === modalcitaOcupada) {
-        modalcitaOcupada.style.display = 'none';
     }
 });

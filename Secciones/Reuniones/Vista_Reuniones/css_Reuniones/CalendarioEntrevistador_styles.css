@@ -362,6 +362,11 @@ main {
     background-color: #ccc;
 }
 
+.modal-cita-footer .delete {
+    background-color: #8a0909;
+    color: white;
+}
+
 .modal-cita-footer .accept {
     background-color: #304878;
     color: white;
