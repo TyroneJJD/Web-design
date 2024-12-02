@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Permisos Usuarios</title>
     <link rel="stylesheet" href="../css_PanelAdministrador/PermisosUsuarios_styles.css">
+    
 </head>
 <body>
     <header>
         <div class="logo" id="home">Nombre Proyecto</div>
-        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button>
         <nav class="nav-menu">
             <ul>
                 <li><a href="#interns">Interns</a></li>
                 <li><a href="#perfil">Mi Perfil</a></li>
-                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li>
                 <li><a href="#explorar">Explorar</a></li>
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#problemas">Problemas</a></li>
@@ -25,12 +26,9 @@
     <!-- Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <span class="close-button" id="cerrar-modal">&times;</span>
             <h2>Avisos</h2>
             <div id="avisos_contenedor">
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
                 <p>Este es el contenido del modal de avisos.</p>
             </div>
         </div>
@@ -42,72 +40,69 @@
         <table>
             <thead>
                 <tr>
+                    <th>ID Usuario</th>
                     <th>Nombre</th>
                     <th>Perfil</th>
                     <th>Coach</th>
-                    <th>Publicar</th>
+                    <th>Publicar Blog</th>
+                    <th>Publicar Problemas</th>
+                    <th>Admin</th>
                 </tr>
             </thead>
             <tbody>
+                <% it.usuarios.forEach(usuario => { %><!-- Corregido: cambié "usuario" por "usuarios" -->
                 <tr>
-                    <td>Juan Pérez</td>
+                    <td><%= usuario._id %></td>
+                    <td><%= usuario.nombreUsuario %></td>
                     <td>
                         <a href="#"><button class="btn btn-profile">Ver Perfil</button></a> 
                     </td>
                     <td>
                         <div class="checkbox-container">
-                            <input type="checkbox" id="checkbox-coach_1">
-                            <label for="checkbox-coach_1">Activar</label>
+                            <input 
+                                type="checkbox" 
+                                id="checkbox-coach_<%= usuario._id %>" 
+                                <%= usuario.esCoach ? 'checked' : '' %> >
+                            <label for="checkbox-coach_<%= usuario._id %>">Activar</label>
                         </div>
                     </td>
                     <td>
                         <div class="checkbox-container">
-                            <input type="checkbox" id="checkbox-publicar_1">
-                            <label for="checkbox-publicar_1">Activar</label>
+                            <input 
+                                type="checkbox" 
+                                id="checkbox-publicar-blog_<%= usuario._id %>" 
+                                <%= usuario.puedePublicarEnElBlog ? 'checked' : '' %> >
+                            <label for="checkbox-publicar-blog_<%= usuario._id %>">Activar</label>
                         </div>
                     </td>
+                    <td>
+                        <div class="checkbox-container">
+                            <input 
+                                type="checkbox" 
+                                id="checkbox-publicar-problemas_<%= usuario._id %>" 
+                                <%= usuario.puedePublicarProblemas ? 'checked' : '' %> >
+                            <label for="checkbox-publicar-problemas_<%= usuario._id %>">Activar</label>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="checkbox-container">
+                            <input 
+                                type="checkbox" 
+                                id="checkbox-administrador_<%= usuario._id %>" 
+                                <%= usuario.esAdministrador ? 'checked' : '' %> >
+                            <label for="checkbox-administrador_<%= usuario._id %>">Administrador</label>
+                        </div>
+                    </td>
+                    
+                    
+                    
                 </tr>
-                <tr>
-                    <td>María López</td>
-                    <td>
-                        <a href="#"><button class="btn btn-profile">Ver Perfil</button></a> 
-                    </td>
-                    <td>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="checkbox-coach_2">
-                            <label for="checkbox-coach_2">Activar</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="checkbox-publicar_2">
-                            <label for="checkbox-publicar_2">Activar</label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>María López</td>
-                    <td>
-                        <a href="#"><button class="btn btn-profile">Ver Perfil</button></a> 
-                    </td>
-                    <td>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="checkbox-coach_3">
-                            <label for="checkbox-coach_3">Activar</label>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="checkbox-container">
-                            <input type="checkbox" id="checkbox-publicar_3">
-                            <label for="checkbox-publicar_3">Activar</label>
-                        </div>
-                    </td>
-                </tr>
+                <% }); %>
             </tbody>
         </table>  
     </main>
 
+    <script src="../js_PanelAdministrador/actualizarPermisos.js"></script>
     <script src="../js_PanelAdministrador/panelPermisosUsuarios.js"></script>
-    
 </body>
 </html>
