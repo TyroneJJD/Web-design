@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Blogs</title>
+    <link rel="stylesheet" href="../css_Blog/listaBlogs_styles.css">
+</head>
+<body>
+
+    <header>
+        <div class="logo" id="home">Nombre Proyecto</div>
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <h2>Avisos</h2>
+            <div id="avisos_contenedor">
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+            </div>
+        </div>
+    </div>
+
+    <main id="main-content">
+
+        <div class="titulo">Lista de Blogs</div>
+
+        <div class="contenedor-blogs">
+            <div class="blog">
+                <div class="titulo-blog">
+                    Mi experiencia en la jornada 1 de ICPC
+                </div>
+                <div class="contenido-blog">
+                    <div>
+                        Autor: Tyrone Julian Johnson Dorantes <br>
+                        Fecha de publicación: 30/12/24
+                    </div>
+                    <div class="boton-leer">
+                        <button>Leer</button>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="blog">
+                <div class="titulo-blog">
+                    Mi experiencia en la jornada 1 de ICPC
+                </div>
+                <div class="contenido-blog">
+                    <div>
+                        Autor: Tyrone Julian Johnson Dorantes <br>
+                        Fecha de publicación: 30/12/24
+                    </div>
+                    <div class="boton-leer">
+                        <button>Leer</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/basic.js"></script>
+</body>
+</html>
