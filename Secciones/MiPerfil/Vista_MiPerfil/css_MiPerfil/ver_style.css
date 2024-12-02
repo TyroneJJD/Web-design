@@ -40,7 +40,6 @@
     border-radius: 10px;
     padding: 10px;
     box-sizing: border-box; /* Incluye el padding y border en el tamaño total */
-    background-image: url(imaege.png);
     background-size: cover;
     background-position: center;
 }

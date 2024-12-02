@@ -1,4 +1,3 @@
-import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 import {
   Application,
   Router,
@@ -12,7 +11,8 @@ import {
 const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/LandingPage/Vista_LandingPage`;
 
 export function inicializarLandingPage(router: Router, app: Application) {
-  router.get("/LandingPage", prueba2);
+  router.get("/LandingPage", index);
+  router.get("/VisionYMision", visionYMision);
 
   app.use(
     cargarArchivosEstaticos("/css_LandingPage", directorioVistaSeccionActual + `/css_LandingPage`)
@@ -20,9 +20,18 @@ export function inicializarLandingPage(router: Router, app: Application) {
   app.use(cargarArchivosEstaticos("/js_LandingPage", directorioVistaSeccionActual + `/js_LandingPage`));
 }
 
-async function prueba2(context: Context) {
+async function index(context: Context) {
   const html = await renderizarVista(
-    "test.html",
+    "index.html",
+    {},
+    directorioVistaSeccionActual + `/html_LandingPage`
+  );
+  context.response.body = html || "Error al renderizar la página";
+}
+
+async function visionYMision(context: Context) {
+  const html = await renderizarVista(
+    "vision_mision.html",
     {},
     directorioVistaSeccionActual + `/html_LandingPage`
   );

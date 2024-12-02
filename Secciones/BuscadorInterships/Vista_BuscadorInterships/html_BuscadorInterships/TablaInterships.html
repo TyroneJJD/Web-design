@@ -5,8 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lista de Interships</title>
     <link rel="stylesheet" href="../css_BuscadorInterships/TablaIntershiphs_styles.css">
+    <script src="../js_BuscadorInterships/BuscadorInterships.js"></script>
 </head>
 <body>
+    <div class="buscador">
+        <input 
+          type="text" 
+          placeholder="Buscar..." 
+          class="input-buscar" 
+          id="buscarProblema"
+        />
+        <button class="btn-buscar" onclick="buscarInterships()">
+          🔍
+        </button>
+      </div>
     <p class="titulo"><b>Lista de Interships</b></p>
     <table>
         <thead>

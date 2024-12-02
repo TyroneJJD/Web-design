@@ -27,6 +27,8 @@ export class ScraperInterships {
     this.obtenerOfertasIntershipsV2 =
       this.obtenerOfertasIntershipsV2.bind(this);
     this.visualizarInterships = this.visualizarInterships.bind(this);
+    this.visualizarIntershipsEspecifico = this.visualizarIntershipsEspecifico.bind(this);
+    this.obtenerOfertaEspecifica = this.obtenerOfertaEspecifica.bind(this);
   }
 
   public async actualizarOfertasInterships(): Promise<void> {
@@ -53,6 +55,44 @@ export class ScraperInterships {
         context.response.body = "An unknown error occurred";
       }
     }
+  }
+
+  private async obtenerOfertaEspecifica(nombreCompania :string ): Promise<IOfertaIntership[]> {
+    
+      const ofertaDB = await this.collection.findOne({ 
+        compania: { $regex: nombreCompania, $options: "i" } 
+      });
+      return ofertaDB ? [ofertaDB] : [];
+    
+    
+  }
+   
+
+  public async visualizarIntershipsEspecifico(context: Context) {
+  
+      const url = new URL(context.request.url);
+      const nombreCompania = url.searchParams.get("nombreCompania");
+      
+
+      if (!nombreCompania || nombreCompania.trim() === "") {
+        context.response.headers.set(
+          "Location",
+          "/BuscadorIntershipsV2"
+        );
+        return;
+    
+      }
+      
+      
+      const ofertaDB = await this.obtenerOfertaEspecifica(nombreCompania);
+
+      const html = await renderizarVista(
+        "TablaInterships.html",
+        { ofertas: ofertaDB },
+        directorioVistaSeccionActual + `/html_BuscadorInterships`
+      );
+      context.response.body = html || "Error al renderizar la página";
+    
   }
 
   private async obtenerOfertasIntershipsV2(): Promise<IOfertaIntership[]> {

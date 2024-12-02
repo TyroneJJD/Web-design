@@ -21,9 +21,26 @@ export class PerfilPropio {
     this.mostrarPaginaEditarMiPerfil =
     this.mostrarPaginaEditarMiPerfil.bind(this);
     this.editarDatosPerfil = this.editarDatosPerfil.bind(this);
+    this.mostrarPaginaVerMiPerfil = this.mostrarPaginaVerMiPerfil.bind(this);
   }
 
-  public async mostrarPaginaVerMiPerfil(context: Context) {}
+  public async mostrarPaginaVerMiPerfil(context: Context) 
+  {
+    const idUsuario = await obtenerIdUsuario(context);
+    if (!idUsuario) {
+      context.response.status = 401;
+      context.response.body = "No se proporcionó un ID de usuario";
+      return;
+    }
+    const datosUsuario = await this.obtenerUsuarioPorId(idUsuario);
+
+    const html = await renderizarVista(
+      "ver_perfil.html",
+      { usuario: datosUsuario },
+      directorioVistaSeccionActual + `/html_MiPerfil`
+    );
+    context.response.body = html || "Error al renderizar la página";
+  }
 
   private obtenerUsuarioPorId = async (id: string) => {
     try {

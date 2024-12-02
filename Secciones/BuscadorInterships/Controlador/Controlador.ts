@@ -11,6 +11,8 @@ export function inicializarBuscadorInterships(
   const interships = new ScraperInterships();
   router.get("/BuscadorIntershipsV2", interships.visualizarInterships);
 
+  router.get("/BuscadorIntershipsV2Especifico", interships.visualizarIntershipsEspecifico);
+
   app.use(
     cargarArchivosEstaticos(
       "/css_BuscadorInterships",

@@ -23,4 +23,11 @@ export function inicializarMiPerfil(router: Router, app: Application) {
       directorioVistaSeccionActual + `/js_MiPerfil`
     )
   );
+
+  app.use(
+    cargarArchivosEstaticos(
+      "/img_MiPerfil",
+      directorioVistaSeccionActual + `/img_MiPerfil`
+    )
+  );
 }

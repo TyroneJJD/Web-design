@@ -81,11 +81,9 @@ export class GestorProblemasProgramacionCompetitiva {
     context: Context
   ) {
     try {
-      // Verificar que el parámetro 'categoria' esté presente
       const url = new URL(context.request.url);
       const nombreProblema = url.searchParams.get("nombreProblema");
-      console.log(nombreProblema);
-      if (!nombreProblema) {
+      if (!nombreProblema || nombreProblema.trim() === "") {
         context.response.headers.set(
           "Location",
           "/ProblemasProgramacionCompetitiva"
@@ -93,10 +91,8 @@ export class GestorProblemasProgramacionCompetitiva {
         return;
       }
 
-      // Consultar problemas en base a la categoría
       const problemas = await this.consultarProblemasConNombre(nombreProblema);
 
-      // Renderizar la vista
       const html = await renderizarVista(
         "Buscador.html",
         { problemas },
@@ -105,12 +101,11 @@ export class GestorProblemasProgramacionCompetitiva {
 
       context.response.body = html || "Error al renderizar la página";
     } catch (error) {
-      // Manejar cualquier error durante la ejecución
       console.error(
         "Error en BuscadorProblemasProgramacionCompetitivaEspecifico:",
         error
       );
-      context.response.status = 500; // Error interno del servidor
+      context.response.status = 500;
       context.response.body = "Error al procesar la solicitud.";
     }
   }

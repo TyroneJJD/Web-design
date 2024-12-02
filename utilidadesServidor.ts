@@ -60,3 +60,16 @@ export function cargarArchivosEstaticos(prefix: string, carpetaRaiz: string) {
     }
   };
 }
+
+export function paginaNoEncontrada() {
+  return async (context: Context, next: () => Promise<unknown>) => {
+    try {
+      await next();
+      if (context.response.status === 404) {
+        context.response.redirect("/Login");
+      }
+    } catch (err) {
+      console.error("Error en el middleware:", err);
+    }
+  };
+}
