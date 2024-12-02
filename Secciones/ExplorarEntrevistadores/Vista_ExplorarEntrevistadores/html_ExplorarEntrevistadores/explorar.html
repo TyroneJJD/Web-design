@@ -4,32 +4,63 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../css_ExplorarEntrevistadores/explorar_styles.css">
-    <title>Buscador</title>
+    <title>Explorar Entrevistadores</title>
 </head>
 <body>
+    <header>
+        <div class="logo" id="home">Nombre Proyecto</div>
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <div class="buscador">
-        <input type="text" placeholder="Buscar..." class="input-buscar" id="input-buscar">
-        <button class="btn-buscar">
-            🔍
-        </button>
-    </div>
-
-    <div class="encabezado-explorar">Explorar Coaches</div>
-
-    <div class="contenedor-coaches">
-        <% it.coaches.forEach(coach => { %>
-            <div class="tarjeta-coach" onclick="window.location.href='/perfil_coach/<%= coach._id %>'">
-                <div class="foto-perfil">
-                    <img src="<%= coach.direccionURLFotoPerfil %>" alt="Foto de <%= coach.nombreUsuario %>">
-                </div>
-                <h3><%= coach.nombreUsuario %></h3>
-                <p><%= coach.titularUsuario %></p>
-                <p><a href="/perfil_coach/<%= coach._id %>">Ver perfil</a></p>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <h2>Avisos</h2>
+            <div id="avisos_contenedor">
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
             </div>
-        <% }); %>
+        </div>
     </div>
     
+    <!-- Cuerpo principal -->
+    <main id="main-content">
+        <div class="buscador">
+            <input type="text" placeholder="Buscar..." class="input-buscar" id="input-buscar">
+            <button class="btn-buscar">
+                🔍
+            </button>
+        </div>
+    
+        <div class="encabezado-explorar">Explorar Entrevistadores</div>
+    
+        <div class="contenedor-coaches">
+            <% it.coaches.forEach(coach => { %>
+                <div class="tarjeta-coach" onclick="window.location.href='/perfil_coach/<%= coach._id %>'">
+                    <div class="foto-perfil">
+                        <img src="<%= coach.direccionURLFotoPerfil %>" alt="Foto de <%= coach.nombreUsuario %>">
+                    </div>
+                    <h3><%= coach.nombreUsuario %></h3>
+                    <p><%= coach.titularUsuario %></p>
+                    <p><a href="/perfil_coach/<%= coach._id %>">Ver perfil</a></p>
+                </div>
+            <% }); %>
+        </div>
+    </main>
 
+    <script src="../js_ExplorarEntrevistadores/ExplorarEntrevistadores.js"></script>
 </body>
 </html>
