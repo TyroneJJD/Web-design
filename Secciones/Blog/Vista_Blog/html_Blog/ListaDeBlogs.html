@@ -6,18 +6,18 @@
     <title>Lista de Blogs</title>
     <link rel="stylesheet" href="../css_Blog/listaBlogs_styles.css">
     <link rel="stylesheet" href="/css_global/navbar.css" />
-    <script src="/js_global/navbar.js" defer></script>
+    <script src="/js_global/navbar.js" defer></script>
 </head>
 <body>
 
     <header>
         <div class="logo" id="home">Nombre Proyecto</div>
-        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button>
         <nav class="nav-menu">
             <ul>
                 <li><a href="#interns">Interns</a></li>
                 <li><a href="#perfil">Mi Perfil</a></li>
-                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li>
                 <li><a href="#explorar">Explorar</a></li>
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#problemas">Problemas</a></li>
@@ -28,53 +28,37 @@
     <!-- Modal -->
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <span class="close-button" id="cerrar-modal">&times;</span>
             <h2>Avisos</h2>
             <div id="avisos_contenedor">
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
                 <p>Este es el contenido del modal de avisos.</p>
             </div>
         </div>
     </div>
 
     <main id="main-content">
-
         <div class="titulo">Lista de Blogs</div>
-
         <div class="contenedor-blogs">
+            <!-- Inicio del bloque dinámico -->
+            <% it.publicaciones.forEach((blog) => { %>
             <div class="blog">
                 <div class="titulo-blog">
-                    Mi experiencia en la jornada 1 de ICPC
+                    <%= blog.tituloPublicacion %>
                 </div>
                 <div class="contenido-blog">
                     <div>
-                        Autor: Tyrone Julian Johnson Dorantes <br>
-                        Fecha de publicación: 30/12/24
+                        Autor: <%= blog.autorPublicacion %> <br>
+                        Fecha de publicación: <%= blog.fechaPublicacion %>
                     </div>
                     <div class="boton-leer">
-                        <button>Leer</button>
+                        <a href="/lecturaPublicacionBlog?id=<%= blog._id %>">
+                            <button>Leer</button>
+                        </a>
                     </div>
-
                 </div>
             </div>
-
-            <div class="blog">
-                <div class="titulo-blog">
-                    Mi experiencia en la jornada 1 de ICPC
-                </div>
-                <div class="contenido-blog">
-                    <div>
-                        Autor: Tyrone Julian Johnson Dorantes <br>
-                        Fecha de publicación: 30/12/24
-                    </div>
-                    <div class="boton-leer">
-                        <button>Leer</button>
-                    </div>
-
-                </div>
-            </div>
+            <% }); %>
+            <!-- Fin del bloque dinámico -->
         </div>
     </main>
 

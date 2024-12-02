@@ -19,12 +19,7 @@ export function inicializarBlog(router: Router, app: Application) {
       context.response.status = 400;
       context.response.body = { error: "Missing id parameter" };
     }
-    if (id) {
-      await blog.visualizarLecturaPublicacionBlog(context, id);
-    } else {
-      context.response.status = 400;
-      context.response.body = { error: "Missing id parameter" };
-    }
+
   });
 
   router.get("/listaPublicaciones", blog.visualizarPublicacionesBlog);

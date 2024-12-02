@@ -20,6 +20,8 @@ export class Blog {
     this.guardarPost = this.guardarPost.bind(this);
     this.guardarPublicacion = this.guardarPublicacion.bind(this);
     this.visualizarLecturaPublicacionBlog = this.visualizarLecturaPublicacionBlog.bind(this);
+    this.obtenerPublicacionesBlog = this.obtenerPublicacionesBlog.bind(this);
+    this.visualizarPublicacionesBlog = this.visualizarPublicacionesBlog.bind(this);
   }
 
   public async guardarPublicacion(context: Context) {
@@ -61,6 +63,11 @@ export class Blog {
 
   public async visualizarLecturaPublicacionBlog(context: Context, postId: string) {
     const post = await this.obtenerPostPorId(postId);
+    if (post == null) {
+      context.response.status = 500;
+      context.response.body = "Error al obtener las publicaciones";
+      return;
+    }
     configure({ autoEscape: false });
     const html = await renderizarVista(
       "lecturaPublicacionBlog.html",
@@ -70,10 +77,24 @@ export class Blog {
     context.response.body = html || "Error al renderizar la página";
   }
 
+  private async obtenerPublicacionesBlog(): Promise<Publicacion[]> {
+    const publicaciones = await this.db
+      .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
+      .find({})
+      .toArray();
+    return publicaciones;
+  }
+
   public async visualizarPublicacionesBlog(context: Context) {
+    const publicaciones = await this.obtenerPublicacionesBlog();
+    if (publicaciones == null) {
+      context.response.status = 500;
+      context.response.body = "Error al obtener las publicaciones";
+      return;
+    }
     const html = await renderizarVista(
       "ListaDeBlogs.html",
-      {},
+      { publicaciones: publicaciones },
       directorioVistaSeccionActual + `/html_Blog`
     );
     context.response.body = html || "Error al renderizar la página";
