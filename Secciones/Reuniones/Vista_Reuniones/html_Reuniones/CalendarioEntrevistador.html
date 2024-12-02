@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css_Reuniones/ReservacionEntrenador_styles.css">
+    <script src="../js_Reuniones/ReservacionEntrenador.js" defer></script>
+    <title>Agendar Cita</title>
+</head>
+<body>
+
+    <header>
+        <div class="logo" id="home">Nombre Proyecto</div>
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <nav class="nav-menu">
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
+            <h2>Avisos</h2>
+            <div id="avisos_contenedor">
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+                <p>Este es el contenido del modal de avisos.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de reservacion -->
+     <div id="modal-cita" class="modal-cita">
+        <div class="modal-cita-content">
+            <div class="modal-cita-header">
+                <h2>Detalles de la Reunión</h2>
+                <span class="close-button" id="cerrar-modal-cita">&times;</span>
+            </div>
+            <div class="modal-cita-body">
+                <form id="reunion-form">
+                    <div class="form-group">
+                        <label for="tipo-reunion">Tipo de Reunión</label>
+                        <select id="tipo-reunion" name="tipo-reunion">
+                            <option value="tecnica">Entrevista Técnica</option>
+                            <option value="comportamiento">Entrevista de Comportamiento</option>
+                            <option value="revision">Revisión de Resume/CV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo de la Reunión</label>
+                        <input type="text" id="motivo" name="motivo" placeholder="Escribe el motivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="archivo-resume">Cargar Resume (opcional)</label>
+                        <input type="file" id="archivo-resume" name="archivo-resume">
+                    </div>
+                    <div class="form-group">
+                        <label for="comentarios">Comentarios Adicionales</label>
+                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe tus comentarios aquí"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-cita-footer">
+                <button class="cancel" id="cancelar-cita">Cancelar</button>
+                <button class="accept" id="aceptar-cita">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de horario pendiente -->
+    <div id="modal-cita-pendiente" class="modal-cita-pendiente">
+        <div class="modal-cita-pendiente-content">
+            <div class="modal-cita-pendiente-header">
+                <h2>Detalles de la Reunión</h2>
+                <span class="close-button" id="cerrar-modal-cita-pendiente">&times;</span>
+            </div>
+            <div class="modal-cita-pendiente-body">
+                <form id="reunion-form">
+                    <div class="form-group">
+                        <label for="tipo-reunion">Tipo de Reunión</label>
+                        <select id="tipo-reunion" name="tipo-reunion">
+                            <option value="tecnica">Entrevista Técnica</option>
+                            <option value="comportamiento">Entrevista de Comportamiento</option>
+                            <option value="revision">Revisión de Resume/CV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo de la Reunión</label>
+                        <input type="text" id="motivo" name="motivo" placeholder="Motivo escrito previamente">
+                    </div>
+                    <div class="form-group">
+                        <label for="archivo-resume">Cargar Resume (opcional)</label>
+                        <input type="file" id="archivo-resume" name="archivo-resume">
+                    </div>
+                    <div class="form-group">
+                        <label for="comentarios">Comentarios Adicionales</label>
+                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios escritos previamente"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-cita-pendiente-footer">
+                <button class="cancel" id="cancelar-cita-pendiente">Cancelar</button>
+                <button class="delete" id="eliminar-cita-pendiente">Eliminar</button>
+                <button class="accept" id="aceptar-cita-pendiente">Aceptar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de horario confirmado -->
+    <div id="modal-cita-confirmado" class="modal-cita-confirmado">
+        <div class="modal-cita-confirmado-content">
+            <div class="modal-cita-confirmado-header">
+                <h2>Detalles de la Reunión</h2>
+                <span class="close-button" id="cerrar-modal-cita-confirmado">&times;</span>
+            </div>
+            <div class="modal-cita-confirmado-body">
+                <form id="reunion-form">
+                    <div class="form-group">
+                        <label for="tipo-reunion">Tipo de Reunión</label>
+                        <input type="text" id="tipo" name="tipo" placeholder="Tipo elegido previamente no editable" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo de la Reunión</label>
+                        <input type="text" id="motivo" name="motivo" placeholder="Motivo escrito previamente no editable" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label for="archivo-resume">Cargar Resume (opcional)</label>
+                        <input type="file" id="archivo-resume" name="archivo-resume">
+                    </div>
+                    <div class="form-group">
+                        <label for="comentarios">Comentarios Adicionales</label>
+                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios escritos previamente no editable" readonly></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-cita-confirmado-footer">
+                <button class="cancel" id="cancelar-cita-confirmado">Cancelar</button>
+                <button class="delete" id="eliminar-cita-confirmado">Eliminar</button>
+                <button class="accept" id="aceptar-cita-confirmado">Aceptar</button>
+            </div>
+        </div>
+    </div>     
+
+    <!-- Modal de horario ocupado -->
+    <div id="modal-cita-ocupado" class="modal-cita-ocupado">
+        <div class="modal-cita-ocupado-content">
+            <div class="modal-cita-ocupado-header">
+                <h2>Información Reunión</h2>
+                <span class="close-button" id="cerrar-modal-cita-ocupado">&times;</span>
+            </div>
+            <div class="modal-cita-confirmado-body">
+                <form id="reunion-form">
+                    <div class="form-group">
+                        <label for="tipo-reunion">Este horario ya ha sido confirmado para otra persona, si la otra persona cancela la reunión hay posibilidades de que te acepten a ti</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-cita-ocupado-footer">
+                <button class="cancel" id="cancelar-cita-ocupado">Cancelar</button>
+                <button class="accept" id="aceptar-cita-ocupado">Aceptar</button>
+            </div>
+        </div>
+    </div>     
+    
+    <!-- Cuerpo principal -->
+    <main id="main-content">
+        <div class="calendario-container">
+            <div class="perfil-coach">
+                <img src="https://via.placeholder.com/120" alt="Foto del Coach">
+                <h2>Nombre del Coach</h2>
+                <p>Breve descripción del coach. Aquí puedes incluir detalles como experiencia, especialidad o una frase destacada.</p>
+            </div>
+    
+            <div class="calendario-container">
+                <div class="semana-navegacion">
+                    <button id="anterior-semana">← Semana Anterior</button>
+                    <h2 id="titulo-semana">Semana: 27 Nov - 03 Dic</h2>
+                    <button id="siguiente-semana">Semana Siguiente →</button>
+                </div>
+    
+                <div class="dias-semana">
+                    <div class="dia-columna">
+                        <h4>Domingo</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Lunes</h4>
+                        <div class="horario">
+                            <span>9:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario_pendiente">
+                            <span>10:30 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>1:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Martes</h4>
+                        <div class="horario">
+                            <span>9:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                        <div class="horario_confirmado">
+                            <span>11:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>0</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>2:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Miércoles</h4>
+                        <div class="horario_ocupado">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Jueves</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Viernes</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Sabado</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>
