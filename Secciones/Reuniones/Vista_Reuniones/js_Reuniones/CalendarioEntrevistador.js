@@ -102,3 +102,10 @@ window.addEventListener('click', (e) => {
         modalcitaConfirmada.style.display = 'none';
     }
 });
+
+document.querySelectorAll('.solicitud').forEach((solicitud) => {
+    solicitud.addEventListener('click', (e) => {
+        const input = solicitud.querySelector('input[type="radio"]');
+        input.checked = true;
+    });
+});

@@ -342,7 +342,13 @@ main {
 }
 
 .modal-cita-body {
-    margin-top: 20px;
+    margin: 20px;
+    max-height: 300px; /* Altura máxima para el scroll */
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding: 5px 0;
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
 }
 
 .modal-cita-footer {
@@ -588,4 +594,73 @@ main {
 
 textarea {
     resize: none;
+}
+
+.lista-solicitudes {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.solicitud {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #f9f9f9;
+    cursor: pointer;
+}
+
+.solicitud:hover {
+    background: #f1f1f1;
+}
+
+/* Oculta los radio inputs para estilizar con un cuadrado */
+.solicitud input[type="radio"] {
+    display: none;
+}
+
+/* Estilo del checkbox cuadrado */
+.solicitud input[type="radio"] + label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.solicitud input[type="radio"] + label::before {
+    content: "";
+    width: 20px;
+    height: 20px;
+    border: 2px solid #181848;
+    border-radius: 3px; /* Quitar border-radius para cuadrado perfecto */
+    display: inline-block;
+    background: white;
+    margin-right: 10px;
+    transition: background 0.3s ease;
+}
+
+.solicitud input[type="radio"]:checked + label::before {
+    background: #181848;
+    border-color: #181848;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    content: "✓";
+    font-size: 14px;
+    color: white;
+}
+
+.enlace-perfil {
+    color: #000000; 
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.enlace-perfil:hover {
+    color: #0056b3;
+    text-decoration: underline;
 }
