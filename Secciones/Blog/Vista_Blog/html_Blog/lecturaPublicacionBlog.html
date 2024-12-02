@@ -6,53 +6,50 @@
     <title>Leer Blog</title>
     <link rel="stylesheet" href="../../../../Ejemplos/ELEMENTOS_BASICOS/css/basic_style.css">
     <link rel="stylesheet" href="../css_Blog/lecturaPublicacionBlog_styles.css">
+    <link rel="stylesheet" href="/css_global/navbar.css" />
+    <script src="/js_global/navbar.js" defer></script>
 </head>
 <body>
     <header>
         <div class="logo" id="home">Nombre Proyecto</div>
-        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
+        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button>
         <nav class="nav-menu">
-          <ul>
-            <li><a href="#interns">Interns</a></li>
-            <li><a href="#perfil">Mi Perfil</a></li>
-            <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
-            <li><a href="#explorar">Explorar</a></li>
-            <li><a href="#blog">Blog</a></li>
-            <li><a href="#problemas">Problemas</a></li>
-          </ul>
+            <ul>
+                <li><a href="#interns">Interns</a></li>
+                <li><a href="#perfil">Mi Perfil</a></li>
+                <li><a href="#avisos" id="abrir-modal">Avisos</a></li>
+                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="#blog">Blog</a></li>
+                <li><a href="#problemas">Problemas</a></li>
+            </ul>
         </nav>
     </header>
 
-      <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
-      <h2>Avisos</h2>
-      <div id="avisos_contenedor">
-        <p>Este es el contenido del modal de avisos.</p>
-        <p>Este es el contenido del modal de avisos.</p>
-        <p>Este es el contenido del modal de avisos.</p>
-        <p>Este es el contenido del modal de avisos.</p>
-      </div>
+    <!-- Modal -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="cerrar-modal">&times;</span>
+            <h2>Avisos</h2>
+            <div id="avisos_contenedor">
+                <p>Este es el contenido del modal de avisos.</p>
+            </div>
+        </div>
     </div>
-  </div>
 
+    <!-- Información de la publicación -->
     <div class="infoPublicacion">
         <div id="titulo">
-            <h1>Titulo de la Publicación del Blog Lorem ipsum, dolor sit amet consectetur adipisicing elit. Hic illo rerum, laborum, unde omnis suscipit exercitationem saepe veritatis accusamus assumenda culpa id asperiores sequi dolorem. Ipsa incidunt aliquid corporis odio.</h1>
+            <h1><%= it.publicacion.tituloPublicacion %></h1>
         </div>
         <div id="descripcionPublicacion">
-            <p> <b>Fecha de Publicación:</b> 01/01/2021</p>
-            <p> <b>Autor: </b> Nombre del Autor</p>
-            <p> <b>Etiquetas:</b> Etiqueta1, Etiqueta2, Etiqueta3</p>
+            <p><b>Fecha de Publicación:</b> <%= it.publicacion.fechaPublicacion %></p>
+            <p><b>Autor:</b> <%= it.publicacion.autorPublicacion %></p>
+            <p><b>Etiquetas:</b> <%= it.publicacion.etiquetasPublicacion %></p>
         </div>
     </div>
 
     <div id="contenidoPublicacion">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam beatae ipsa ut, itaque voluptates velit nesciunt distinctio iure neque officia expedita, aliquam hic excepturi, sunt numquam amet id. Dicta, quia.
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Cumque, incidunt sapiente. Nemo voluptate dolorum incidunt atque aperiam dolores expedita maiores vitae repellat. Ea autem officia quos odit quis maiores! Vitae!
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam nam inventore asperiores, numquam impedit repellendus doloribus beatae dolor neque similique veniam eos sint sed autem nemo reiciendis quod debitis repellat!
-        </p>
+        <p><%= it.publicacion.contenidoPublicacion %></p>
     </div>
 
     <script src="../../../../Ejemplos/ELEMENTOS_BASICOS/js/basic.js"></script>

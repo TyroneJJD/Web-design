@@ -3,6 +3,8 @@ import { ObjectId } from "npm:mongodb@6.1.0";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
+import {configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+
 export interface Publicacion {
   tituloPublicacion: string;
   etiquetasPublicacion: string[];
@@ -17,6 +19,7 @@ export class Blog {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.guardarPost = this.guardarPost.bind(this);
     this.guardarPublicacion = this.guardarPublicacion.bind(this);
+    this.visualizarLecturaPublicacionBlog = this.visualizarLecturaPublicacionBlog.bind(this);
   }
 
   public async guardarPublicacion(context: Context) {
@@ -55,6 +58,28 @@ export class Blog {
       .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
       .insertOne(newPost);
   }
+
+  public async visualizarLecturaPublicacionBlog(context: Context, postId: string) {
+    const post = await this.obtenerPostPorId(postId);
+    configure({ autoEscape: false });
+    const html = await renderizarVista(
+      "lecturaPublicacionBlog.html",
+      {publicacion: post},
+      directorioVistaSeccionActual + `/html_Blog`
+    );
+    context.response.body = html || "Error al renderizar la página";
+  }
+
+  public async visualizarPublicacionesBlog(context: Context) {
+    const html = await renderizarVista(
+      "ListaDeBlogs.html",
+      {},
+      directorioVistaSeccionActual + `/html_Blog`
+    );
+    context.response.body = html || "Error al renderizar la página";
+  }
+
+  
 
   public async visualizarEditorTexto(context: Context) {
     const html = await renderizarVista(
