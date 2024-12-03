@@ -9,7 +9,9 @@ export function inicializarReuniones(
   app: Application
 ) {
   const gestorReuniones = new GestorReuniones();
+  router.get("/calendarioEntrevistador", gestorReuniones.mostrarCalendarioEntrevistador);
   router.get("/calendarioTrainee", gestorReuniones.mostrarCalendarioTrainee);
+  router.get("/reservacionEntrenador", gestorReuniones.mostrarReservacionEntrenador);
   
   app.use(
     cargarArchivosEstaticos(
