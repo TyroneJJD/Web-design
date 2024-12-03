@@ -85,8 +85,8 @@ export class crearNuevaCuenta {
         esCoach: false,
         puedePublicarEnElBlog: false,
         puedePublicarProblemas: false,
-        agenda: [],
-        bandejaDeEntrada: [],
+
+
       };
       this.crearNuevoUsuario(nuevoUsuario);
       context.response.status = 303;
