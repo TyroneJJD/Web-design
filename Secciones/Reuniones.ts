@@ -14,7 +14,7 @@ export interface IDetallesCandidatosRegistrado {
 
   //------------------- Datos que ingresa el candidato
   idCandidatoRegistrado: string;
-  nombreCandidato: string;
+
   tipoDeReuinion: string;
   motivoDeLaReunion: string;
   comentariosAdicionales: string;

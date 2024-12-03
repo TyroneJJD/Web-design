@@ -104,7 +104,7 @@ export class GestorReuniones {
   public async generarReuniones(context: Context) {
     if (context.request.hasBody) {
       const body = await context.request.body({ type: "form" }).value;
-      console.log("ya pasee");
+
       const idCoach = "xxxxxxxxxx";
       const fechaReunionStr = body.get("fechaReunion")?.trim() || "";
       const horaInicioStr = body.get("horaInicio")?.trim() || "";
@@ -186,9 +186,9 @@ export class GestorReuniones {
       const body = await context.request.body({ type: "form" }).value;
 
       // Recuperar los datos del formulario
-      const idSesion = "674e9623334586762d8bcc10"; //body.get("idSesion")?.trim() || "";
+      const idSesionReunion = "674e9623334586762d8bcc10"; //body.get("idSesion")?.trim() || "";
       const idCandidatoRegistrado = "hgbf"; //body.get("idCandidatoRegistrado")?.trim() || "";
-      const nombreCandidato = "juanito"; //body.get("nombreCandidato")?.trim() || "";
+
 
       const tipoDeReunion = body.get("tipoDeReunion")?.trim() || "";
       const motivoDeLaReunion = body.get("motivoDeLaReunion")?.trim() || "";
@@ -197,9 +197,9 @@ export class GestorReuniones {
       const linkResume = body.get("linkResume")?.trim() || "";
 
       if (
-        !idSesion ||
+        !idSesionReunion ||
         !idCandidatoRegistrado ||
-        !nombreCandidato ||
+
         !tipoDeReunion ||
         !motivoDeLaReunion ||
         !linkResume
@@ -213,7 +213,7 @@ export class GestorReuniones {
         // Crear el objeto candidato
         const nuevoCandidato: IDetallesCandidatosRegistrado = {
           idCandidatoRegistrado: idCandidatoRegistrado,
-          nombreCandidato: nombreCandidato,
+
           tipoDeReuinion: tipoDeReunion,
           motivoDeLaReunion: motivoDeLaReunion,
           comentariosAdicionales: comentariosAdicionales,
@@ -224,7 +224,7 @@ export class GestorReuniones {
 
         // Buscar la sesión en la base de datos
         const registroReunion = await this.obtenerRegistroreunionPorId(
-          idSesion
+          idSesionReunion
         );
         console.log(registroReunion);
         if (!registroReunion) {
@@ -237,7 +237,7 @@ export class GestorReuniones {
         registroReunion.candidatosRegistrados.push(nuevoCandidato);
 
         // Actualizar la sesión en la base de datos
-        await this.agregarCandidatoAReunion(idSesion, registroReunion);
+        await this.agregarCandidatoAReunion(idSesionReunion, registroReunion);
 
         // Responder con éxito
         context.response.status = 200;
