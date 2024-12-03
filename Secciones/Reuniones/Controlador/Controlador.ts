@@ -12,6 +12,8 @@ export function inicializarReuniones(
   router.get("/calendarioEntrevistador", gestorReuniones.mostrarCalendarioEntrevistador);
   router.get("/calendarioTrainee", gestorReuniones.mostrarCalendarioTrainee);
   router.get("/reservacionEntrenador", gestorReuniones.mostrarReservacionEntrenador);
+  router.post("/generar-reuniones", gestorReuniones.generarReuniones);
+  router.post("/inscribirme-reunion", gestorReuniones.inscribirmeASesion);
   
   app.use(
     cargarArchivosEstaticos(

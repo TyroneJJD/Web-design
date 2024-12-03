@@ -118,37 +118,43 @@
     <!-- Modal de horario confirmado -->
     <div id="modal-cita-confirmado" class="modal-cita-confirmado">
         <div class="modal-cita-confirmado-content">
-            <div class="modal-cita-confirmado-header">
-                <h2>Detalles de la Reunión</h2>
-                <span class="close-button" id="cerrar-modal-cita-confirmado">&times;</span>
-            </div>
-            <div class="modal-cita-confirmado-body">
-                <form id="reunion-form">
-                    <div class="form-group">
-                        <label for="tipo-reunion">Tipo de Reunión</label>
-                        <input type="text" id="tipo" name="tipo" placeholder="Tipo elegido previamente no editable" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="motivo">Motivo de la Reunión</label>
-                        <input type="text" id="motivo" name="motivo" placeholder="Motivo escrito previamente no editable" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="archivo-resume">Link Resume (opcional)</label>
-                        <input type="link" id="archivo-resume" name="archivo-resume" placeholder="Link del archivo no editable" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="comentarios">Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios escritos previamente no editable" readonly></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-cita-confirmado-footer">
-                <button class="cancel" id="cancelar-cita-confirmado">Cancelar</button>
-                <button class="delete" id="eliminar-cita-confirmado">Eliminar</button>
-                <button class="accept" id="aceptar-cita-confirmado">Aceptar</button>
-            </div>
+          <div class="modal-cita-confirmado-header">
+            <h2>Detalles de la Reunión</h2>
+            <span class="close-button" id="cerrar-modal-cita-confirmado">&times;</span>
+          </div>
+          <div class="modal-cita-confirmado-body">
+            <!-- Formulario que envía los datos directamente al backend -->
+            <form id="inscripcion-form" action="/inscribirme-reunion" method="POST">
+                
+      
+              <div class="form-group">
+                <label for="tipo">Tipo de Reunión</label>
+                <input type="text" id="tipo" name="tipoDeReunion" />
+              </div>
+              <div class="form-group">
+                <label for="motivo">Motivo de la Reunión</label>
+                <input type="text" id="motivo" name="motivoDeLaReunion" />
+              </div>
+              <div class="form-group">
+                <label for="archivo-resume">Link Resume</label>
+                <input type="text" id="archivo-resume" name="linkResume" />
+              </div>
+              <div class="form-group">
+                <label for="comentarios">Comentarios Adicionales</label>
+                <textarea id="comentarios" name="comentariosAdicionales" rows="4"></textarea>
+              </div>
+            </form>
+          </div>
+          <div class="modal-cita-confirmado-footer">
+            <button class="cancel" id="cancelar-cita-confirmado">Cancelar</button>
+            <button class="accept" id="aceptar-cita-confirmado" type="submit" form="inscripcion-form">
+              Aceptar
+            </button>
+          </div>
         </div>
-    </div>     
+      </div>
+      
+           
 
     <!-- Modal de horario ocupado -->
     <div id="modal-cita-ocupado" class="modal-cita-ocupado">

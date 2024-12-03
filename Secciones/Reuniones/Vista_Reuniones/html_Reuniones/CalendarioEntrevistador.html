@@ -162,37 +162,36 @@
     
     <!-- modal agregar horario -->
     <div id="modal-horas" class="modal-horas">
-        <div class="modal-horas-content">
+        <form id="form-horas" action="/generar-reuniones" method="POST">
+          <div class="modal-horas-content">
             <div class="modal-horas-header">
-                <h2 id = "text_modal_horario">Seleccionar Horario</h2>
-                <span class="close-button" id="cerrar-modal-horas">&times;</span>
+              <h2 id="text_modal_horario">Seleccionar Horario</h2>
+              <span class="close-button" id="cerrar-modal-horas">&times;</span>
             </div>
             <div class="modal-horas-body">
-                <div class = "selector-dia">
-                    <label for="dia">Día:</label>
-                    <input type="date" id="dia" required>
-                </div>
-                <div>
-                    &nbsp;
-                </div>
-                <div class="selector-horas">
-                    <label for="hora-inicio">Hora de inicio:</label>
-                    <input type="time" id="hora-inicio" required>
-                </div>
-                <div>
-                    &nbsp;
-                </div>
-                <div class="selector-horas">
-                    <label for="hora-fin">Hora de fin:</label>
-                    <input type="time" id="hora-fin" required>
-                </div>
+              <div class="selector-dia">
+                <label for="fechaReunion">Día:</label>
+                <input type="date" id="fechaReunion" name="fechaReunion" required>
+              </div>
+              <div>&nbsp;</div>
+              <div class="selector-horas">
+                <label for="horaInicio">Hora de inicio:</label>
+                <input type="time" id="horaInicio" name="horaInicio" required>
+              </div>
+              <div>&nbsp;</div>
+              <div class="selector-horas">
+                <label for="horaFin">Hora de fin:</label>
+                <input type="time" id="horaFin" name="horaFin" required>
+              </div>
             </div>
             <div class="modal-horas-footer">
-                <button class="cancel" id="cancelar-horas">Cancelar</button>
-                <button class="accept" id="aceptar-horas">Aceptar</button>
+              <button type="button" class="cancel" id="cancelar-horas">Cancelar</button>
+              <button type="submit" class="accept" id="aceptar-horas">Aceptar</button>
             </div>
-        </div>
-    </div>
+          </div>
+        </form>
+      </div>
+      
     
     <!-- Cuerpo principal -->
     <main id="main-content">
