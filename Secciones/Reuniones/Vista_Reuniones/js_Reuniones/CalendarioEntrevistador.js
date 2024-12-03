@@ -103,6 +103,36 @@ window.addEventListener('click', (e) => {
     }
 });
 
+// Logica para modal de agregar horario
+
+const agregarHorario = document.querySelectorAll('.agregar-horario');
+const modalAgregarHorario = document.getElementById('modal-horas');
+const closeModalAgregarHorario = document.getElementById('cerrar-modal-horas');
+const cancelModalAgregarHorario = document.getElementById('cancelar-horas');
+
+// Abrir modal al seleccionar horario
+agregarHorario.forEach(horario => {
+    horario.addEventListener('click', () => {
+        modalAgregarHorario.style.display = 'flex';
+    });
+});
+
+// Cerrar modal
+closeModalAgregarHorario.addEventListener('click', () => {
+    modalAgregarHorario.style.display = 'none';
+});
+
+cancelModalAgregarHorario.addEventListener('click', () => {
+    modalAgregarHorario.style.display = 'none';
+});
+
+// Opcional: Cerrar modal al hacer clic fuera del contenido
+window.addEventListener('click', (e) => {
+    if (e.target === modalAgregarHorario) {
+        modalAgregarHorario.style.display = 'none';
+    }
+});
+
 document.querySelectorAll('.solicitud').forEach((solicitud) => {
     solicitud.addEventListener('click', (e) => {
         const input = solicitud.querySelector('input[type="radio"]');
