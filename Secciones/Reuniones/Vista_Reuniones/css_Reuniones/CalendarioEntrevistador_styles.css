@@ -618,9 +618,14 @@ textarea {
 }
 
 /* Oculta los radio inputs para estilizar con un cuadrado */
-.solicitud input[type="radio"] {
+/*.solicitud input[type="radio"] {
     display: none;
-}
+}*/
+
+input[type="radio"] {
+    display: inline-block; /* Asegúrate de que se muestre correctamente */
+    visibility: visible; /* Verifica que esté visible */
+  }
 
 /* Estilo del checkbox cuadrado */
 .solicitud input[type="radio"] + label {

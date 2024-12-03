@@ -14,6 +14,7 @@ export function inicializarReuniones(
   const gestorCalendarioEntrevistador = new CalendarioEntrevistador();
   router.get("/calendarioEntrevistador", gestorCalendarioEntrevistador.mostrarCalendarioEntrevistador);
   router.post("/generar-reuniones", gestorCalendarioEntrevistador.generarReuniones);
+  router.post("/asignarCandidatoAReunion", gestorCalendarioEntrevistador.asignarCandidatoAReunion);
 
   //-----------------------------------------//
   const gestorCalendarioTrainee = new CalendarioTrainee();

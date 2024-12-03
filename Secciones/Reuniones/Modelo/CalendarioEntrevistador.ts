@@ -41,7 +41,47 @@ export class CalendarioEntrevistador {
       "Reuniones"
     ) as unknown as Collection<ISesionEntrevista>;
 
-    return await collection.find({ idCoach: idEntrevistador }).toArray();
+    return await collection
+    .find({ idCoach: idEntrevistador })
+    .sort({ horaInicio: 1 }) // 1 para ascendente, -1 para descendente
+    .toArray();
+  }
+
+  public async asignarCandidatoAReunion(context: Context) {
+    try {
+      // Leer los datos del cuerpo de la solicitud
+      const body = context.request.body({ type: "json" });
+      const { candidato, idReunion } = await body.value;
+
+      // Validar los datos
+      if (!candidato || !idReunion) {
+        context.response.status = 400;
+        context.response.body = { error: "Candidato o ID de reunión faltante." };
+        return;
+      }
+
+      // Simula guardar los datos en la base de datos
+      console.log("Asignando candidato a la reunión...");
+      console.log("Candidato:", candidato);
+      console.log("ID de la reunión:", idReunion);
+
+      // Aquí se realiza la lógica para actualizar la reunión en la base de datos
+      // Ejemplo: Actualizar reunión con el ID especificado y añadir el candidato
+      // await db.collection('Reuniones').updateOne({ id: idReunion }, { $push: { candidatos: candidato } });
+
+      // Responder al cliente con éxito
+      context.response.status = 200;
+      context.response.body = {
+        message: "Candidato asignado a la reunión con éxito.",
+        candidato,
+        idReunion,
+      };
+    } catch (error) {
+      // Manejo de errores
+      console.error("Error al asignar candidato a reunión:", error);
+      context.response.status = 500;
+      context.response.body = { error: "Ocurrió un error en el servidor." };
+    }
   }
 
 
