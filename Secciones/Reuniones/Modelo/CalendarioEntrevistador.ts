@@ -11,6 +11,7 @@ import {
 } from "../../Reuniones.ts";
 import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
 
+
 export class CalendarioEntrevistador {
   private db: BaseDeDatosMongoDB;
   constructor() {
@@ -22,6 +23,9 @@ export class CalendarioEntrevistador {
     this.mostrarCalendarioEntrevistador =
       this.mostrarCalendarioEntrevistador.bind(this);
     this.generarReuniones = this.generarReuniones.bind(this);
+    this.obtenerTodosLosDatosDeLaReunionPorID =
+      this.obtenerTodosLosDatosDeLaReunionPorID.bind(this);
+    this.asignarCandidatoAReunion = this.asignarCandidatoAReunion.bind(this);
   }
 
   private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
@@ -36,15 +40,31 @@ export class CalendarioEntrevistador {
     return usuario;
   }
 
-  private async obtenerReunionesCreadasPorElEntrevistador(idEntrevistador: string): Promise<ISesionEntrevista[]> {
+  private async obtenerReunionesCreadasPorElEntrevistador(
+    idEntrevistador: string
+  ): Promise<ISesionEntrevista[]> {
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
       "Reuniones"
     ) as unknown as Collection<ISesionEntrevista>;
 
     return await collection
-    .find({ idCoach: idEntrevistador })
-    .sort({ horaInicio: 1 }) // 1 para ascendente, -1 para descendente
-    .toArray();
+      .find({ idCoach: idEntrevistador })
+      .sort({ horaInicio: 1 }) // 1 para ascendente, -1 para descendente
+      .toArray();
+  }
+
+  public async obtenerTodosLosDatosDeLaReunionPorID(
+    idSesion: string
+  ): Promise<ISesionEntrevista> {
+    const collection =
+      (await this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
+        "Reuniones"
+      )) as unknown as Collection<ISesionEntrevista>;
+    const dato = await collection.findOne({ _id: new ObjectId(idSesion) });
+    if (!dato) {
+      throw new Error(`Sesión con ID ${idSesion} no encontrada`);
+    }
+    return dato;
   }
 
   public async asignarCandidatoAReunion(context: Context) {
@@ -56,20 +76,46 @@ export class CalendarioEntrevistador {
       // Validar los datos
       if (!candidato || !idReunion) {
         context.response.status = 400;
-        context.response.body = { error: "Candidato o ID de reunión faltante." };
+        context.response.body = {
+          error: "Candidato o ID de reunión faltante.",
+        };
         return;
       }
 
       // Simula guardar los datos en la base de datos
-      console.log("Asignando candidato a la reunión...");
-      console.log("Candidato:", candidato);
-      console.log("ID de la reunión:", idReunion);
+      //console.log("Asignando candidato a la reunión...");
+      //console.log("Candidato:", candidato);
 
-      // Aquí se realiza la lógica para actualizar la reunión en la base de datos
-      // Ejemplo: Actualizar reunión con el ID especificado y añadir el candidato
-      // await db.collection('Reuniones').updateOne({ id: idReunion }, { $push: { candidatos: candidato } });
+      const registroReunion = await this.obtenerTodosLosDatosDeLaReunionPorID(
+        idReunion
+      );
+      //console.log("Reunión:", registroReunion);
 
-      // Responder al cliente con éxito
+      // Mover el candidato a candidatoSeleccionadoAEntrevistar
+      const [candidatoSeleccionado] =
+        registroReunion.candidatosRegistrados.splice(candidato, 1);
+      registroReunion.candidatoSeleccionadoAEntrevistar = candidatoSeleccionado;
+
+      // Marcar la sesión como asignada
+      registroReunion.sesionAsignada = true;
+      registroReunion.candidatoSeleccionadoAEntrevistar.estadoReunion =
+        "aceptado";
+      registroReunion.candidatoSeleccionadoAEntrevistar.respuestaDelEntrevistador =
+        "Por favor checa tu correo electrónico.";
+
+      // Actualizar el estado y la respuesta de los candidatos no seleccionados
+      registroReunion.candidatosRegistrados.forEach((candidato) => {
+        candidato.estadoReunion = "rechazado";
+        candidato.respuestaDelEntrevistador =
+          "Otro candidato fue seleccionado, mil disculpas.";
+      });
+
+      //console.log("Reunión Actualizada:", registroReunion);
+
+      
+
+
+
       context.response.status = 200;
       context.response.body = {
         message: "Candidato asignado a la reunión con éxito.",
@@ -84,8 +130,6 @@ export class CalendarioEntrevistador {
     }
   }
 
-
-
   public async mostrarCalendarioEntrevistador(context: Context) {
     const IDusuarioSacadoDeLasCookies = await obtenerIdUsuario(context);
     if (!IDusuarioSacadoDeLasCookies) {
@@ -93,8 +137,13 @@ export class CalendarioEntrevistador {
       context.response.body = { message: "Usuario no autenticado." };
       return;
     }
-    const datosDelEntrevistadorActual = await this.obtenerEntrevistadorPorId(IDusuarioSacadoDeLasCookies);
-    const reunionesQuePropusoElEntrevistador = await this.obtenerReunionesCreadasPorElEntrevistador(IDusuarioSacadoDeLasCookies);
+    const datosDelEntrevistadorActual = await this.obtenerEntrevistadorPorId(
+      IDusuarioSacadoDeLasCookies
+    );
+    const reunionesQuePropusoElEntrevistador =
+      await this.obtenerReunionesCreadasPorElEntrevistador(
+        IDusuarioSacadoDeLasCookies
+      );
 
     const html = await renderizarVista(
       "CalendarioEntrevistador.html",

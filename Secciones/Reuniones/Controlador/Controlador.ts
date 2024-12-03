@@ -3,6 +3,7 @@ import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { CalendarioEntrevistador } from "../Modelo/CalendarioEntrevistador.ts";
 import { CalendarioTrainee } from "../Modelo/CalendarioTrainee.ts";
 import { ReservacionEntrenador } from "../Modelo/ReservacionEntrenador.ts";
+import { identificacion,generarReunion  } from "../../../Servicios/GestorReuniones.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Reuniones/Vista_Reuniones`;
 
@@ -10,6 +11,10 @@ export function inicializarReuniones(
   router: Router,
   app: Application
 ) {
+
+      
+  router.get("/identificarse", identificacion);
+  router.get("/oauth2callback", generarReunion);
   //-----------------------------------------//
   const gestorCalendarioEntrevistador = new CalendarioEntrevistador();
   router.get("/calendarioEntrevistador", gestorCalendarioEntrevistador.mostrarCalendarioEntrevistador);

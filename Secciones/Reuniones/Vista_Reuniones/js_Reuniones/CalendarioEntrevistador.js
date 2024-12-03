@@ -235,8 +235,10 @@ aceptarCita.addEventListener('click', async () => {
             if (respuesta.ok) {
                 const resultado = await respuesta.json();
                 alert(`Datos enviados correctamente: ${JSON.stringify(resultado)}`);
-                // Puedes cerrar el modal aquí si todo salió bien
+                //Puedes cerrar el modal aquí si todo salió bien
                 modalCita.style.display = 'none';
+
+                globalThis.location.href = '/identificarse';
             } else {
                 alert(`Error al enviar los datos: ${respuesta.status}`);
             }
