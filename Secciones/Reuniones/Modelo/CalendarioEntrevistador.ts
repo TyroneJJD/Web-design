@@ -3,10 +3,13 @@ import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
 import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
 import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
+import { IUsuario } from "../../DatosUsuario.ts";
+import { ObjectId } from "npm:mongodb";
 import {
   ISesionEntrevista,
   IDetallesCandidatosRegistrado,
 } from "../../Reuniones.ts";
+import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
 
 export class CalendarioEntrevistador {
   private db: BaseDeDatosMongoDB;
@@ -21,10 +24,47 @@ export class CalendarioEntrevistador {
     this.generarReuniones = this.generarReuniones.bind(this);
   }
 
+  private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
+    const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
+      "Usuarios"
+    ) as unknown as Collection<IUsuario>;
+
+    const usuario = await collection.findOne({ _id: new ObjectId(id) });
+    if (!usuario) {
+      throw new Error(`Usuario con ID ${id} no encontrado`);
+    }
+    return usuario;
+  }
+
+  private async obtenerReunionesCreadasPorElEntrevistador(idEntrevistador: string): Promise<ISesionEntrevista[]> {
+    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
+      "Reuniones"
+    ) as unknown as Collection<ISesionEntrevista>;
+
+    return await collection.find({ idCoach: idEntrevistador }).toArray();
+  }
+
+
+
   public async mostrarCalendarioEntrevistador(context: Context) {
+    const IDusuarioSacadoDeLasCookies = await obtenerIdUsuario(context);
+    if (!IDusuarioSacadoDeLasCookies) {
+      context.response.status = 400;
+      context.response.body = { message: "Usuario no autenticado." };
+      return;
+    }
+    const datosDelEntrevistadorActual = await this.obtenerEntrevistadorPorId(IDusuarioSacadoDeLasCookies);
+    const reunionesQuePropusoElEntrevistador = await this.obtenerReunionesCreadasPorElEntrevistador(IDusuarioSacadoDeLasCookies);
+    
+    console.log(datosDelEntrevistadorActual);
+    console.log(reunionesQuePropusoElEntrevistador);
+
     const html = await renderizarVista(
       "CalendarioEntrevistador.html",
-      {},
+      {
+        datosUsuario: datosDelEntrevistadorActual,
+        reuniones: reunionesQuePropusoElEntrevistador,
+      },
       directorioVistaSeccionActual + `/html_Reuniones`
     );
 

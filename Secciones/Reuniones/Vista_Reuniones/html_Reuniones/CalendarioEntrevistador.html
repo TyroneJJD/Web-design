@@ -197,21 +197,17 @@
     <main id="main-content">
         <div class="calendario-container">
             <div class="perfil-coach">
-                <img src="https://via.placeholder.com/120" alt="Foto del Coach">
-                <h2>Nombre del Coach</h2>
-                <p>Breve descripción del coach. Aquí puedes incluir detalles como experiencia, especialidad o una frase destacada.</p>
+                <img class="foto-perfil" src="<%= it.datosUsuario.direccionURLFotoPerfil %>" alt="Foto de perfil">
+                <h1>Calendario de <%= it.datosUsuario.nombreUsuario %> <%= it.datosUsuario.apellidoUsuario %></h1>
+                <p><%= it.datosUsuario.titularUsuario %></p>
             </div
     
             <div class="calendario-container">
                 <div class="agregar-horario">
                     <button id="agregar-horario_1">+ Agregar Horario</button>
                 </div>
-                
-                <div class="semana-navegacion">
-                    <button id="anterior-semana">← Semana Anterior</button>
-                    <h2 id="titulo-semana">Semana: 27 Nov - 03 Dic</h2>
-                    <button id="siguiente-semana">Semana Siguiente →</button>
-                </div>
+                <br>
+                <br>
     
                 <div class="dias-semana">
                     <div class="dia-columna">

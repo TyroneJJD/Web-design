@@ -91,13 +91,13 @@ export class IniciarSession {
             puedePublicarEnElBlog: userDataExists.puedePublicarEnElBlog,
             puedePublicarProblemas: userDataExists.puedePublicarProblemas,
 
-            exp: Math.floor(Date.now() / 1000) + 60 * 60,
           },
           key
         );
 
         context.cookies.set("auth_token", jwt, {
           httpOnly: true,
+          expires: new Date(Date.now() + 10 * 60 * 60 * 1000), // Tiempo en milisegundos (10 horas)
           secure: false,
         });
 
