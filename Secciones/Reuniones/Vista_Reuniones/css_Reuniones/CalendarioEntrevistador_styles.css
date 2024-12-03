@@ -667,24 +667,30 @@ textarea {
 
 .agregar-horario {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center; /* Centrar verticalmente */
+    text-align: center;
     background: #f8b400;
     color: white;
-    margin: 5px 0;
-    padding: 5px 10px;
-    border-radius: 3px;
+    margin: 10px auto; /* Centrar horizontalmente el div */
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
+    width: 50%;
     transition: background 0.3s;
 }
 
 .agregar-horario button {
+    display: inline-block; /* Asegura que el botón se alinee correctamente */
     background: none;
     border: none;
+    align-items: center;
+    text-align: center;
     color: white;
     font-size: 16px;
     cursor: pointer;
 }
+
 
 .agregar-horario:hover {
     background: #f8b600bf;

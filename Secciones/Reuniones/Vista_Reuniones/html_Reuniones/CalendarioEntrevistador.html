@@ -164,10 +164,17 @@
     <div id="modal-horas" class="modal-horas">
         <div class="modal-horas-content">
             <div class="modal-horas-header">
-                <h2>Seleccionar Horario para el día DD-MM-YYYY</h2>
+                <h2 id = "text_modal_horario">Seleccionar Horario</h2>
                 <span class="close-button" id="cerrar-modal-horas">&times;</span>
             </div>
             <div class="modal-horas-body">
+                <div class = "selector-dia">
+                    <label for="dia">Día:</label>
+                    <input type="date" id="dia" required>
+                </div>
+                <div>
+                    &nbsp;
+                </div>
                 <div class="selector-horas">
                     <label for="hora-inicio">Hora de inicio:</label>
                     <input type="time" id="hora-inicio" required>
@@ -194,9 +201,13 @@
                 <img src="https://via.placeholder.com/120" alt="Foto del Coach">
                 <h2>Nombre del Coach</h2>
                 <p>Breve descripción del coach. Aquí puedes incluir detalles como experiencia, especialidad o una frase destacada.</p>
-            </div>
+            </div
     
             <div class="calendario-container">
+                <div class="agregar-horario">
+                    <button id="agregar-horario_1">+ Agregar Horario</button>
+                </div>
+                
                 <div class="semana-navegacion">
                     <button id="anterior-semana">← Semana Anterior</button>
                     <h2 id="titulo-semana">Semana: 27 Nov - 03 Dic</h2>
@@ -205,10 +216,9 @@
     
                 <div class="dias-semana">
                     <div class="dia-columna">
-                        <h4>Domingo</h4>
-                        <h4>27</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_1">+ Agregar Horario</button>
+                        <div id = "fecha_1">
+                            <h4>Domingo</h4>
+                            <h4>27</h4>
                         </div>
                         <div class="horario">
                             <span>10:00 AM</span>
@@ -232,9 +242,6 @@
                     <div class="dia-columna">
                         <h4>Lunes</h4>
                         <h4>28</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_2">+ Agregar Horario</button>
-                        </div>
                         <div class="horario">
                             <span>9:00 AM</span>
                             <div class="solicitudes">
@@ -257,9 +264,6 @@
                     <div class="dia-columna">
                         <h4>Martes</h4>
                         <h4>29</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_3">+ Agregar Horario</button>
-                        </div>
                         <div class="horario">
                             <span>9:00 AM</span>
                             <div class="solicitudes">
@@ -282,9 +286,6 @@
                     <div class="dia-columna">
                         <h4>Miércoles</h4>
                         <h4>30</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_4">+ Agregar Horario</button>
-                        </div>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
@@ -307,9 +308,6 @@
                     <div class="dia-columna">
                         <h4>Jueves</h4>
                         <h4>01</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_5">+ Agregar Horario</button>
-                        </div>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
@@ -332,9 +330,6 @@
                     <div class="dia-columna">
                         <h4>Viernes</h4>
                         <h4>02</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_6">+ Agregar Horario</button>
-                        </div>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
@@ -357,9 +352,6 @@
                     <div class="dia-columna">
                         <h4>Sabado</h4>
                         <h4>03</h4>
-                        <div class="agregar-horario">
-                            <button id="agregar-horario_7">+ Agregar Horario</button>
-                        </div>
                         <div class="horario">
                             <span>10:00 AM</span>
                             <div class="solicitudes">
