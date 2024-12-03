@@ -210,163 +210,44 @@
                 <br>
     
                 <div class="dias-semana">
-                    <div class="dia-columna">
-                        <div id = "fecha_1">
-                            <h4>Domingo</h4>
-                            <h4>27</h4>
+                    <% const reunionesAgrupadas = {}; %>
+                  
+                    <% it.reuniones.forEach(reunion => { 
+                      const fechaInicio = new Date(reunion.horaInicio);
+                      const dia = fechaInicio.toLocaleDateString("es-ES", { weekday: "long", day: "numeric" });
+                      const hora = fechaInicio.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: true });
+                  
+                      if (!reunionesAgrupadas[dia]) reunionesAgrupadas[dia] = {};
+                      if (!reunionesAgrupadas[dia][hora]) reunionesAgrupadas[dia][hora] = [];
+                  
+                      reunionesAgrupadas[dia][hora].push(reunion);
+                    }); %>
+                  
+                    <% Object.entries(reunionesAgrupadas).forEach(([diaCompleto, horarios]) => { 
+                      const [diaNombre, diaNumero] = diaCompleto.split(" ");
+                    %>
+                      <div class="dia-columna">
+                        <div id="fecha_<%= diaNombre %>">
+                          <h4><%= diaNombre.charAt(0).toUpperCase() + diaNombre.slice(1) %></h4>
+                          <h4><%= diaNumero %></h4>
                         </div>
-                        <div class="horario">
-                            <span>10:00 AM</span>
+                        <% Object.entries(horarios).forEach(([hora, reuniones]) => { %>
+                          <div class="horario">
+                            <span><%= hora %></span>
                             <div class="solicitudes">
-                                👤 x <span>1</span>
+                              👤 x <span><%= reuniones.reduce((total, r) => total + r.candidatosRegistrados.length, 0) %></span>
                             </div>
-                        </div>
-                        <div class="horario">
-                            <span>12:30 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>3</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>3:00 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>2</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dia-columna">
-                        <h4>Lunes</h4>
-                        <h4>28</h4>
-                        <div class="horario">
-                            <span>9:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>3</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>10:30 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>1</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>1:00 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>5</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dia-columna">
-                        <h4>Martes</h4>
-                        <h4>29</h4>
-                        <div class="horario">
-                            <span>9:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>2</span>
-                            </div>
-                        </div>
-                        <div class="horario_confirmado">
-                            <span>11:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>0</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>2:30 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>4</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dia-columna">
-                        <h4>Miércoles</h4>
-                        <h4>30</h4>
-                        <div class="horario">
-                            <span>10:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>1</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>12:30 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>3</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>3:00 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>2</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dia-columna">
-                        <h4>Jueves</h4>
-                        <h4>01</h4>
-                        <div class="horario">
-                            <span>10:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>1</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>12:30 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>3</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>3:00 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>2</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dia-columna">
-                        <h4>Viernes</h4>
-                        <h4>02</h4>
-                        <div class="horario">
-                            <span>10:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>1</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>12:30 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>3</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>3:00 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>2</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="dia-columna">
-                        <h4>Sabado</h4>
-                        <h4>03</h4>
-                        <div class="horario">
-                            <span>10:00 AM</span>
-                            <div class="solicitudes">
-                                👤 x <span>1</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>12:30 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>3</span>
-                            </div>
-                        </div>
-                        <div class="horario">
-                            <span>3:00 PM</span>
-                            <div class="solicitudes">
-                                👤 x <span>2</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                          </div>
+                        <% }); %>
+                      </div>
+                    <% }); %>
+                  </div>
+                  
+                  
+
+
+
+
             </div>
         </div>
     </main>
