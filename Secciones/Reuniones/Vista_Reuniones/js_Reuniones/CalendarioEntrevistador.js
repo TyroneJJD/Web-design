@@ -139,3 +139,46 @@ document.querySelectorAll('.solicitud').forEach((solicitud) => {
         input.checked = true;
     });
 });
+
+//--------------------------------------------------------------------
+
+const listaSolicitudes = document.querySelector('.lista-solicitudes');
+
+// Manejar clic en horario para mostrar detalles de los candidatos
+horarios.forEach(horario => {
+    horario.addEventListener('click', (e) => {
+        // Obtener los datos relacionados al horario (puedes usar atributos data-* para pasar información)
+        const reuniones = e.currentTarget.dataset.reuniones 
+            ? JSON.parse(e.currentTarget.dataset.reuniones) 
+            : [];
+
+        // Limpiar contenido anterior
+        listaSolicitudes.innerHTML = '';
+
+        // Generar contenido dinámico
+        if (reuniones.length > 0) {
+            reuniones.forEach(reunion => {
+                reunion.candidatosRegistrados.forEach(candidato => {
+                    const solicitudDiv = document.createElement('div');
+                    solicitudDiv.classList.add('solicitud');
+                    solicitudDiv.innerHTML = `
+                        <div class="info-candidato">
+                            <p><strong>Nombre Candidato:</strong> ${candidato.nombreCandidato}</p>
+                            <p><strong>Tipo de reuinion:</strong> ${candidato.tipoDeReuinion}</p>
+                            <p><strong>Motivo de la reunion:</strong> ${candidato.motivoDeLaReunion}</p>
+                            <p><strong>Comentarios Adicionales:</strong> ${candidato.comentariosAdicionales}</p>
+                            <p><strong>Link Resume:</strong> ${candidato.linkResume}</p>
+                        </div>
+                        <input type="radio" name="candidato-seleccionado" value="${candidato.id}">
+                    `;
+                    listaSolicitudes.appendChild(solicitudDiv);
+                });
+            });
+        } else {
+            listaSolicitudes.innerHTML = '<p>No hay solicitudes para este horario.</p>';
+        }
+
+        // Mostrar el modal
+        modalcita.style.display = 'flex';
+    });
+});

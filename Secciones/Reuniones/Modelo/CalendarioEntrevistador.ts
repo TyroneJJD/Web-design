@@ -55,9 +55,6 @@ export class CalendarioEntrevistador {
     }
     const datosDelEntrevistadorActual = await this.obtenerEntrevistadorPorId(IDusuarioSacadoDeLasCookies);
     const reunionesQuePropusoElEntrevistador = await this.obtenerReunionesCreadasPorElEntrevistador(IDusuarioSacadoDeLasCookies);
-    
-    console.log(datosDelEntrevistadorActual);
-    console.log(reunionesQuePropusoElEntrevistador);
 
     const html = await renderizarVista(
       "CalendarioEntrevistador.html",

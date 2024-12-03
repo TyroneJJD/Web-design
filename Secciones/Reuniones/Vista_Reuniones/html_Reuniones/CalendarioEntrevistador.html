@@ -9,6 +9,8 @@
 </head>
 <body>
 
+    
+
     <header>
         <div class="logo" id="home">Nombre Proyecto</div>
         <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
@@ -24,7 +26,7 @@
         </nav>
     </header>
 
-    <!-- Modal -->
+    <!-- Modal IGNORALO-->
     <div id="modal" class="modal">
         <div class="modal-content">
             <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
@@ -39,87 +41,25 @@
     </div>
 
     <!-- Modal de reservacion -->
-    <div id="modal-cita" class="modal-cita">
+    <div id="modal-cita" class="modal-cita" style="display: none;">
         <div class="modal-cita-content">
-            <div class="modal-cita-header">
-                <h2>Solicitudes</h2>
-                <span class="close-button" id="cerrar-modal-cita">&times;</span>
+          <div class="modal-cita-header">
+            <h2>Solicitudes para esta reunión</h2>
+            <span class="close-button" id="cerrar-modal-cita">&times;</span>
+          </div>
+          <div class="modal-cita-body">
+            <div class="lista-solicitudes">
+              <!-- Las solicitudes se generarán dinámicamente aquí -->
             </div>
-            <div class="modal-cita-body">
-                <div class="lista-solicitudes">
-                    <!-- Ejemplo de solicitudes -->
-                    <div class="solicitud" data-id="1">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-1" value="1">
-                        <label for="solicitud-1">
-                            <a href="/perfil/juan-perez" target="_blank" class="enlace-perfil">
-                                <strong>Juan Pérez</strong>
-                            </a>
-                            - Entrevista técnica
-                        </label>
-                    </div>
-                    <div class="solicitud" data-id="2">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-2" value="2">
-                        <label for="solicitud-2">
-                            <a href="/perfil/maria-lopez" target="_blank" class="enlace-perfil">
-                                <strong>Maria López</strong>
-                            </a>
-                            - Revisión de CV
-                        </label>
-                    </div>
-                    <div class="solicitud" data-id="3">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-3" value="3">
-                        <label for="solicitud-3">
-                            <a href="/perfil/pedro-gonzalez" target="_blank" class="enlace-perfil">
-                                <strong>Pedro González</strong>
-                            </a>
-                            - Entrevista de comportamiento
-                        </label>
-                    </div>
-                    <div class="solicitud" data-id="4">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-4" value="4">
-                        <label for="solicitud-4">
-                            <a href="/perfil/ana-ramirez" target="_blank" class="enlace-perfil">
-                                <strong>Ana Ramírez</strong>
-                            </a>
-                            - Entrevista técnica
-                        </label>
-                    </div>
-                    <div class="solicitud" data-id="5">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-5" value="5">
-                        <label for="solicitud-5">
-                            <a href="/perfil/jose-ramon" target="_blank" class="enlace-perfil">
-                                <strong>José Ramón</strong>
-                            </a>
-                            - Revisión de CV
-                        </label>
-                    </div>
-                    <div class="solicitud" data-id="6">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-6" value="6">
-                        <label for="solicitud-6">
-                            <a href="/perfil/sofia-ortiz" target="_blank" class="enlace-perfil">
-                                <strong>Sofía Ortiz</strong>
-                            </a>
-                            - Entrevista de comportamiento
-                        </label>
-                    </div>
-                    <div class="solicitud" data-id="7">
-                        <input type="radio" name="seleccion-solicitud" id="solicitud-7" value="7">
-                        <label for="solicitud-7">
-                            <a href="/perfil/raul-ramirez" target="_blank" class="enlace-perfil">
-                                <strong>Raúl Ramírez</strong>
-                            </a>
-                            - Entrevista técnica
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-cita-footer">
-                <button class="cancel" id="cancelar-cita">Cancelar</button>
-                <button class="delete" id="eliminar-cita">Eliminar</button>
-                <button class="accept" id="aceptar-cita">Aceptar</button>
-            </div>
+          </div>
+          <div class="modal-cita-footer">
+            <button class="cancel" id="cancelar-cita">Cancelar</button>
+            <button class="accept" id="aceptar-cita">Aceptar</button>
+          </div>
         </div>
-    </div>
+      </div>
+      
+      
 
     <!-- Modal de horario ocupado -->
     <div id="modal-cita-confirmado" class="modal-cita-confirmado">
@@ -200,7 +140,7 @@
                 <img class="foto-perfil" src="<%= it.datosUsuario.direccionURLFotoPerfil %>" alt="Foto de perfil">
                 <h1>Calendario de <%= it.datosUsuario.nombreUsuario %> <%= it.datosUsuario.apellidoUsuario %></h1>
                 <p><%= it.datosUsuario.titularUsuario %></p>
-            </div
+            </div>
     
             <div class="calendario-container">
                 <div class="agregar-horario">
@@ -209,48 +149,54 @@
                 <br>
                 <br>
     
-                <div class="dias-semana">
-                    <% const reunionesAgrupadas = {}; %>
-                  
-                    <% it.reuniones.forEach(reunion => { 
-                      const fechaInicio = new Date(reunion.horaInicio);
-                      const dia = fechaInicio.toLocaleDateString("es-ES", { weekday: "long", day: "numeric" });
-                      const hora = fechaInicio.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: true });
-                  
-                      if (!reunionesAgrupadas[dia]) reunionesAgrupadas[dia] = {};
-                      if (!reunionesAgrupadas[dia][hora]) reunionesAgrupadas[dia][hora] = [];
-                  
-                      reunionesAgrupadas[dia][hora].push(reunion);
-                    }); %>
-                  
-                    <% Object.entries(reunionesAgrupadas).forEach(([diaCompleto, horarios]) => { 
-                      const [diaNombre, diaNumero] = diaCompleto.split(" ");
-                    %>
-                      <div class="dia-columna">
-                        <div id="fecha_<%= diaNombre %>">
-                          <h4><%= diaNombre.charAt(0).toUpperCase() + diaNombre.slice(1) %></h4>
-                          <h4><%= diaNumero %></h4>
-                        </div>
-                        <% Object.entries(horarios).forEach(([hora, reuniones]) => { %>
-                          <div class="horario">
-                            <span><%= hora %></span>
-                            <div class="solicitudes">
-                              👤 x <span><%= reuniones.reduce((total, r) => total + r.candidatosRegistrados.length, 0) %></span>
-                            </div>
-                          </div>
-                        <% }); %>
-                      </div>
-                    <% }); %>
-                  </div>
-                  
-                  
+                <% const reunionesAgrupadas = {}; %>
 
+<% it.reuniones.forEach(reunion => { 
+    const fechaInicio = new Date(reunion.horaInicio);
 
+    // Formatear los elementos de la fecha
+    const diaSemana = fechaInicio.toLocaleDateString("es-ES", { weekday: "long" });
+    const diaNumero = fechaInicio.getDate();
+    const mesCompleto = fechaInicio.toLocaleDateString("es-ES", { month: "long" });
 
+    // Construir el formato final
+    const diaCompleto = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)} ${diaNumero} de ${mesCompleto}`;
+
+    const hora = fechaInicio.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: true });
+
+    if (!reunionesAgrupadas[diaCompleto]) reunionesAgrupadas[diaCompleto] = {};
+    if (!reunionesAgrupadas[diaCompleto][hora]) reunionesAgrupadas[diaCompleto][hora] = [];
+
+    reunionesAgrupadas[diaCompleto][hora].push(reunion);
+}); %>
+
+<div class="dias-semana">
+    <% Object.entries(reunionesAgrupadas).forEach(([diaCompleto, horarios]) => { %>
+        <div class="dia-columna">
+            <!-- Mostrar el formato completo del día -->
+            <div id="fecha_<%= diaCompleto.replace(/ /g, "_") %>">
+                <h4><%= diaCompleto %></h4>
+            </div>
+            <% Object.entries(horarios).forEach(([hora, reuniones]) => { %>
+                <div 
+                    class="horario" 
+                    data-reuniones='<%= JSON.stringify(reuniones) %>'
+                >
+                    <span><%= hora %></span>
+                    <div class="solicitudes">
+                        👤 x <span><%= reuniones.reduce((total, r) => total + r.candidatosRegistrados.length, 0) %></span>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% }); %>
+</div>
 
             </div>
         </div>
     </main>
+    
+    
 
 </body>
 </html>
