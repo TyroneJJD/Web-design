@@ -51,7 +51,7 @@ inicializarExplorarEntrevistadores(router, app);
 inicializarReuniones(router, app);
 inicializarPanelAdmin_ProblemasCompetitiva(router, app);
 
-//app.use(paginaNoEncontrada());
+app.use(paginaNoEncontrada());
 app.use(router.routes());
 app.use(router.allowedMethods());
 
