@@ -5,130 +5,209 @@ const cerrarModal = document.getElementById("cerrar-modal");
 const home = document.getElementById("home");
 
 // Selecciona los enlaces del menú y el contenedor principal
-const links = document.querySelectorAll('nav .link_pagina');
-const mainContent = document.getElementById('main-content');
-
+const links = document.querySelectorAll("nav .link_pagina");
+const mainContent = document.getElementById("main-content");
 
 home.addEventListener("click", (e) => {
-    var str = "<h1>Bienvenido</h1><p>Selecciona una página del menú para cargar contenido aquí.</p>"
-    mainContent.innerHTML = str;   
+  var str =
+    "<h1>Bienvenido</h1><p>Selecciona una página del menú para cargar contenido aquí.</p>";
+  mainContent.innerHTML = str;
 });
-
 
 // Muestra el modal al hacer clic en "Avisos"
 abrirModal.addEventListener("click", (e) => {
-    e.preventDefault(); // Previene el comportamiento del enlace
-    modal.style.display = "flex"; // Cambia el display para mostrar el modal
+  e.preventDefault(); // Previene el comportamiento del enlace
+  modal.style.display = "flex"; // Cambia el display para mostrar el modal
 });
 
 // Cierra el modal al hacer clic en la "X"
 cerrarModal.addEventListener("click", () => {
-    modal.style.display = "none";
+  modal.style.display = "none";
 });
 
 // Cierra el modal al hacer clic fuera del contenido
 window.addEventListener("click", (e) => {
-    if (e.target === modal) {
-        modal.style.display = "none";
-    }
+  if (e.target === modal) {
+    modal.style.display = "none";
+  }
 });
 
 // Obtener referencias a los elementos
-const menuToggle = document.querySelector('.menu-toggle');
-const navMenu = document.querySelector('.nav-menu');
+const menuToggle = document.querySelector(".menu-toggle");
+const navMenu = document.querySelector(".nav-menu");
 
 // Agregar un event listener al botón de hamburguesa
-menuToggle.addEventListener('click', () => {
+menuToggle.addEventListener("click", () => {
   // Alternar la clase 'active' en el menú
-  navMenu.classList.toggle('active');
+  navMenu.classList.toggle("active");
 });
 
-// Logica para modal de horario pendiente
+// Logica para modal de horario default
 
-const horariosPendientes = document.querySelectorAll('.horario_pendiente');
-const modalcitaPendiente = document.getElementById('modal-cita-pendiente');
-const closeModalCitaPendiente = document.getElementById('cerrar-modal-cita-pendiente');
-const cancelModalCitaPendiente = document.getElementById('cancelar-cita-pendiente');
+const horarios = document.querySelectorAll(".horario");
+const modalcita = document.getElementById("modal-cita");
+const closeModalCita = document.getElementById("cerrar-modal-cita");
+
 
 // Abrir modal al seleccionar horario
-horariosPendientes.forEach(horario => {
-    horario.addEventListener('click', () => {
-        modalcitaPendiente.style.display = 'flex';
-    });
+horarios.forEach((horario) => {
+  horario.addEventListener("click", () => {
+    modalcita.style.display = "flex";
+  });
 });
 
 // Cerrar modal
-closeModalCitaPendiente.addEventListener('click', () => {
-    modalcitaPendiente.style.display = 'none';
+closeModalCita.addEventListener("click", () => {
+  modalcita.style.display = "none";
 });
 
-cancelModalCitaPendiente.addEventListener('click', () => {
-    modalcitaPendiente.style.display = 'none';
-});
+
 
 // Opcional: Cerrar modal al hacer clic fuera del contenido
-window.addEventListener('click', (e) => {
-    if (e.target === modalcitaPendiente) {
-        modalcitaPendiente.style.display = 'none';
-    }
+window.addEventListener("click", (e) => {
+  if (e.target === modalcita) {
+    modalcita.style.display = "none";
+  }
 });
 
 // Logica para modal de horario confirmado
 
-const horariosConfirmados = document.querySelectorAll('.horario_confirmado');
-const modalcitaConfirmada = document.getElementById('modal-cita-confirmado');
-const closeModalCitaConfirmada = document.getElementById('cerrar-modal-cita-confirmado');
-const cancelModalCitaConfirmada = document.getElementById('cancelar-cita-confirmado');
+const horariosConfirmados = document.querySelectorAll(".horario_confirmado");
+const modalcitaConfirmada = document.getElementById("modal-cita-confirmado");
+const closeModalCitaConfirmada = document.getElementById(
+  "cerrar-modal-cita-confirmado"
+);
+const cancelModalCitaConfirmada = document.getElementById(
+  "cancelar-cita-confirmado"
+);
 
 // Abrir modal al seleccionar horario
-horariosConfirmados.forEach(horario => {
-    horario.addEventListener('click', () => {
-        modalcitaConfirmada.style.display = 'flex';
-    });
+horariosConfirmados.forEach((horario) => {
+  horario.addEventListener("click", () => {
+    modalcitaConfirmada.style.display = "flex";
+  });
 });
 
 // Cerrar modal
-closeModalCitaConfirmada.addEventListener('click', () => {
-    modalcitaConfirmada.style.display = 'none';
+closeModalCitaConfirmada.addEventListener("click", () => {
+  modalcitaConfirmada.style.display = "none";
 });
 
-cancelModalCitaConfirmada.addEventListener('click', () => {
-    modalcitaConfirmada.style.display = 'none';
+cancelModalCitaConfirmada.addEventListener("click", () => {
+  modalcitaConfirmada.style.display = "none";
 });
 
 // Opcional: Cerrar modal al hacer clic fuera del contenido
-window.addEventListener('click', (e) => {
-    if (e.target === modalcitaConfirmada) {
-        modalcitaConfirmada.style.display = 'none';
-    }
+window.addEventListener("click", (e) => {
+  if (e.target === modalcitaConfirmada) {
+    modalcitaConfirmada.style.display = "none";
+  }
 });
 
-// Logica para modal de horario ocupado
+// Logica para modal de agregar horario
 
-const horariosOcupados = document.querySelectorAll('.horario_ocupado');
-const modalcitaOcupada = document.getElementById('modal-cita-ocupado');
-const closeModalCitaOcupada = document.getElementById('cerrar-modal-cita-ocupado');
-const cancelModalCitaOcupada = document.getElementById('cancelar-cita-ocupado');
+const agregarHorario = document.querySelectorAll(".agregar-horario");
+const modalAgregarHorario = document.getElementById("modal-horas");
+const closeModalAgregarHorario = document.getElementById("cerrar-modal-horas");
+const cancelModalAgregarHorario = document.getElementById("cancelar-horas");
 
 // Abrir modal al seleccionar horario
-horariosOcupados.forEach(horario => {
-    horario.addEventListener('click', () => {
-        modalcitaOcupada.style.display = 'flex';
-    });
+agregarHorario.forEach((horario) => {
+  horario.addEventListener("click", () => {
+    modalAgregarHorario.style.display = "flex";
+  });
 });
 
 // Cerrar modal
-closeModalCitaOcupada.addEventListener('click', () => {
-    modalcitaOcupada.style.display = 'none';
+closeModalAgregarHorario.addEventListener("click", () => {
+  modalAgregarHorario.style.display = "none";
 });
 
-cancelModalCitaOcupada.addEventListener('click', () => {
-    modalcitaOcupada.style.display = 'none';
+cancelModalAgregarHorario.addEventListener("click", () => {
+  modalAgregarHorario.style.display = "none";
 });
 
 // Opcional: Cerrar modal al hacer clic fuera del contenido
-window.addEventListener('click', (e) => {
-    if (e.target === modalcitaOcupada) {
-        modalcitaOcupada.style.display = 'none';
-    }
+window.addEventListener("click", (e) => {
+  if (e.target === modalAgregarHorario) {
+    modalAgregarHorario.style.display = "none";
+  }
 });
+
+document.querySelectorAll(".solicitud").forEach((solicitud) => {
+  solicitud.addEventListener("click", (e) => {
+    const input = solicitud.querySelector('input[type="radio"]');
+    input.checked = true;
+  });
+});
+
+//--------------------------------------------------------------------
+
+const listaSolicitudes = document.querySelector(".lista-solicitudes");
+const modalCita = document.getElementById("modal-cita");
+const cerrarModalCita = document.getElementById("cerrar-modal-cita");
+
+const cancelarCita = document.getElementById("cancelar-cita");
+
+// Manejar clic en horario para mostrar detalles de los candidatos
+horarios.forEach((horario) => {
+  horario.addEventListener("click", (e) => {
+    // Obtener los datos relacionados al horario (puedes usar atributos data-* para pasar información)
+    const reuniones = e.currentTarget.dataset.reuniones
+      ? JSON.parse(e.currentTarget.dataset.reuniones)
+      : [];
+
+    // Limpiar contenido anterior
+    listaSolicitudes.innerHTML = "";
+
+    // Generar contenido dinámico
+    if (reuniones.length > 0) {
+      reuniones.forEach((reunion) => {
+        reunion.candidatosRegistrados.forEach((candidato) => {
+          const solicitudDiv = document.createElement("div");
+          solicitudDiv.classList.add("solicitud");
+          solicitudDiv.innerHTML = `
+    <div class="info-candidato">
+        <p><strong>Estado Reunion:</strong> ${candidato.estadoReunion}</p>
+        <p><strong>Respuesta del entrevistador:</strong> ${candidato.respuestaDelEntrevistador}</p>
+        <p><strong>Resume del candidato:</strong> ${candidato.linkResume}</p>
+    </div>
+   
+`;
+
+          listaSolicitudes.appendChild(solicitudDiv);
+        });
+      });
+    } else {
+      listaSolicitudes.innerHTML =
+        "<p>No hay solicitudes para este horario.</p>";
+    }
+
+    // Mostrar el modal
+    modalCita.style.display = "flex";
+  });
+});
+
+// Cerrar el modal
+cerrarModalCita.addEventListener("click", () => {
+  modalCita.style.display = "none";
+});
+
+// Manejo del botón "Cancelar"
+cancelarCita.addEventListener("click", () => {
+  modalCita.style.display = "none";
+});
+
+globalThis.addEventListener("load", () => {
+  // Verificar si ya se ha realizado la redirección
+  if (!sessionStorage.getItem("redireccionRealizada")) {
+    // Si no se ha realizado, redirigir a /identificarse
+    globalThis.location.href = "/identificarse";
+
+    // Marcar que la redirección ha sido realizada
+    sessionStorage.setItem("redireccionRealizada", "true");
+  }
+});
+
+// Manejo del botón "Aceptar"
+

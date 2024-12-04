@@ -18,18 +18,19 @@ export class CalendarioTrainee {
 
   public async mostrarCalendarioTrainee(context: Context) {
     const IDusuario = await obtenerIdUsuario(context);
-    //const IDusuario = "674cce539dca6ab3034178fa";
 
     if (!IDusuario) {
       throw new Error("ID de usuario no encontrado");
     }
     const datosUsuario = await this.obtenerUsuarioPorId(IDusuario);
     const reuniones = await this.obtenerReunionesPorCandidato(IDusuario);
-    console.log(reuniones);
 
     const html = await renderizarVista(
       "CalendarioTrainee.html",
-      {},
+      {
+        datosUsuario: datosUsuario,
+        reuniones: reuniones,
+      },
       directorioVistaSeccionActual + `/html_Reuniones`
     );
 
@@ -49,20 +50,25 @@ export class CalendarioTrainee {
   }
 
   public async obtenerReunionesPorCandidato(
-    id: string
+    idCandidato: string
   ): Promise<ISesionEntrevista[]> {
+    // Obtener la referencia a la colección de reuniones
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
       "Reuniones"
     ) as unknown as Collection<ISesionEntrevista>;
-
+  
+    // Buscar reuniones donde el candidato esté registrado
     const reuniones = await collection
-      .find({ "candidatosRegistrados.idCandidatoRegistrado": id })
+      .find({ "candidatosRegistrados.idCandidatoRegistrado": idCandidato })
       .toArray();
-
-    if (reuniones.length === 0) {
-      throw new Error(`No se encontraron reuniones con el candidato ID ${id}`);
+  
+    // Si no se encuentran reuniones, devolver un arreglo vacío
+    if (!reuniones || reuniones.length === 0) {
+      return [];
     }
-
+  
+    // Retornar las reuniones encontradas
     return reuniones;
   }
+  
 }
