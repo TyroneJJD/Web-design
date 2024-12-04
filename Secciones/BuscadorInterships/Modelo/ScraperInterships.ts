@@ -59,11 +59,11 @@ export class ScraperInterships {
 
   private async obtenerOfertaEspecifica(nombreCompania :string ): Promise<IOfertaIntership[]> {
     
-      const ofertaDB = await this.collection.findOne({ 
-        compania: { $regex: nombreCompania, $options: "i" } 
-      });
-      return ofertaDB ? [ofertaDB] : [];
-    
+    const ofertasDB = await this.collection.find({ 
+      compania: { $regex: nombreCompania, $options: "i" } 
+    }).toArray();
+  
+    return ofertasDB;
     
   }
    
