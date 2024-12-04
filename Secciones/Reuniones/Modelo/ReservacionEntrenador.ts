@@ -9,6 +9,7 @@ import {
   ISesionEntrevista,
   IDetallesCandidatosRegistrado,
 } from "../../Reuniones.ts";
+import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
 
 export class ReservacionEntrenador {
   private db: BaseDeDatosMongoDB;
@@ -23,9 +24,18 @@ export class ReservacionEntrenador {
   }
 
   public async mostrarReservacionEntrenador(context: Context) {
+    const idMiUsuario = await obtenerIdUsuario(context);
+    const IdSolicitado = this.obtenerIdSolicitado(context);
+    const InfoDelCoach = await this.obtenerEntrevistadorPorId(IdSolicitado);
+    const reunionesDelCoach = await this.obtenerReunionesCreadasPorElEntrenador(IdSolicitado);
+
     const html = await renderizarVista(
       "ReservacionEntrenador.html",
-      {},
+      {
+        idUsuario: idMiUsuario,
+        reuniones: reunionesDelCoach,
+        coachInfo:InfoDelCoach
+      },
       directorioVistaSeccionActual + `/html_Reuniones`
     );
 
@@ -146,5 +156,37 @@ export class ReservacionEntrenador {
       console.error("Error agregando el candidato:", error);
       throw new Error("No se pudo agregar el candidato a la reunión.");
     }
+  }
+
+  private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
+    const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
+      "Usuarios"
+    ) as unknown as Collection<IUsuario>;
+
+    const usuario = await collection.findOne({ _id: new ObjectId(id) });
+    if (!usuario) {
+      throw new Error(`Usuario con ID ${id} no encontrado`);
+    }
+    return usuario;
+  }
+
+  private obtenerIdSolicitado(context:Context):string {
+    const url = context.request.url; 
+    const params = url.searchParams; 
+    const idPerfil = params.get("perfil")?? "";
+    return idPerfil;
+  }
+
+  private async obtenerReunionesCreadasPorElEntrenador(
+    idEntrevistador: string
+  ): Promise<ISesionEntrevista[]> {
+    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
+      "Reuniones"
+    ) as unknown as Collection<ISesionEntrevista>;
+
+    return await collection
+      .find({ idCoach: idEntrevistador })
+      .sort({ horaInicio: 1 }) // 1 para ascendente, -1 para descendente
+      .toArray();
   }
 }

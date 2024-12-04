@@ -126,7 +126,7 @@
             <!-- Formulario que envía los datos directamente al backend -->
             <form id="inscripcion-form" action="/inscribirme-reunion" method="POST">
                 
-                <input type="hidden"  id="idCandidatoRegistrado" value="<%= it.idUsuario %>">
+      
               <div class="form-group">
                 <label for="tipo">Tipo de Reunión</label>
                 <input type="text" id="tipo" name="tipoDeReunion" />
@@ -153,7 +153,9 @@
           </div>
         </div>
       </div>
-         
+      
+           
+
     <!-- Modal de horario ocupado -->
     <div id="modal-cita-ocupado" class="modal-cita-ocupado">
         <div class="modal-cita-ocupado-content">
@@ -179,80 +181,174 @@
     <main id="main-content">
         <div class="calendario-container">
             <div class="perfil-coach">
-                <img class="foto-perfil" src="<%= it.coachInfo.direccionURLFotoPerfil %>" alt="Foto de perfil">
-                <h1>Calendario de <%= it.coachInfo.nombreUsuario %> <%= it.coachInfo.apellidoUsuario %></h1>
-                <p><%= it.coachInfo.titularUsuario %></p>
+                <img src="https://via.placeholder.com/120" alt="Foto del Coach">
+                <h2>Nombre del Coach</h2>
+                <p>Breve descripción del coach. Aquí puedes incluir detalles como experiencia, especialidad o una frase destacada.</p>
             </div>
     
             <div class="calendario-container">
-                
-                <br>
-                <br>
+                <div class="semana-navegacion">
+                    <button id="anterior-semana">← Semana Anterior</button>
+                    <h2 id="titulo-semana">Semana: 27 Nov - 03 Dic</h2>
+                    <button id="siguiente-semana">Semana Siguiente →</button>
+                </div>
     
-                <% const reunionesAgrupadas = {}; %>
-
-<% it.reuniones.forEach(reunion => { 
-    const fechaInicio = new Date(reunion.horaInicio);
-
-    // Formatear los elementos de la fecha
-    const diaSemana = fechaInicio.toLocaleDateString("es-ES", { weekday: "long" });
-    const diaNumero = fechaInicio.getDate();
-    const mesCompleto = fechaInicio.toLocaleDateString("es-ES", { month: "long" });
-
-    // Construir el formato final
-    const diaCompleto = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)} ${diaNumero} de ${mesCompleto}`;
-
-    const hora = fechaInicio.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: true });
-
-    if (!reunionesAgrupadas[diaCompleto]) reunionesAgrupadas[diaCompleto] = {};
-    if (!reunionesAgrupadas[diaCompleto][hora]) reunionesAgrupadas[diaCompleto][hora] = [];
-
-    reunionesAgrupadas[diaCompleto][hora].push(reunion);
-}); %>
-
-<div class="dias-semana">
-    <% Object.entries(reunionesAgrupadas).forEach(([diaCompleto, horarios]) => { %>
-        <div class="dia-columna">
-            <!-- Mostrar el formato completo del día -->
-            <div id="fecha_<%= diaCompleto.replace(/ /g, "_") %>">
-                <h4><%= diaCompleto %></h4>
-            </div>
-            <% Object.entries(horarios).forEach(([hora, reuniones]) => { %>
-                <div 
-                    class="horario" 
-                    data-reuniones='<%= JSON.stringify(reuniones) %>'
-                >
-                    <span><%= hora %></span>
-
-                    <!--SOLO HAY UNA REUNION X HORARIO (HORA)-->
-                    <div class="<% 
-                        if (reuniones[0].candidatosRegistrados.some(item => item.estadoReunion === 'pendiente' && item.idCandidatoRegistrado === it.idUsuario)) { 
-                    %> 
-                            horario_pendiente 
-                    <% 
-                        } else if (reuniones[0].candidatosRegistrados.some(item => item.estadoReunion === 'confirmada' && item.idCandidatoRegistrado !== it.idUsuario)) { 
-                    %> 
-                            horario_ocupado 
-                    <%        
-                        } else if (reuniones[0].candidatosRegistrados.some(item => item.estadoReunion === 'confirmada' && item.idCandidatoRegistrado === it.idUsuario)) { 
-                    %>         
-                            horario_confirmado  
-                    <% 
-                        } else { 
-                    %> 
-                            horario 
-                    <% 
-                        } 
-                    %>">
-
-                        👤 x <span><%= reuniones.reduce((total, r) => total + r.candidatosRegistrados.length, 0) %></span>
+                <div class="dias-semana">
+                    <div class="dia-columna">
+                        <h4>Domingo</h4>
+                        <h4>27</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Lunes</h4>
+                        <h4>28</h4>
+                        <div class="horario">
+                            <span>9:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario_pendiente">
+                            <span>10:30 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>1:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>5</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Martes</h4>
+                        <h4>29</h4>
+                        <div class="horario">
+                            <span>9:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                        <div class="horario_confirmado">
+                            <span>11:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>0</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>2:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>4</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Miércoles</h4>
+                        <h4>30</h4>
+                        <div class="horario_ocupado">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Jueves</h4>
+                        <h4>01</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Viernes</h4>
+                        <h4>02</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="dia-columna">
+                        <h4>Sabado</h4>
+                        <h4>03</h4>
+                        <div class="horario">
+                            <span>10:00 AM</span>
+                            <div class="solicitudes">
+                                👤 x <span>1</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>12:30 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>3</span>
+                            </div>
+                        </div>
+                        <div class="horario">
+                            <span>3:00 PM</span>
+                            <div class="solicitudes">
+                                👤 x <span>2</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            <% }); %>
-        </div>
-    <% }); %>
-</div>
-
             </div>
         </div>
     </main>
