@@ -204,10 +204,11 @@ export const verificarSiEsCoach = async (
     try {
       const payload = await verify(token, key);
 
-      if (payload.isCoach === true) {
+      if (payload.esCoach === true) {
         ctx.state.user = payload;
         await next();
       } else {
+        console.log(payload)
         ctx.response.status = 403;
         ctx.response.body = "Acceso denegado. No eres un Coach.";
       }
