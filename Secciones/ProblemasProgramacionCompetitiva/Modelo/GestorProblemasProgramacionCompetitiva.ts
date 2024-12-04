@@ -4,11 +4,27 @@ import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
 import { BaseDeDatosMySQL } from "../../../Servicios/BaseDeDatosMySQL.ts";
 
 interface IProblemaCompetitiva {
+  idProblema: string;
   nombreProblema: string;
   plataformaProblema: string;
   dificultadProblema: string;
-  categoriasProblema: string[];
+  categoriasProblema: Set<string>;
   urlProblema: string;
+}
+
+interface ICategoria {
+    idCategoria: string;
+    nombreCategoria: string;
+}
+
+interface IDificultad {
+    idDificultad: string;
+    nombreDificultad: string;
+}
+
+interface IPlataforma {
+    idPlataforma: string;
+    nombrePlataforma: string;
 }
 
 export class GestorProblemasProgramacionCompetitiva {
@@ -27,23 +43,27 @@ export class GestorProblemasProgramacionCompetitiva {
 
     const selectQuery = `
       SELECT 
-    p.Clave, 
-    p.Nombre, 
-    p.Plataforma, 
-    p.Enlace, 
-    p.Dificultad, 
-    GROUP_CONCAT(pc.NombreCategoria) AS Categorias
-    FROM 
-        Problemas p
-    LEFT JOIN 
-        Problemas_Cat pc
-    ON 
-        p.Clave = pc.ClaveProblema
-    GROUP BY 
-        p.Clave
-    ORDER BY 
-        p.FechaCreacion DESC
-    LIMIT 3;
+    P.Clave AS Clave, 
+    P.Nombre AS Nombre, 
+    P.Enlace AS Enlace,
+    Pl.Nombre AS Plataforma, 
+    D.Nombre AS Dificultad,
+    GROUP_CONCAT(C.Nombre ORDER BY C.Nombre SEPARATOR ', ') AS Categorias
+FROM 
+    Problemas P
+JOIN 
+    Plataformas Pl ON P.Plataforma = Pl.Clave_Plataforma
+JOIN 
+    Dificultades D ON P.Dificultad = D.Clave_Dificultad
+JOIN 
+    Problemas_Categorias PC ON P.Clave = PC.Problema_Clave
+JOIN 
+    Categorias C ON PC.Categoria_Clave = C.Clave_Categoria
+GROUP BY 
+    P.Clave
+ORDER BY 
+    P.Clave DESC
+LIMIT 3;
       `;
 
     try {
@@ -51,6 +71,7 @@ export class GestorProblemasProgramacionCompetitiva {
 
       const problemas: IProblemaCompetitiva[] = (resultados as any[]).map(
         (fila) => ({
+          idProblema: fila.Clave,
           nombreProblema: fila.Nombre,
           plataformaProblema: fila.Plataforma,
           dificultadProblema: fila.Dificultad,
@@ -116,24 +137,28 @@ export class GestorProblemasProgramacionCompetitiva {
     const db = BaseDeDatosMySQL.obtenerInstancia();
     const query = `
   SELECT 
-    p.Clave, 
-    p.Nombre AS nombreProblema, 
-    p.Plataforma AS plataformaProblema, 
-    p.Enlace AS urlProblema, 
-    p.Dificultad AS dificultadProblema, 
-    GROUP_CONCAT(pc.NombreCategoria) AS Categorias
-  FROM 
-    Problemas p
-  LEFT JOIN 
-    Problemas_Cat pc
-  ON 
-    p.Clave = pc.ClaveProblema
-  WHERE 
-    p.Nombre LIKE ?
-  GROUP BY 
-    p.Clave
-  ORDER BY 
-    p.Clave DESC;
+    P.Clave AS Clave, 
+    P.Nombre AS nombreProblema, 
+    P.Enlace AS urlProblema,
+    Pl.Nombre AS plataformaProblema, 
+    D.Nombre AS dificultadProblema,
+    GROUP_CONCAT(C.Nombre ORDER BY C.Nombre SEPARATOR ', ') AS Categorias
+FROM 
+    Problemas P
+JOIN 
+    Plataformas Pl ON P.Plataforma = Pl.Clave_Plataforma
+JOIN 
+    Dificultades D ON P.Dificultad = D.Clave_Dificultad
+JOIN 
+    Problemas_Categorias PC ON P.Clave = PC.Problema_Clave
+JOIN 
+    Categorias C ON PC.Categoria_Clave = C.Clave_Categoria
+WHERE
+    P.Nombre LIKE ?
+    GROUP BY 
+    P.Clave
+ORDER BY 
+    P.Clave DESC
 `;
     const categoriaParcial = `%${categoria}%`;
 
@@ -145,10 +170,12 @@ export class GestorProblemasProgramacionCompetitiva {
     console.log(resultados);
     // Mapear los resultados a la interfaz IProblemaCompetitiva
     return resultados.map((row) => ({
+        idProblema: row.Clave,
       nombreProblema: row.nombreProblema,
       plataformaProblema: row.plataformaProblema,
       dificultadProblema: row.dificultadProblema,
-      categoriasProblema: row.Categorias ? row.Categorias.split(",") : [], // Convertir la cadena a un arreglo
+      //Convertir las categorías a un set
+      categoriasProblema: row.Categorias ? new Set(row.Categorias.split(",")) : new Set(),
       urlProblema: row.urlProblema,
     }));
   }

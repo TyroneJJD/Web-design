@@ -12,6 +12,7 @@ import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Co
 import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
 import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
 import { inicializarReuniones } from "./Secciones/Reuniones/Controlador/Controlador.ts";
+import { inicializarPrueba } from "./Secciones/PanelAdministrador/Controlador/ControladorPrueba.ts";
 
 import {
   verificarVariablesDeEntornoDefinidas,
@@ -48,6 +49,7 @@ inicializarPanelAdministrador(router, app);
 inicializarProblemasProgramacionCompetitiva(router, app);
 inicializarExplorarEntrevistadores(router, app);
 inicializarReuniones(router, app);
+inicializarPrueba(router, app);
 
 //app.use(paginaNoEncontrada());
 app.use(router.routes());
