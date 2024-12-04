@@ -79,7 +79,17 @@ export class crearNuevaCuenta {
         correoElectronicoUsuario: correo,
         apellidoUsuario: apellido,
         contraseniaUsuario: contrasena,
-
+        titularUsuario: "",
+        descripcionUsuario: "",
+        direccionURLFotoPerfil: "",
+        direccionURLFotoBackground: "",
+        linksUsuario: {
+          linkLinkendin: "",
+          linkGithub: "",
+          linkPortafolioPersonal: "",
+        },
+        reseniasUsuario: [],
+        
         quiereSerCoach: quiereSerCoach,
         esAdministrador: false,
         esCoach: false,
