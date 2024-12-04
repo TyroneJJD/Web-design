@@ -50,7 +50,7 @@
     
         <div class="contenedor-coaches">
             <% it.coaches.forEach(coach => { %>
-                <div class="tarjeta-coach" onclick="window.location.href='/perfil_coach/<%= coach._id %>'">
+                <div class="tarjeta-coach" onclick="window.location.href='/verPerfil?perfil=<%= coach._id %>'">
                     <div class="foto-perfil">
                         <img src="<%= coach.direccionURLFotoPerfil %>" alt="Foto de <%= coach.nombreUsuario %>">
                     </div>
