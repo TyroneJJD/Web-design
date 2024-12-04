@@ -22,21 +22,52 @@ export class PerfilPropio {
     this.mostrarPaginaEditarMiPerfil.bind(this);
     this.editarDatosPerfil = this.editarDatosPerfil.bind(this);
     this.mostrarPaginaVerMiPerfil = this.mostrarPaginaVerMiPerfil.bind(this);
+    this.mostrarPaginaVerPerfil = this.mostrarPaginaVerPerfil.bind(this);
   }
 
   public async mostrarPaginaVerMiPerfil(context: Context) 
   {
-    const idUsuario = await obtenerIdUsuario(context);
+    const idUsuario = await obtenerIdUsuario(context); //metodoLocal es obtenido de la cookie
     if (!idUsuario) {
       context.response.status = 401;
       context.response.body = "No se proporcionó un ID de usuario";
       return;
     }
     const datosUsuario = await this.obtenerUsuarioPorId(idUsuario);
-
     const html = await renderizarVista(
       "ver_perfil.html",
-      { usuario: datosUsuario },
+      { usuario: datosUsuario, esMiPerfil:true },
+      directorioVistaSeccionActual + `/html_MiPerfil`
+    );
+    context.response.body = html || "Error al renderizar la página";
+  }
+
+  public async mostrarPaginaVerPerfil(context: Context) 
+  {
+    const idUsuario = await obtenerIdUsuario(context); //metodoLocal es obtenido de la cookie
+    const idSolicitado = this.obtenerIdSolicitado(context);
+    let esMiPerfil = false;
+
+    if (!idUsuario) {
+      context.response.status = 401;
+      context.response.body = "No se proporcionó un ID de usuario";
+      return;
+    }
+
+    if (!idSolicitado) {
+      context.response.status = 401;
+      context.response.body = "No se proporcionó un ID de perfil";
+      return;
+    }
+
+    if(idUsuario === idSolicitado){
+      esMiPerfil = true;
+    }
+
+    const datosUsuario = await this.obtenerUsuarioPorId(idSolicitado);
+    const html = await renderizarVista(
+      "ver_perfil.html",
+      { usuario: datosUsuario, esMiPerfil : esMiPerfil },
       directorioVistaSeccionActual + `/html_MiPerfil`
     );
     context.response.body = html || "Error al renderizar la página";
@@ -79,14 +110,8 @@ export class PerfilPropio {
 
       const body = context.request.body({ type: "json" });
       const formData = await body.value;
-
-      const titularUsuario = formData.get("rol");
-      const descripcionUsuario = formData.get("sobre_mi");
-      const linkLinkendin = formData.get("linkLinkedin");
-      const linkGithub = formData.get("linkGithub");
-      const linkPortafolioPersonal = formData.get("linkPortafolio");
-      const imagenPerfil = formData.get("imagenPerfil");
-      const imagenBackground = formData.get("imagenBackground");
+      const infoTexto = formData.get("infoCampos");
+      const infoImagenes = formData.get("infoImagenes");
 
       const idUsuario = await obtenerIdUsuario(context);
 
@@ -95,31 +120,31 @@ export class PerfilPropio {
         context.response.body = { error: "ID de usuario no proporcionado" };
         return;
       }
-      const manejadorArchivos = new ManejadorArchivos();
-      const urlNuevaFotoPerfil = await manejadorArchivos.guardarFotoDePerfil(imagenPerfil, idUsuario);
-      const urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDePerfil(imagenBackground, idUsuario);
 
-      const result = await this.collection.updateOne(
-        { _id: new ObjectId(idUsuario) },
-        {
-          $set: {
-            titularUsuario: titularUsuario ?? undefined,
-            descripcionUsuario: descripcionUsuario ?? undefined,
-            linksUsuario: {
-              linkLinkendin: linkLinkendin ?? "",
-              linkGithub: linkGithub ?? "",
-              linkPortafolioPersonal: linkPortafolioPersonal ?? "",
-            },
-            direccionURLFotoPerfil: urlNuevaFotoPerfil ?? "",
-            direccionURLFotoBackground: urlNuevaFotoBackground ?? "", 
-          },
-        }
-      );
+      const UsuarioActualizado = await this.ActualizaUsuario(infoTexto,idUsuario);
+      const ImagenesActualizadas = await this.ActualizaImagenes(infoImagenes,idUsuario);
 
-      if (result.modifiedCount === 0) {
+  
+      if (!UsuarioActualizado) {
         context.response.status = 404;
         context.response.body = {
           error: "Usuario no encontrado o no modificado",
+        };
+        return;
+      }
+
+      if (!ImagenesActualizadas.FotoPerfilProcesada) {
+        context.response.status = 404;
+        context.response.body = {
+          error: "Error en carga de imagen de perfil",
+        };
+        return;
+      }
+
+      if (!ImagenesActualizadas.FotoBackgroundProcesada) {
+        context.response.status = 404;
+        context.response.body = {
+          error: "Error en carga de imagen de background",
         };
         return;
       }
@@ -133,5 +158,89 @@ export class PerfilPropio {
     }
   }
 
+  private obtenerIdSolicitado(context:Context):string | null{
+    const url = context.request.url; 
+    const params = url.searchParams; 
+    const idPerfil = params.get("perfil");
+    return idPerfil;
+  }
+
+  private async ActualizaImagenes(archivoJSON: {
+    fileName: string;
+    base64: string;
+    }[], idUsuario: string){
+
+      const manejadorArchivos = new ManejadorArchivos();
+      let urlNuevaFotoPerfil;
+      let urlNuevaFotoBackground;
+
+      const FotoPerfil = archivoJSON[0];
+      const FotoBackground = archivoJSON[1];
+
+      let FotoPerfilProcesada;
+      let FotoBackgroundProcesada;
+
+      if(FotoPerfil.fileName != ""){
+        FotoPerfilProcesada = true;
+      }else{
+        urlNuevaFotoPerfil = await manejadorArchivos.guardarFotoDePerfil(FotoPerfil, idUsuario);
+        const result = await this.collection.updateOne(
+          { _id: new ObjectId(idUsuario) },
+          {
+            $set: {
+              direccionURLFotoPerfil: urlNuevaFotoPerfil ?? "",
+            },
+          }
+        );
+
+        FotoPerfilProcesada = (result.modifiedCount !== 0);
+      }
+
+      
+      if(FotoBackground.fileName != ""){
+        FotoBackgroundProcesada = true;
+      }else{
+        urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDePerfil(FotoPerfil, idUsuario);
+        const result = await this.collection.updateOne(
+          { _id: new ObjectId(idUsuario) },
+          {
+            $set: {
+              direccionURLFotoBackground: urlNuevaFotoBackground ?? "",
+            },
+          }
+        );
+
+        FotoBackgroundProcesada = (result.modifiedCount !== 0);
+      }
+
+      return {FotoPerfilProcesada,FotoBackgroundProcesada};
+
+  }
  
+  private async ActualizaUsuario(archivoJSON:{
+    titularUsuario:string,
+    descripcionUsuario:string,
+    linkLinkendin:string,
+    linkGithub:string,
+    linkPortafolioPersonal : string
+  }, idUsuario:string){
+
+    const result = await this.collection.updateOne(
+      { _id: new ObjectId(idUsuario) },
+      {
+        $set: {
+          titularUsuario: archivoJSON.titularUsuario ?? undefined,
+          descripcionUsuario: archivoJSON.descripcionUsuario ?? undefined,
+          linksUsuario: {
+            linkLinkendin: archivoJSON.linkLinkendin ?? "",
+            linkGithub: archivoJSON.linkGithub ?? "",
+            linkPortafolioPersonal: archivoJSON.linkPortafolioPersonal ?? "",
+          },
+        },
+      }
+    );
+
+    return (result.modifiedCount !== 0);
+
+  }
 }

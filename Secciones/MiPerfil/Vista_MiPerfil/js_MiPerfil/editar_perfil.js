@@ -2,6 +2,8 @@ const cambiarFotoBackgroundBtn = document.getElementById('cambiar_background_btn
 const cambiarFotoPerfilBtn = document.getElementById('cambiar_perfil_btn');
 
 const GuardarBtn = document.getElementById("guardar_btn");
+const CancelarBtn = document.getElementById("cancelar_btn");
+
 
 const backgroundInput = document.getElementById('backgroung_img');
 const perfilInput = document.getElementById('perfil_img');
@@ -9,9 +11,18 @@ const perfilInput = document.getElementById('perfil_img');
 const elementoConBackground = document.getElementById('contenedor_foto');
 const elementoFoto = document.getElementById('foto_perfil');
 
-var imagenBackground = "";
-var imagenPerfil = "";
+const imagenBackgroundInicial = CargaFotoBackGround();
+const imagenPerfilInicial = CargaFotoPerfil();
 
+console.log(imagenBackgroundInicial);
+console.log(imagenPerfilInicial);
+
+let imagenBackground = imagenBackgroundInicial;
+let imagenPerfil = imagenPerfilInicial;
+
+document.addEventListener('DOMContentLoaded', () => {
+
+});
 
 cambiarFotoBackgroundBtn.addEventListener('click', () => {
   backgroundInput.click();
@@ -70,25 +81,40 @@ perfilInput.addEventListener('change', function (event) {
 GuardarBtn.addEventListener("click",() => {
 
     if(EsInfoValida()){
-        console.log("Si")
 
         const infoPerfil = {};
-        let links = [];
+        const infoCampos = {};
+        const infoImagenes = {};
 
-        infoPerfil.rol = document.getElementById('rol').value;
-        infoPerfil.sobreMi = document.getElementById('sobre_mi').value;
+        infoCampos.titularUsuario = document.getElementById('rol').value;
+        infoCampos.descripcionUsuario = document.getElementById('sobre_mi').value;
 
-        document.querySelectorAll('red_social').forEach(input => {
-            links.push(input.value);
-        });
+        infoCampos.linkLinkedin = document.getElementById('linkLinkendin').value;
+        infoCampos.linkGithub = document.getElementById('linkGithub').value;
+        infoCampos.linkPortafolioPersonal = document.getElementById('linkPortafolioPersonal').value;
 
-        infoPerfil.links = links;
-        infoPerfil.imagenPerfil = imagenPerfil;
-        infoPerfil.imagenBackground = imagenBackground;
+        infoPerfil.infoCampos = infoCampos;
 
-    }else{
-        console.log("No")
+        if(imagenPerfil !== imagenPerfilInicial){
+            infoImagenes.imagenPerfil = imagenPerfil;
+        }else{
+            infoImagenes.imagenPerfil = {fileName:"",base64:""};
+        }
+
+        if(imagenBackground !== imagenBackgroundInicial){
+            infoImagenes.imagenBackground = imagenBackground;
+        }else{
+            infoImagenes.imagenBackground = {fileName:"",base64:""};;
+        }
+
+        infoPerfil.infoImagenes = infoImagenes;
+
+        EnviaDatosGuardados(infoPerfil);
+
     }
+});
+
+CancelarBtn.addEventListener("click", ()=>{
 
 });
 
@@ -139,8 +165,9 @@ function SonLinksValidos(){
 
 function EsImagenValida(img){
 
-    console.log("EsImagenb")
-
+    if(img === ""){
+        return true;
+    }
 
     if (!img || Object.keys(img).length === 0) {
         return false;
@@ -171,10 +198,31 @@ function EsImagenValida(img){
 }
 
 function CargaFotoPerfil(){
-    
-
+    return elementoFoto.src;
 }
 
 function CargaFotoBackGround(){
+    return getComputedStyle(elementoConBackground).backgroundImage.slice(5,-2);
+}
 
+function EnviaDatosGuardados(infoPerfil){
+    fetch('/editarDatosPerfil', {
+        method: 'POST', // Método HTTP
+        headers: {
+            'Content-Type': 'application/json', // Tipo de contenido
+        },
+        body: JSON.stringify(infoPerfil), // Convertir el objeto a JSON
+    })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error en la solicitud: ${response.status}`);
+            }
+            return response.json(); // Parsear la respuesta JSON
+        })
+        .then(result => {
+            console.log("Respuesta del servidor:", result);
+        })
+        .catch(error => {
+            console.error("Ocurrió un error:", error);
+        });
 }

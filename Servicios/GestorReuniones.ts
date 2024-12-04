@@ -1,109 +1,126 @@
 import { GoogleApis } from "npm:googleapis";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
+import { BaseDeDatosMongoDB } from "./BaseDeDatosMongoDB.ts";
+import { ISesionEntrevista } from "../Secciones/Reuniones.ts";
+import { ObjectId } from "npm:mongodb";
+import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
+import { ManejadorCorreoElectronico} from "./CorreoElectronico/ManejadorCorreoElectronico.ts";
+import { IUsuario } from "../Secciones/DatosUsuario.ts";
 
-export class GestorReuniones {
-  private auth;
-  private calendar;
-  private clientId: string;
-  private clientSecret: string;
-  private redirectUri: string;
+export function identificacion(context: Context) {
+  const env = config();
+  const googleApis = new GoogleApis();
+  const auth = new googleApis.auth.OAuth2(
+    env.CLIENT_ID,
+    env.CLIENT_SECRET,
+    env.REDIRECT_URI
+  );
 
-  constructor() {
-    const env = config();
-    this.clientId = env.CLIENT_ID;
-    this.clientSecret = env.CLIENT_SECRET;
-    this.redirectUri = env.REDIRECT_URI;
+  const url = auth.generateAuthUrl({
+    access_type: "offline",
+    scope: ["https://www.googleapis.com/auth/calendar"],
+  });
 
-    const googleApis = new GoogleApis();
-    this.auth = new googleApis.auth.OAuth2(
-      this.clientId,
-      this.clientSecret,
-      this.redirectUri
-    );
-    this.calendar = googleApis.calendar({ version: "v3", auth: this.auth });
+  context.response.redirect(url);
+}
+
+export async function generarReunion(context: Context) {
+  const datos = await context.request.body().value;
+
+  const url = datos.urlActual;
+  const parsedUrl = new URL(url);
+  const code = parsedUrl.searchParams.get("code");
+
+  const idDeLaReunion = datos.idReunion;
+
+  const db = BaseDeDatosMongoDB.obtenerInstancia();
+  const refColeccion = db.obtenerReferenciaColeccion<ISesionEntrevista>(
+    "Reuniones"
+  ) as unknown as Collection<ISesionEntrevista>;
+
+  const archivoDeLaReunion = await refColeccion.findOne({
+    _id: new ObjectId(idDeLaReunion),
+  });
+
+  console.log("Reunión encontrada:", archivoDeLaReunion);
+  const env = config();
+
+  if (!code) {
+    context.response.status = 400;
+    context.response.body = "Falta el código de autorización.";
+
+    return;
   }
 
-  /**
-   * Genera la URL de autorización y redirige al usuario.
-   */
-  public identificacion(context: Context): void {
-    const url = this.auth.generateAuthUrl({
-      access_type: "offline",
-      scope: ["https://www.googleapis.com/auth/calendar"],
-    });
+  const googleApis = new GoogleApis();
+  const auth = new googleApis.auth.OAuth2(
+    env.CLIENT_ID,
+    env.CLIENT_SECRET,
+    env.REDIRECT_URI
+  );
 
-    context.response.redirect(url);
+  const { tokens } = await auth.getToken(code);
+  auth.setCredentials(tokens);
+
+  // Crear un evento en Google Calendar con Google Meet
+  const calendar = googleApis.calendar({ version: "v3", auth });
+  const event = {
+    summary: "Reunion de prueba",
+    description: "Descripción de la reunión de prueba.",
+    start: {
+      dateTime: archivoDeLaReunion?.horaInicio?.toISOString(),
+      timeZone: "America/Mexico_City",
+    },
+    end: {
+      dateTime: archivoDeLaReunion?.horaFin?.toISOString(),
+      timeZone: "America/Mexico_City",
+    },
+    conferenceData: {
+      createRequest: {
+        requestId: "some-random-string",
+        conferenceSolutionKey: { type: "hangoutsMeet" },
+      },
+    },
+    attendees: [],
+    reminders: {
+      useDefault: false, // Deshabilitar recordatorios predeterminados
+      overrides: [
+        { method: "email", minutes: 24 * 60 }, // Recordatorio por correo, 24 horas antes
+        { method: "popup", minutes: 10 }, // Recordatorio emergente, 10 minutos antes
+      ],
+    },
+  };
+
+  const response = await calendar.events.insert({
+    calendarId: "primary",
+    requestBody: event,
+    conferenceDataVersion: 1,
+  });
+  const datosDelEntrevistador = await obtenerUsuarioPorId(archivoDeLaReunion?.idCoach as string);
+  const datosDelEntrevistado = await obtenerUsuarioPorId(archivoDeLaReunion?.candidatoSeleccionadoAEntrevistar.idCandidatoRegistrado as string);
+  
+  const manejadorCorreoElectronico = new ManejadorCorreoElectronico();
+  if (response.data.hangoutLink) {
+    manejadorCorreoElectronico.enviarCorreoNuevaReunionParaEntrevistador(datosDelEntrevistador.correoElectronicoUsuario, datosDelEntrevistador.nombreUsuario + datosDelEntrevistador.apellidoUsuario, response.data.hangoutLink);
+    manejadorCorreoElectronico.enviarCorreoNuevaReunionParaEntrevistado(datosDelEntrevistado.correoElectronicoUsuario, datosDelEntrevistado.nombreUsuario + datosDelEntrevistado.apellidoUsuario, response.data.hangoutLink);
+  } else {
+    console.error("Error: hangoutLink is undefined");
   }
 
-  /**
-   * Genera una reunión en Google Calendar con Google Meet.
-   */
+  context.response.status = 302; // Redirección temporal
+  context.response.headers.set("Location", "/calendarioEntrevistador");
+}
 
-  // AQUI TENEMOS UN PROBLEMA GIGANTE
-  public async generarReunion(context: Context): Promise<void> {
-    const urlParams = context.request.url.searchParams;
-    const code = urlParams.get("code");
+ async function obtenerUsuarioPorId(id: string): Promise<IUsuario> {
+  const db = BaseDeDatosMongoDB.obtenerInstancia();
+  const collection = db.obtenerReferenciaColeccion<IUsuario>(
+    "Usuarios"
+  ) as unknown as Collection<IUsuario>;
 
-    if (!code) {
-      context.response.status = 400;
-      context.response.body = "Falta el código de autorización.";
-      return;
-    }
-
-    try {
-      // Intercambiar código por tokens
-      const { tokens } = await this.auth.getToken(code);
-      this.auth.setCredentials(tokens);
-
-      // Crear un evento en Google Calendar
-      const event = {
-        summary: "SUPER Reunión Tilina",
-        description: "Descripción de la reunión de prueba.",
-        start: {
-          dateTime: new Date(
-            new Date().getTime() + 60 * 60 * 12000
-          ).toISOString(),
-          timeZone: "America/Mexico_City",
-        },
-        end: {
-          dateTime: new Date(
-            new Date().getTime() + 60 * 60 * 13000
-          ).toISOString(),
-          timeZone: "America/Mexico_City",
-        },
-        conferenceData: {
-          createRequest: {
-            requestId: "some-random-string",
-            conferenceSolutionKey: { type: "hangoutsMeet" },
-          },
-        },
-        attendees: [
-          { email: "juliandorantes2004@gmail.com" },
-          { email: "tyronejjd24@gmail.com" },
-        ],
-        reminders: {
-          useDefault: false,
-          overrides: [
-            { method: "email", minutes: 24 * 60 },
-            { method: "popup", minutes: 10 },
-          ],
-        },
-      };
-
-      const response = await this.calendar.events.insert({
-        calendarId: "primary",
-        requestBody: event,
-        conferenceDataVersion: 1,
-      });
-
-      context.response.body = {
-        message: "Reunión creada",
-        event: response.data,
-      };
-    } catch (error) {
-      context.response.status = 500;
-      context.response.body = { message: "Error al crear la reunión", error };
-    }
+  const usuario = await collection.findOne({ _id: new ObjectId(id) });
+  if (!usuario) {
+    throw new Error(`Usuario con ID ${id} no encontrado`);
   }
+  return usuario;
 }
