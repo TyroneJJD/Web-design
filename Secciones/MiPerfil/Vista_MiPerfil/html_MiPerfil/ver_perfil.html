@@ -57,7 +57,10 @@
             <p class="sobre_mi" id="sobre_mi"><%= it.usuario.descripcionUsuario %></p>
             <p class="puntuacion">Puntuación: 4.5</p>
 
-            <a href="/reservacionEntrenador?perfil=<%= it.usuario._id %>"><button class="agregar-btn">Agendar</button></a>
+            
+            <% if (!it.esMiPerfil) { %>                 
+                <a href="/reservacionEntrenador?perfil=<%= it.usuario._id %>"><button class="agregar-btn">Agendar</button></a>
+            <% } %>
 
         </section>
 

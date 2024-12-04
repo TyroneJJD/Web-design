@@ -221,6 +221,7 @@ function EnviaDatosGuardados(infoPerfil){
         })
         .then(result => {
             console.log("Respuesta del servidor:", result);
+            alert(result)
         })
         .catch(error => {
             console.error("Ocurrió un error:", error);
