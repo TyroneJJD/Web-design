@@ -4,6 +4,7 @@ import { CalendarioEntrevistador } from "../Modelo/CalendarioEntrevistador.ts";
 import { CalendarioTrainee } from "../Modelo/CalendarioTrainee.ts";
 import { ReservacionEntrenador } from "../Modelo/ReservacionEntrenador.ts";
 import { identificacion,generarReunion  } from "../../../Servicios/GestorReuniones.ts";
+import {verificadorAutenticacion, verificarSiEsCoach} from "../../../Servicios/Autenticacion.ts"
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Reuniones/Vista_Reuniones`;
 
@@ -17,18 +18,18 @@ export function inicializarReuniones(
   router.post("/oauth2callback", generarReunion);
   //-----------------------------------------// TERMINADO
   const gestorCalendarioEntrevistador = new CalendarioEntrevistador();
-  router.get("/calendarioEntrevistador", gestorCalendarioEntrevistador.mostrarCalendarioEntrevistador);
-  router.post("/generar-reuniones", gestorCalendarioEntrevistador.generarReuniones);
-  router.post("/asignarCandidatoAReunion", gestorCalendarioEntrevistador.asignarCandidatoAReunion);
+  router.get("/calendarioEntrevistador",verificadorAutenticacion, verificarSiEsCoach,gestorCalendarioEntrevistador.mostrarCalendarioEntrevistador);
+  router.post("/generar-reuniones", verificadorAutenticacion,verificarSiEsCoach,gestorCalendarioEntrevistador.generarReuniones);
+  router.post("/asignarCandidatoAReunion", verificadorAutenticacion, verificarSiEsCoach,gestorCalendarioEntrevistador.asignarCandidatoAReunion);
 
   //-----------------------------------------//
   const gestorCalendarioTrainee = new CalendarioTrainee();
-  router.get("/calendarioTrainee", gestorCalendarioTrainee.mostrarCalendarioTrainee);
+  router.get("/calendarioTrainee", verificadorAutenticacion, gestorCalendarioTrainee.mostrarCalendarioTrainee);
 
   //-----------------------------------------//
   const gestorReservacionEntrenador = new ReservacionEntrenador();
-  router.get("/reservacionEntrenador", gestorReservacionEntrenador.mostrarReservacionEntrenador);
-  router.post("/inscribirme-reunion", gestorReservacionEntrenador.inscribirmeASesion);
+  router.get("/reservacionEntrenador", verificadorAutenticacion, gestorReservacionEntrenador.mostrarReservacionEntrenador);
+  router.post("/inscribirme-reunion",verificadorAutenticacion,  gestorReservacionEntrenador.inscribirmeASesion);
   
   app.use(
     cargarArchivosEstaticos(

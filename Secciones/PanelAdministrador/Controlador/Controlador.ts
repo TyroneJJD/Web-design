@@ -2,6 +2,7 @@ import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { GestorPermisos } from "../Modelo/GestorPermisos.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
+import { verificadorAutenticacion, verificarSiEsAdministrador } from "../../../Servicios/Autenticacion.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
 
@@ -12,6 +13,8 @@ export function inicializarPanelAdministrador(
   const gestorPermisos = new GestorPermisos();
   router.get(
     "/panelPermisosUsuarios",
+    verificadorAutenticacion,
+    verificarSiEsAdministrador,
     gestorPermisos.mostrarPanelPermisosUsuarios
   );
 

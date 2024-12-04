@@ -1,6 +1,7 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { ScraperInterships } from "../Modelo/ScraperInterships.ts";
+import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/BuscadorInterships/Vista_BuscadorInterships`;
 
@@ -9,9 +10,9 @@ export function inicializarBuscadorInterships(
   app: Application
 ) {
   const interships = new ScraperInterships();
-  router.get("/BuscadorIntershipsV2", interships.visualizarInterships);
+  router.get("/BuscadorIntershipsV2", verificadorAutenticacion, interships.visualizarInterships);
 
-  router.get("/BuscadorIntershipsV2Especifico", interships.visualizarIntershipsEspecifico);
+  router.get("/BuscadorIntershipsV2Especifico", verificadorAutenticacion, interships.visualizarIntershipsEspecifico);
 
   app.use(
     cargarArchivosEstaticos(

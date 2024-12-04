@@ -9,6 +9,7 @@ import {
 
 } from "../../../utilidadesServidor.ts";
 import { ManejadorEntrevistador } from "../Modelo/Entrevistador.ts";
+import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/ExplorarEntrevistadores/Vista_ExplorarEntrevistadores`;
 
@@ -18,7 +19,7 @@ export function inicializarExplorarEntrevistadores(
 ) {
 
   const entrevistadores = new ManejadorEntrevistador();
-  router.get("/ExplorarEntrevistadores", entrevistadores.visualizarExplorarEntrevistadores);
+  router.get("/ExplorarEntrevistadores",verificadorAutenticacion, entrevistadores.visualizarExplorarEntrevistadores);
 
   app.use(
     cargarArchivosEstaticos("/css_ExplorarEntrevistadores", directorioVistaSeccionActual + `/css_ExplorarEntrevistadores`)
