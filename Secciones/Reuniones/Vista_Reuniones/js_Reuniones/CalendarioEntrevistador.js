@@ -209,44 +209,80 @@ cancelarCita.addEventListener("click", () => {
   modalCita.style.display = "none";
 });
 
-// Manejo del botón "Aceptar"
-aceptarCita.addEventListener('click', async () => {
-    const candidatoSeleccionado = document.querySelector('input[name="candidato-seleccionado"]:checked');
-    if (candidatoSeleccionado) {
-        const candidato = JSON.parse(candidatoSeleccionado.value.replace(/&apos;/g, "'"));
-        const idReunion = candidatoSeleccionado.getAttribute('data-id-reunion');
+globalThis.addEventListener("load", () => {
+  // Verificar si ya se ha realizado la redirección
+  if (!sessionStorage.getItem("redireccionRealizada")) {
+    // Si no se ha realizado, redirigir a /identificarse
+    globalThis.location.href = "/identificarse";
 
-        // Datos a enviar
-        const datos = {
-            candidato,
-            idReunion,
-        };
-
-        // Realizar la solicitud HTTP POST
-        try {
-            const respuesta = await fetch('/asignarCandidatoAReunion', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(datos),
-            });
-
-            if (respuesta.ok) {
-                const resultado = await respuesta.json();
-                alert(`Datos enviados correctamente: ${JSON.stringify(resultado)}`);
-                //Puedes cerrar el modal aquí si todo salió bien
-                modalCita.style.display = 'none';
-
-                globalThis.location.href = '/identificarse';
-            } else {
-                alert(`Error al enviar los datos: ${respuesta.status}`);
-            }
-        } catch (error) {
-            alert(`Error al conectar con el servidor: ${error.message}`);
-        }
-    } else {
-        alert('No se ha seleccionado ningún candidato.');
-    }
+    // Marcar que la redirección ha sido realizada
+    sessionStorage.setItem("redireccionRealizada", "true");
+  }
 });
 
+// Manejo del botón "Aceptar"
+aceptarCita.addEventListener("click", async () => {
+  const candidatoSeleccionado = document.querySelector(
+    'input[name="candidato-seleccionado"]:checked'
+  );
+
+  if (candidatoSeleccionado) {
+    const candidato = JSON.parse(
+      candidatoSeleccionado.value.replace(/&apos;/g, "'")
+    );
+    const idReunion = candidatoSeleccionado.getAttribute("data-id-reunion");
+
+    const datos = {
+      candidato,
+      idReunion,
+    };
+
+    try {
+      const peticionDeActualizacionALaDb = await fetch("/asignarCandidatoAReunion", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(datos),
+      });
+
+      if (peticionDeActualizacionALaDb.ok) {
+
+
+        // Realiza la tercera solicitud /oauth2callback
+        const datosV2 = {
+          ...datos, // Otros datos que quieras incluir
+          urlActual: globalThis.location.href, // Incluye la URL actual
+        };
+        
+        const peticionDeCreacionReunion = await fetch("/oauth2callback", {
+          method: "POST", // Usamos POST para enviar datos
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(datosV2), // Incluye los datos con la URL actual
+        });
+
+        if (peticionDeCreacionReunion.ok) {
+          alert("Cita agendada correctamente");
+          modalCita.style.display = "none";
+
+
+
+
+          
+        } else {
+          //alert(`Error en /oauth2callback: ${peticionDeCreacionReunion.status}`);
+          alert("Se necesita volver a loguear en google");
+          globalThis.location.href = "/identificarse";
+        }
+      } else {
+        alert(`Error al asignar candidato: ${peticionDeActualizacionALaDb.status}`);
+      }
+    } catch (error) {
+      alert(`Error al conectar con el servidor: ${error.message}`);
+    }
+  } else {
+    alert("No se ha seleccionado ningún candidato.");
+  }
+});

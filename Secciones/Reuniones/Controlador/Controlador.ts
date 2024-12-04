@@ -14,7 +14,7 @@ export function inicializarReuniones(
 
       
   router.get("/identificarse", identificacion);
-  router.get("/oauth2callback", generarReunion);
+  router.post("/oauth2callback", generarReunion);
   //-----------------------------------------//
   const gestorCalendarioEntrevistador = new CalendarioEntrevistador();
   router.get("/calendarioEntrevistador", gestorCalendarioEntrevistador.mostrarCalendarioEntrevistador);

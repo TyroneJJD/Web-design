@@ -3,6 +3,8 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 
 export function identificacion(context: Context) {
+  
+
     const env = config();
     const googleApis = new GoogleApis();
   const auth = new googleApis.auth.OAuth2(
@@ -16,17 +18,31 @@ export function identificacion(context: Context) {
     scope: ["https://www.googleapis.com/auth/calendar"],
   });
 
+  
   context.response.redirect(url);
 }
 
 export async function generarReunion(context: Context) {
+
+  const datos =  await context.request.body().value;
+
+  console.log("Datos recibidos (generarReunion):", datos);
+
+  const url = datos.urlActual;
+  const parsedUrl = new URL(url);
+
+// Obtener el valor del parámetro 'code'
+const code = parsedUrl.searchParams.get("code");
+
+console.log("Código recibido:", code);
+
     const env = config();
-    const urlParams = context.request.url.searchParams;
-    const code = urlParams.get("code");
+    
   
     if (!code) {
       context.response.status = 400;
       context.response.body = "Falta el código de autorización.";
+
       return;
     }
   
@@ -45,7 +61,7 @@ export async function generarReunion(context: Context) {
     // Crear un evento en Google Calendar con Google Meet
     const calendar = googleApis.calendar({ version: "v3", auth });
     const event = {
-      summary: "HIPER Reunión Tilina",
+      summary: "SHAMA LAMA SUPER DUPER HIPER Reunión Tilina",
       description: "Descripción de la reunión de prueba.",
       start: {
         dateTime: new Date(new Date().getTime() + 60 * 60 * 12000).toISOString(),
@@ -80,7 +96,7 @@ export async function generarReunion(context: Context) {
       conferenceDataVersion: 1,
     });
 
-    console.log(response.data);
+    //console.log(response.data);
   
     context.response.status = 302; // Redirección temporal
     context.response.headers.set("Location", "/calendarioEntrevistador");
