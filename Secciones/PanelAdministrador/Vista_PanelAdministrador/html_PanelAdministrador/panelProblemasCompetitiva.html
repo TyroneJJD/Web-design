@@ -94,71 +94,70 @@
     </div>
   </div>   
 
-  <!-- Modal para modificar Problema -->
-  <div id="modal-modificar-problema" class="modal-modificar-problema">
-    <div class="modal-modificar-problema-content">
-        <div class="modal-modificar-problema-header">
-            <h2>Información del Problema</h2>
-            <span class="close-button" id="cerrar-modal-modificar-problema">&times;</span>
-        </div>
-        <% it.problemas.forEach(problema => { %>
-        <div class="modal-modificar-problema-body">
-            <form id="reunion-form">
-                <div class="form-group">
-                    <input type="hidden" id="id-problema" name="id-problema" value="<%= problema.idProblema %>">
-                </div>
-                <div class="form-group">
-                    <label for="nombre-problema">Nombre del Problema</label>
-                    <input type="text" id="nombre-problema" name="nombre-problema" value="<%= problema.nombreProblema %>">
-                </div>
-                <div class="form-group">
-                    <label for="plataforma">Plataforma</label>
-
-
-                    <select id="plataforma" name="plataforma">
-                        <% it.plataformas.forEach(plataforma => { %> 
-                          <option value="<%= plataforma.idPlataforma %>" <%= problema.plataformaProblema === plataforma.nombrePlataforma ? "selected" : "" %>><%= plataforma.nombrePlataforma %></option>
-                        <% }); %>
-                    </select>
-                </div>
-                <div class="form-group">
-                  <label for="dificultad">Dificultad</label>
-                  <select id="dificultad" name="dificultad">
-                      <% it.dificultades.forEach(dificultad => { %> 
-                        <option value="<%= dificultad.idDificultad %>" <%= problema.dificultadProblema === dificultad.nombreDificultad ? "selected" : "" %>><%= dificultad.nombreDificultad %></option>
-                      <% }); %>
-                  </select>
-              </div>
-                <div class="form-group">
-                    <label for="categorias">Categorias</label>
-                    <div class="lista-categorias">
-                      <% it.categorias.forEach(categoria => { %>
-                      <div class="categoria" data-id="<%= categoria.idCategoria %>">
-                          <input type="checkbox" name="seleccion-categoria" id="<%=categoria.nombreCategoria%>" value="<%= categoria.idCategoria %>">
-                          <label for="categoria-<%= categoria %>"><%= categoria.nombreCategoria %></label>
-                      </div>
-                      <% }); %>
-                      <% problema.categoriasProblema.forEach(categoria => { %>
-                        <script>
-                          document.getElementById("<%=categoria%>".trim()).checked = true;
-                        </script>  
-                      <% }); %>
-                  </div>                  
-                </div>
-                <div class="form-group">
-                    <label for="link-problema">Link del Problema</label>
-                    <input type="text" id="link-problema" name="link-problema" value="<%= problema.urlProblema %>">
-                </div>
-            </form>
-        </div>
-        <% }); %>
-        <div class="modal-modificar-problema-footer">
-            <button class="cancel" id="cancelar-modificar-problema">Cancelar</button>
-            <button class="delete" id="eliminar-modificar-problema" onclick="eliminarProblema()">Eliminar</button>
-            <button class="accept" id="aceptar-modificar-problema" onclick="modificarProblema()">Guardar</button>
+  <% it.problemas.forEach(problema => { %>
+    <div id="modal-modificar-problema-<%= problema.idProblema %>" class="modal-modificar-problema">
+        <div class="modal-modificar-problema-content">
+            <div class="modal-modificar-problema-header">
+                <h2>Información del Problema</h2>
+                <!-- ID del botón de cierre único -->
+                <span class="close-button" id="cerrar-modal-modificar-problema-<%= problema.idProblema %>">&times;</span>
+            </div>
+            <div class="modal-modificar-problema-body">
+                <form id="reunion-form-<%= problema.idProblema %>">
+                    <div class="form-group">
+                        <input type="hidden" id="id-problema-<%= problema.idProblema %>" name="id-problema" value="<%= problema.idProblema %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="nombre-problema-<%= problema.idProblema %>">Nombre del Problema</label>
+                        <input type="text" id="nombre-problema-<%= problema.idProblema %>" name="nombre-problema" value="<%= problema.nombreProblema %>">
+                    </div>
+                    <div class="form-group">
+                        <label for="plataforma-<%= problema.idProblema %>">Plataforma</label>
+                        <select id="plataforma-<%= problema.idProblema %>" name="plataforma">
+                            <% it.plataformas.forEach(plataforma => { %> 
+                              <option value="<%= plataforma.idPlataforma %>" <%= problema.plataformaProblema === plataforma.nombrePlataforma ? "selected" : "" %>><%= plataforma.nombrePlataforma %></option>
+                            <% }); %>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="dificultad-<%= problema.idProblema %>">Dificultad</label>
+                      <select id="dificultad-<%= problema.idProblema %>" name="dificultad">
+                          <% it.dificultades.forEach(dificultad => { %> 
+                            <option value="<%= dificultad.idDificultad %>" <%= problema.dificultadProblema === dificultad.nombreDificultad ? "selected" : "" %>><%= dificultad.nombreDificultad %></option>
+                          <% }); %>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="categorias-<%= problema.idProblema %>">Categorias</label>
+                        <div class="lista-categorias">
+                          <% it.categorias.forEach(categoria => { %>
+                          <div class="categoria" data-id="<%= problema.idProblema %>">
+                              <input type="checkbox" name="seleccion-categoria" id="<%= categoria.nombreCategoria %>-<%= problema.idProblema %>" value="<%= categoria.idCategoria %>">
+                              <label for="<%= categoria.nombreCategoria %>-<%= problema.idProblema %>"><%= categoria.nombreCategoria %></label>
+                          </div>
+                          <% }); %>
+                          <% problema.categoriasProblema.forEach(categoria => { %>
+                            <script>
+                              document.getElementById("<%= categoria %>-<%= problema.idProblema %>".trim()).checked = true;
+                            </script>  
+                          <% }); %>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="link-problema-<%= problema.idProblema %>">Link del Problema</label>
+                        <input type="text" id="link-problema-<%= problema.idProblema %>" name="link-problema" value="<%= problema.urlProblema %>">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-modificar-problema-footer">
+                <!-- IDs únicos para los botones -->
+                <button class="cancel" id="cancelar-modificar-problema-<%= problema.idProblema %>">Cancelar</button>
+                <button class="delete" id="eliminar-modificar-problema-<%= problema.idProblema %>" onclick="eliminarProblema(<%= problema.idProblema %>)">Eliminar</button>
+                <button class="accept" id="aceptar-modificar-problema-<%= problema.idProblema %>" onclick="modificarProblema(<%= problema.idProblema %>)">Aceptar</button>
+            </div>
         </div>
     </div>
-  </div>   
+    <% }); %>    
 
   <main id="main-content">
 
@@ -182,7 +181,7 @@
   
     <div class="contenedor-problemas">
       <% it.problemas.forEach(problema => { %>
-        <div class="problema">
+        <div class="problema" data-id="<%= problema.idProblema %>">
           <div class="titulo-problema"> <i><%= problema.nombreProblema %></i> </div>
             <div class="descripcion-problema">
               <div class="plataforma">Plataforma: <%= problema.plataformaProblema %> </div>

@@ -1,36 +1,36 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
-import { GestorProblemasProgramacionCompetitiva } from "../Modelo/GestorPrueba.ts";
+import { GestorProblemasProgramacionCompetitiva } from "../Modelo/GestorProblemasCompetitiva.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
 
-export function inicializarPrueba(
+export function inicializarPanelAdmin_ProblemasCompetitiva(
   router: Router,
   app: Application
 ) {
   const gestorProblemas = new GestorProblemasProgramacionCompetitiva();
   router.get(
-    "/Prueba",
+    "/AdminPanel_ProblemasCompetitiva",
     gestorProblemas.BuscadorProblemasProgramacionCompetitiva
   );
 
   router.get(
-    "/PruebaEspecifico",
+    "/AdminPanel_ProblemasCompetitivaEspecifico",
     gestorProblemas.BuscadorProblemasProgramacionCompetitivaEspecifico
   );
 
   router.get(
-    "/EliminarProblema",
+    "/AdminPanel_EliminarProblemasCompetitiva",
     gestorProblemas.eliminarProblemaProgramacionCompetitiva
   );
 
   router.get(
-    "/AgregarProblema",
+    "/AdminPanel_AgregarProblemasCompetitiva",
     gestorProblemas.agregarProblemaProgramacionCompetitiva
   );
 
   router.get(
-    "/ModificarProblema",
+    "/AdminPanel_ModificarProblemasCompetitiva",
     gestorProblemas.modificarProblemaProgramacionCompetitiva
   );
 
