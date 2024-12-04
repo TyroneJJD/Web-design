@@ -1,42 +1,47 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
-import { GestorProblemasProgramacionCompetitiva } from "../Modelo/GestorPrueba.ts";
+
 import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
+import { GestorProblemasProgramacionCompetitiva } from "../Modelo/GestorProblemasCompetitiva.ts";
+
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
 
-export function inicializarPrueba(
+export function inicializarPanelAdmin_ProblemasCompetitiva(
   router: Router,
   app: Application
 ) {
   const gestorProblemas = new GestorProblemasProgramacionCompetitiva();
   router.get(
-    "/Prueba",
-    verificadorAutenticacion,
+
+    "/AdminPanel_ProblemasCompetitiva",
+
     gestorProblemas.BuscadorProblemasProgramacionCompetitiva
   );
 
   router.get(
-    "/PruebaEspecifico",
-    verificadorAutenticacion,
+
+    "/AdminPanel_ProblemasCompetitivaEspecifico",
+
     gestorProblemas.BuscadorProblemasProgramacionCompetitivaEspecifico
   );
 
   router.get(
-    "/EliminarProblema",
-    verificadorAutenticacion,
+
+    "/AdminPanel_EliminarProblemasCompetitiva",
     gestorProblemas.eliminarProblemaProgramacionCompetitiva
   );
 
   router.get(
-    "/AgregarProblema",
-    verificadorAutenticacion,
+
+    "/AdminPanel_AgregarProblemasCompetitiva",
     gestorProblemas.agregarProblemaProgramacionCompetitiva
   );
 
   router.get(
-    "/ModificarProblema",
-    verificadorAutenticacion,
+
+    "/AdminPanel_ModificarProblemasCompetitiva",
+
     gestorProblemas.modificarProblemaProgramacionCompetitiva
   );
 

@@ -110,7 +110,7 @@ LIMIT 3;
       if (!nombreProblema || nombreProblema.trim() === "") {
         context.response.headers.set(
           "Location",
-          "/Prueba"
+          "/AdminPanel_ProblemasCompetitiva"
         );
         return;
       }
@@ -221,7 +221,7 @@ LIMIT 3;
             return;
         }
     
-        context.response.redirect("/PruebaEspecifico?nombreProblema=" + nombreProblema);
+        context.response.redirect("/AdminPanel_ProblemasCompetitivaEspecifico?nombreProblema=" + nombreProblema);
         } catch (error) {
         console.error("Error en Agregar Problema:", error);
         context.response.status = 500;
@@ -263,7 +263,7 @@ LIMIT 3;
         return;
       }
 
-      context.response.redirect("/Prueba");
+      context.response.redirect("/AdminPanel_ProblemasCompetitiva");
     } catch (error) {
       console.error("Error en Eliminar Problema:", error);
       context.response.status = 500;
@@ -357,7 +357,7 @@ LIMIT 3;
         return;
       }
 
-      context.response.redirect("/PruebaEspecifico?nombreProblema=" + nombreProblema);
+      context.response.redirect("/AdminPanel_ProblemasCompetitivaEspecifico?nombreProblema=" + nombreProblema);
     } catch (error) {
       console.error("Error en Modificar Problema:", error);
       context.response.status = 500;
