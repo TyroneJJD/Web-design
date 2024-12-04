@@ -11,7 +11,6 @@ import {
 } from "../../Reuniones.ts";
 import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
 
-
 export class CalendarioEntrevistador {
   private db: BaseDeDatosMongoDB;
   constructor() {
@@ -69,11 +68,9 @@ export class CalendarioEntrevistador {
 
   public async asignarCandidatoAReunion(context: Context) {
     try {
-      // Leer los datos del cuerpo de la solicitud
       const body = context.request.body({ type: "json" });
       const { candidato, idReunion } = await body.value;
 
-      // Validar los datos
       if (!candidato || !idReunion) {
         context.response.status = 400;
         context.response.body = {
@@ -82,14 +79,9 @@ export class CalendarioEntrevistador {
         return;
       }
 
-      // Simula guardar los datos en la base de datos
-      //console.log("Asignando candidato a la reunión...");
-      //console.log("Candidato:", candidato);
-
       const registroReunion = await this.obtenerTodosLosDatosDeLaReunionPorID(
         idReunion
       );
-      //console.log("Reunión:", registroReunion);
 
       // Mover el candidato a candidatoSeleccionadoAEntrevistar
       const [candidatoSeleccionado] =
@@ -110,11 +102,7 @@ export class CalendarioEntrevistador {
           "Otro candidato fue seleccionado, mil disculpas.";
       });
 
-      //console.log("Reunión Actualizada:", registroReunion);
-
-      
-
-
+      await this.actualizarReunion(registroReunion);
 
       context.response.status = 200;
       context.response.body = {
@@ -128,6 +116,18 @@ export class CalendarioEntrevistador {
       context.response.status = 500;
       context.response.body = { error: "Ocurrió un error en el servidor." };
     }
+  }
+
+  public async actualizarReunion(reunionActualizada: ISesionEntrevista): Promise<void> {
+    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
+      "Reuniones"
+    ) as unknown as Collection<ISesionEntrevista>;
+    const { _id, ...datosActualizados } = reunionActualizada;
+
+    await collection.updateOne(
+      { _id }, // Filtro por ID de la reunión
+      { $set: datosActualizados } // Datos a actualizar
+    );
   }
 
   public async mostrarCalendarioEntrevistador(context: Context) {
@@ -237,7 +237,6 @@ export class CalendarioEntrevistador {
   public async insertarNuevaReunion(
     nuevaReunion: Omit<ISesionEntrevista, "_id">
   ): Promise<ISesionEntrevista> {
-    console.log("Creando nuevo usuario:", nuevaReunion);
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
       "Reuniones"
     ) as unknown as Collection<ISesionEntrevista>;
