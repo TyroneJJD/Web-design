@@ -14,10 +14,10 @@
         <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
         <nav class="nav-menu">
             <ul>
-                <li><a href="#interns">Interns</a></li>
+                <li><a href="/BuscadorIntershipsV2">Interns</a></li>
                 <li><a href="#perfil">Mi Perfil</a></li>
                 <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
-                <li><a href="#explorar">Explorar</a></li>
+                <li><a href="/ExplorarEntrevistadores">Explorar</a></li>
                 <li><a href="#blog">Blog</a></li>
                 <li><a href="#problemas">Problemas</a></li>
             </ul>
@@ -30,10 +30,6 @@
             <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
             <h2>Avisos</h2>
             <div id="avisos_contenedor">
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
             </div>
         </div>
     </div>
@@ -48,10 +44,11 @@
                         <img src="<%= it.usuario.direccionURLFotoPerfil %>" alt="Foto de perfil">
                     </div>
 
-                    <div id="btn_editar">
-                        <img src="../img_MiPerfil/editar.png" alt="Foto de perfil">
-                    </div>
-                    <!-- Este botón solo debe de aparecer si es tu perfil el que estás viendo -->
+                    <% if (it.esMiPerfil) { %>                 
+                        <div id="btn_editar">
+                            <a href="/verEditarDatosPerfil"><img src="../img_MiPerfil/editar.png" alt="Foto de perfil"></a>
+                        </div>
+                    <% } %>
                     
                 </div>
             </div>
@@ -69,24 +66,33 @@
             <div class="certificados">
                 <h3>Links</h3>
                 <ul id="mis_redes">
-                    <li class="red_social">
-                        <div class="elemento">
-                            <img src="https://media.geeksforgeeks.org/wp-content/uploads/20200327230544/g4gicon.png" width="50" alt="">
-                            <span><%= it.usuario.linksUsuario.linkLinkendin %></span>
-                        </div>
-                    </li>
-                    <li class="red_social">
-                        <div class="elemento">
-                            <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" width="50" alt="">
-                            <span><%= it.usuario.linksUsuario.linkGithub %></span>
-                        </div>
-                    </li>
-                    <li class="red_social">
-                        <div class="elemento">
-                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/69/Portfolio_icon.svg/1200px-Portfolio_icon.svg.png" width="50" alt="">
-                            <span><%= it.usuario.linksUsuario.linkPortafolioPersonal %></span>
-                        </div>
-                    </li>
+
+                    <% if (it.usuario.linksUsuario.linkLinkendin !== "") { %>                 
+                        <li class="red_social">
+                            <div class="elemento">
+                                <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="50" alt="">
+                                <p><%= it.usuario.linksUsuario.linkLinkendin %></p>
+                            </div>
+                        </li>
+                    <% } %>
+
+                    <% if (it.usuario.linksUsuario.linkGithub !== "") { %>                 
+                        <li class="red_social">
+                            <div class="elemento">
+                                <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" width="50" alt="">
+                                <p><%= it.usuario.linksUsuario.linkGithub %></p>
+                            </div>
+                        </li>
+                    <% } %>
+
+                    <% if (it.usuario.linksUsuario.linkPortafolioPersonal !== "") { %>                 
+                        <li class="red_social">
+                            <div class="elemento">
+                                <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="50" alt="">
+                                <p><%= it.usuario.linksUsuario.linkPortafolioPersonal %></p>
+                            </div>
+                        </li>
+                    <% } %>
                 </ul>
             </div>
             <div class="resenas">

@@ -6,6 +6,7 @@
     <title>Mi Proyecto</title>
     <link rel="stylesheet" href="../css_MiPerfil/basic_style.css">
     <link rel="stylesheet" href="../css_MiPerfil/editar_style.css">
+
 </head>
 <body>
 
@@ -30,9 +31,6 @@
             <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
             <h2>Avisos</h2>
             <div id="avisos_contenedor">
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
-                <p>Este es el contenido del modal de avisos.</p>
                 <p>Este es el contenido del modal de avisos.</p>
             </div>
         </div>
@@ -63,8 +61,6 @@
 
             <h1 id="nombre_usuario"><%= it.usuario.nombreUsuario %></h1>
 
-            <!-- Formulario para editar datos -->
-            <form id="formulario_editar_perfil" action="/editarDatosPerfil" method="POST">
                 <div id="info_personal_inputs">
                     <div>
                         <input 
@@ -91,65 +87,42 @@
 
                 <p class="puntuacion">Esto será calculado en base a algo</p>
 
-                <!-- Links de redes sociales -->
-                <div id="links_inputs">
-                    <input 
-                        type="text" 
-                        name="linkLinkedin" 
-                        class="red_social" 
-                        value="<%= it.usuario.linksUsuario.linkLinkendin %>"
-                    >
-                    <br>
-                    <input 
-                        type="text" 
-                        name="linkGithub" 
-                        class="red_social" 
-                        value="<%= it.usuario.linksUsuario.linkGithub %>"
-                    >
-                    <br>
-                    <input 
-                        type="text" 
-                        name="linkPortafolio" 
-                        class="red_social" 
-                        value="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>"
-                    >
-                </div>
-
                 <!-- Botones para guardar o cancelar -->
                 <button type="submit" id="guardar_btn">Guardar</button>
-                <button type="button" id="cancelar_btn">Cancelar</button>
-            </form>
+                <a href="/verMiPerfil"><button type="button" id="cancelar_btn">Cancelar</button></a>
         </section>
 
         <!-- Columna derecha -->
         <section class="detalles">
-            <div class="links">
+            <div class="certificados">
                 <h3>Links</h3>
-                <div id="links_inputs">
-                    <input 
-                        type="text" 
-                        class="red_social" 
-                        value="<%= it.usuario.linksUsuario.linkLinkendin %>"
-                    >
-                    <br>
-                    <input 
-                        type="text" 
-                        class="red_social" 
-                        value="<%= it.usuario.linksUsuario.linkGithub %>"
-                    >
-                    <br>
-                    <input 
-                        type="text" 
-                        class="red_social" 
-                        value="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>"
-                    >
-                </div>
+                </li>
+                <ul id="mis_redes">
+                    <li class="red_social">
+                        <div class="elemento">
+                            <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="50" alt="">
+                            <input id="linkLinkendin" type="text" value="<%= it.usuario.linksUsuario.linkLinkendin %>" placeholder="LinkedLn">
+                        </div>
+                    </li>
+                    <li class="red_social">
+                        <div class="elemento">
+                            <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" width="50" alt="">
+                            <input id="linkGithub" type="text" value="<%= it.usuario.linksUsuario.linkGithub %>" placeholder="GitHub">
+                        </div>
+                    </li>
+                    <li class="red_social">
+                        <div class="elemento">
+                            <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="50" alt="">
+                            <input id="linkPortafolioPersonal" type="text" value="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>" placeholder="Portafolio">
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div class="resenas">
                 <h3>Reseñas</h3>
-                <ul id="lista_reseñas">
-                    <li></li>
-                </ul>
+                <% it.usuario.reseniasUsuario.forEach(function(resenia) { %>
+                    <p><%= it.usuario.resenia.nombreUsuarioResenador %>: <%= it.usuario.resenia.contenidoResenia %> - Calificación: <%= it.usuario.resenia.calificacionResenia %></p>
+                <% }); %>
             </div>
         </section>
     </main>

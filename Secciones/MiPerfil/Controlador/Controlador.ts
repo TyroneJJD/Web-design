@@ -7,6 +7,7 @@ export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/MiPerfil/Vi
 export function inicializarMiPerfil(router: Router, app: Application) {
   const miPerfil = new PerfilPropio();
   router.get("/verMiPerfil", miPerfil.mostrarPaginaVerMiPerfil);
+  router.get("/verPerfil", miPerfil.mostrarPaginaVerPerfil);
   router.get("/verEditarDatosPerfil", miPerfil.mostrarPaginaEditarMiPerfil);
 
   router.post("/editarDatosPerfil", miPerfil.editarDatosPerfil);

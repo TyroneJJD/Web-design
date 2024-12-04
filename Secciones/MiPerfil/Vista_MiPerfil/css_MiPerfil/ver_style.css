@@ -114,11 +114,15 @@
     display: flex;
     align-items: center;
     margin: 7px;
+    overflow: auto;
+
 }
 
-.elemento span{
-    font-size: 1em;
+.elemento p{
     margin-left: 5%;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    word-break: break-word;
 }
 
 #mis_redes{
