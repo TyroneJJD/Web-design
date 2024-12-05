@@ -45,10 +45,15 @@ menuToggle.addEventListener('click', () => {
 
 // Logica para modal de horario default
 
-const horarios = document.querySelectorAll('.horario');
-const modalcita = document.getElementById('modal-cita');
-const closeModalCita = document.getElementById('cerrar-modal-cita');
-const cancelModalCita = document.getElementById('cancelar-cita');
+// Obtener los id de las reuniones
+const elementos = document.querySelectorAll('.horario[data-id]');
+elementos.forEach(elemento => {
+    console.log(elemento.getAttribute('data-id'));
+    
+const horarios = document.querySelectorAll('.horario[data-id="'+elemento.getAttribute('data-id')+'"]');
+const modalcita = document.getElementById('modal-cita-'+elemento.getAttribute('data-id'));
+const closeModalCita = document.getElementById('cerrar-modal-cita-'+elemento.getAttribute('data-id'));
+const cancelModalCita = document.getElementById('cancelar-cita-'+elemento.getAttribute('data-id'));
 
 // Abrir modal al seleccionar horario
 horarios.forEach(horario => {
@@ -73,6 +78,7 @@ window.addEventListener('click', (e) => {
     }
 });
 
+});
 // Logica para modal de horario pendiente
 
 const horariosPendientes = document.querySelectorAll('.horario_pendiente');
