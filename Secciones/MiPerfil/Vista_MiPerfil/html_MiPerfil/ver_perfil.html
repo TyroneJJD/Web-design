@@ -54,7 +54,7 @@
 
 
                     <% if (it.esMiPerfil) { %>                 
-                        <div id="btn_editar">
+                        <div id="btn_editar" title="Editar Perfil">
                             <a href="/verEditarDatosPerfil"><img src="../img_MiPerfil/editar.png" alt="Foto de perfil"></a>
                         </div>
                     <% } %>
@@ -83,7 +83,7 @@
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="50" alt="">
-                                <p><%= it.usuario.linksUsuario.linkLinkendin %></p>
+                                <p><a href="<%= it.usuario.linksUsuario.linkLinkendin %>">LinkedIn</a></p>
                             </div>
                         </li>
                     <% } %>
@@ -92,7 +92,7 @@
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" width="50" alt="">
-                                <p><%= it.usuario.linksUsuario.linkGithub %></p>
+                                <p><a href="<%= it.usuario.linksUsuario.linkGithub %>">GitHub</a></p>
                             </div>
                         </li>
                     <% } %>
@@ -101,7 +101,7 @@
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="50" alt="">
-                                <p><%= it.usuario.linksUsuario.linkPortafolioPersonal %></p>
+                                <p><a href="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>">Mi Pagina!</a></p>
                             </div>
                         </li>
                     <% } %>
