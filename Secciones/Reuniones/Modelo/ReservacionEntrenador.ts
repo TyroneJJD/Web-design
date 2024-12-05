@@ -46,15 +46,25 @@ export class ReservacionEntrenador {
     if (context.request.hasBody) {
       const body = await context.request.body({ type: "form" }).value;
 
-      // Recuperar los datos del formulario
-      const idSesionReunion = "674e9623334586762d8bcc10"; //body.get("idSesion")?.trim() || "";
-      const idCandidatoRegistrado = "hgbf"; //body.get("idCandidatoRegistrado")?.trim() || "";
+      // Recuperar los datos del 
+      const idEntrevistador = body.get("idCoach")?.trim() || "";
+      const idSesionReunion = body.get("idSesion")?.trim() || "";
+      const idCandidatoRegistrado = body.get("idCandidatoRegistrado")?.trim() || "";
 
       const tipoDeReunion = body.get("tipoDeReunion")?.trim() || "";
       const motivoDeLaReunion = body.get("motivoDeLaReunion")?.trim() || "";
       const comentariosAdicionales =
         body.get("comentariosAdicionales")?.trim() || "";
       const linkResume = body.get("linkResume")?.trim() || "";
+
+      console.log(
+        idSesionReunion,
+        idCandidatoRegistrado,
+        tipoDeReunion,
+        motivoDeLaReunion,
+        comentariosAdicionales,
+        linkResume
+      );
 
       if (
         !idSesionReunion ||
@@ -101,6 +111,7 @@ export class ReservacionEntrenador {
         // Responder con éxito
         context.response.status = 200;
         context.response.body = { message: "Candidato agregado exitosamente." };
+        context.response.redirect("/reservacionEntrenador?perfil="+idEntrevistador);
       } catch (error) {
         console.error("Error agregando el candidato:", error);
         context.response.status = 500;
