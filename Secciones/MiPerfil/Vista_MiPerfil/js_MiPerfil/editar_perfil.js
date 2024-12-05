@@ -120,11 +120,38 @@ CancelarBtn.addEventListener("click", ()=>{
 
 function EsInfoValida(){
 
-    return (EsRolValido() && EsDescripcionValida() && SonLinksValidos() && EsImagenValida(imagenBackground) && EsImagenValida(imagenPerfil));
+    if(!EsRolValido){
+        alert("Ingrese correctamente el rol");
+        return false;
+    }
+
+    if(!EsDescripcionValida()){
+        alert("Ingrese correctamente la descripción");
+        return false;
+    }
+
+    if(!SonLinksValidos()){
+        alert("Ingrese correctamente los links");
+        return false;
+    }
+
+    if(!EsImagenValida(imagenBackground)){
+        alert("Ingrese la imagen de background");
+        return false;
+    }
+
+    if(!EsImagenValida(imagenPerfil)){
+        alert("Ingrese la imagen de perfil");
+        return false;
+    }
+
+    return true;
 
 }
 
 function EsRolValido(){
+
+    let texto = document.getElementById("rol").value.trim();
 
     if(document.getElementById("rol").value.trim().length > 20){
         return false;
@@ -134,6 +161,8 @@ function EsRolValido(){
 }    
 
 function EsDescripcionValida(){
+
+    let texto = document.getElementById("sobre_mi").value.trim();
 
     if(document.getElementById("sobre_mi").value.trim().length > 150){
         return false;
@@ -146,7 +175,7 @@ function SonLinksValidos(){
 
     let result = true;
     
-    document.querySelectorAll('.red_social').forEach(input => {
+    document.querySelectorAll('.mi_link').forEach(input => {
         if(input.value !== ""){
             try{
                 new URL(input.value.trim());
@@ -156,9 +185,6 @@ function SonLinksValidos(){
             }
         }
     });
-
-    console.log("EsLink")
-    console.log(result)
 
     return result;
 } 
@@ -206,6 +232,7 @@ function CargaFotoBackGround(){
 }
 
 function EnviaDatosGuardados(infoPerfil){
+    console.log(JSON.stringify(infoPerfil));
     fetch('/editarDatosPerfil', {
         method: 'POST', // Método HTTP
         headers: {
@@ -213,17 +240,4 @@ function EnviaDatosGuardados(infoPerfil){
         },
         body: JSON.stringify(infoPerfil), // Convertir el objeto a JSON
     })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error en la solicitud: ${response.status}`);
-            }
-            return response.json(); // Parsear la respuesta JSON
-        })
-        .then(result => {
-            console.log("Respuesta del servidor:", result);
-            alert(result)
-        })
-        .catch(error => {
-            console.error("Ocurrió un error:", error);
-        });
 }
