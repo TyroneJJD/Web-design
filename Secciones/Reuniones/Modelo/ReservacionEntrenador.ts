@@ -9,7 +9,11 @@ import {
   ISesionEntrevista,
   IDetallesCandidatosRegistrado,
 } from "../../Reuniones.ts";
-import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
+import { 
+  obtenerIdUsuario,
+  obtenerNombresUsuario,
+  obtenerApellidoUsuario
+} from "../../../Servicios/Autenticacion.ts";
 
 export class ReservacionEntrenador {
   private db: BaseDeDatosMongoDB;
@@ -25,14 +29,18 @@ export class ReservacionEntrenador {
 
   public async mostrarReservacionEntrenador(context: Context) {
     const idMiUsuario = await obtenerIdUsuario(context);
+    const nombreUsuario = await obtenerNombresUsuario(context);
+    const apellidoUsuario = await obtenerApellidoUsuario(context);
     const IdSolicitado = this.obtenerIdSolicitado(context);
     const InfoDelCoach = await this.obtenerEntrevistadorPorId(IdSolicitado);
     const reunionesDelCoach = await this.obtenerReunionesCreadasPorElEntrenador(IdSolicitado);
+    const nombresCandidato = nombreUsuario + " " + apellidoUsuario;
 
     const html = await renderizarVista(
       "ReservacionEntrenador.html",
       {
         idUsuario: idMiUsuario,
+        nombreCandidato: nombresCandidato,
         reuniones: reunionesDelCoach,
         coachInfo:InfoDelCoach
       },
@@ -50,7 +58,7 @@ export class ReservacionEntrenador {
       const idEntrevistador = body.get("idCoach")?.trim() || "";
       const idSesionReunion = body.get("idSesion")?.trim() || "";
       const idCandidatoRegistrado = body.get("idCandidatoRegistrado")?.trim() || "";
-
+      const nombreCandidato = body.get("nombreCandidato")?.trim() || "";
       const tipoDeReunion = body.get("tipoDeReunion")?.trim() || "";
       const motivoDeLaReunion = body.get("motivoDeLaReunion")?.trim() || "";
       const comentariosAdicionales =
@@ -82,7 +90,7 @@ export class ReservacionEntrenador {
         // Crear el objeto candidato
         const nuevoCandidato: IDetallesCandidatosRegistrado = {
           idCandidatoRegistrado: idCandidatoRegistrado,
-
+          nombreCandidato: nombreCandidato,
           tipoDeReuinion: tipoDeReunion,
           motivoDeLaReunion: motivoDeLaReunion,
           comentariosAdicionales: comentariosAdicionales,

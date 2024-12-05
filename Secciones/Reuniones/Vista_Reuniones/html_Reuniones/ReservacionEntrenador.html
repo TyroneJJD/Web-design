@@ -49,6 +49,8 @@
                 <form id="reunion-form" method="POST" action="/inscribirme-reunion">
                     <input type="hidden"  id="idSesion" value="<%= it.idSesion %>">
                     <input type="hidden"  id="idCandidatoRegistrado" value="<%= it.idUsuario %>">
+                    <input type="hidden" name="nombreCandidato" value="<%= it.nombreCandidato %>">
+
                     <div class="form-group">
                         <label for="tipo-reunion">Tipo de Reunión</label>
                         <select id="tipo-reunion" name="tipoDeReunion">
@@ -157,7 +159,7 @@
                 <% it.reuniones.forEach(reunion => { 
                     //infoReunion;
                     const idSesion = reunion._id;
-                    
+
 
                     const fechaInicio = new Date(reunion.horaInicio);
                 
@@ -188,6 +190,8 @@
                                 <input type="hidden" name="idCoach" value="<%= it.coachInfo._id %>">
                                 <input type="hidden" name="idSesion" value="<%= idSesion %>">
                                 <input type="hidden" name="idCandidatoRegistrado" value="<%= it.idUsuario %>">
+                                <input type="hidden" name="nombreCandidato" value="<%= it.nombreCandidato %>">
+
                                 <div class="form-group">
                                     <label for="tipo-reunion-<%= idSesion %>">Tipo de Reunión</label>
                                     <select id="tipo-reunion-<%= idSesion %>" name="tipoDeReunion">
