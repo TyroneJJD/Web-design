@@ -176,3 +176,55 @@ button{
     flex-direction: column;
     gap: 20px;
 }
+
+/*Drag n drop*/
+#zona_cambio_background {
+    display: none; /* Inicialmente oculta */
+    width: 80%;
+    height: 200px;
+    border: 2px dashed #ccc;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    border-radius: 10px;
+}
+
+#zona_cambio_perfil {
+    display: none; /* Inicialmente oculta */
+    width: 80%;
+    height: 200px;
+    border: 2px dashed #ccc;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255, 255, 255, 0.8);
+    z-index: 1000;
+    text-align: center;
+    font-size: 18px;
+    color: #333;
+    border-radius: 10px;
+}
+
+#contenedor_zonas{
+    display: none; /* Oculto por defecto */
+    position: fixed; /* Posición fija para flotar sobre la página */
+    top: 0;
+    left: 0;
+    width: 100%; /* Cubre todo el ancho */
+    height: 100%; /* Cubre toda la altura */
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    justify-content: center; /* Centra horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    z-index: 1001; /* Asegura que esté encima de todo */
+}
