@@ -128,10 +128,13 @@ export class ManejadorArchivos {
   ): Promise<string> {
     const { fileName, base64 } = archivoJSON;
     const nombreCarpeta = "FotosPerfil";
-  
+
     const datosArchivo = new Uint8Array(
-      atob(base64).split("").map((char) => char.charCodeAt(0))
+      atob(base64.split(",")[1]).split("").map((char) => char.charCodeAt(0))
     );
+
+    const mimeType = base64.substring(base64.indexOf(":") + 1, base64.indexOf(";")); 
+    console.log(mimeType)
   
     const urlDeSubida = `${this.storageBucketUrl}/${encodeURIComponent(
       nombreCarpeta + "/" + idUsuario
@@ -141,7 +144,7 @@ export class ManejadorArchivos {
       method: "POST",
       headers: {
         Authorization: `Bearer ${env.FIREBASE_API_KEY}`,
-        "Content-Type": "application/octet-stream",
+        "Content-Type": mimeType,
       },
       body: datosArchivo,
     });
@@ -152,10 +155,13 @@ export class ManejadorArchivos {
   
     const responseBody = await respuestaAPI.json();
     const tokenArchivo = responseBody.downloadTokens;
-  
-    return `https://firebasestorage.googleapis.com/v0/b/${
+
+    let url = `https://firebasestorage.googleapis.com/v0/b/${
       env.FIREBASE_STORAGE_BUCKET
     }/o/${encodeURIComponent(nombreCarpeta + "/" + fileName)}?alt=media&token=${tokenArchivo}`;
+
+    console.log(url)
+    return url;
   }
 
 
@@ -167,8 +173,11 @@ export class ManejadorArchivos {
     const nombreCarpeta = "FotosBackground";
   
     const datosArchivo = new Uint8Array(
-      atob(base64).split("").map((char) => char.charCodeAt(0))
+      atob(base64.split(",")[1]).split("").map((char) => char.charCodeAt(0))
     );
+
+    const mimeType = base64.substring(base64.indexOf(":") + 1, base64.indexOf(";")); 
+    console.log(mimeType)
   
     const urlDeSubida = `${this.storageBucketUrl}/${encodeURIComponent(
       nombreCarpeta + "/" + idUsuario
@@ -178,7 +187,7 @@ export class ManejadorArchivos {
       method: "POST",
       headers: {
         Authorization: `Bearer ${env.FIREBASE_API_KEY}`,
-        "Content-Type": "application/octet-stream",
+        "Content-Type": mimeType,
       },
       body: datosArchivo,
     });

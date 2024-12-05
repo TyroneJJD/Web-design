@@ -45,9 +45,9 @@ backgroundInput.addEventListener('change', function (event) {
             elementoConBackground.style.backgroundImage = `url(${imageSrc})`;
 
             imagenBackground = {
-                imageUrl: imageSrc,       // Base64 de la imagen
                 fileName: file.name,      // Nombre del archivo
-                fileSize: file.size,      // Tamaño del archivo en bytes
+                base64: imageSrc,       // Base64 de la imagen
+                //fileSize: file.size,      // Tamaño del archivo en bytes
             };
         };
 
@@ -67,9 +67,9 @@ perfilInput.addEventListener('change', function (event) {
             elementoFoto.src = imageSrc;
 
             imagenPerfil = {
-                imageUrl: imageSrc,       // Base64 de la imagen
                 fileName: file.name,      // Nombre del archivo
-                fileSize: file.size,      // Tamaño del archivo en bytes
+                base64: imageSrc,       // Base64 de la imagen
+                //fileSize: file.size,      // Tamaño del archivo en bytes
             };
         };
 
@@ -200,23 +200,22 @@ function EsImagenValida(img){
     }
 
     // Validar que el objeto esté completo
-    if (!img.imageUrl || !img.fileName || !img.fileSize) {
+    if (!img.base64 || !img.fileName ) {
         return false;
     }
 
-    if (img.imageUrl == "" || img.fileName == "" || img.fileSize <= 0 ) {
+    if (img.base64 == "" || img.fileName == "") {
         return false;
     }
 
     // Validar que la URL sea de una imagen
-    if (!img.imageUrl.startsWith('data:image')) {
+    if (!img.base64.startsWith('data:image')) {
         return false;
     }
 
     if (!(img &&
-        typeof img.imageUrl === 'string' &&
-        typeof img.fileName === 'string' &&
-        typeof img.fileSize === 'number')) {
+        typeof img.base64 === 'string' &&
+        typeof img.fileName === 'string')) {
       return true;
     }
 
