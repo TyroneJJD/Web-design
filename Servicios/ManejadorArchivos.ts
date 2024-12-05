@@ -158,7 +158,7 @@ export class ManejadorArchivos {
 
     let url = `https://firebasestorage.googleapis.com/v0/b/${
       env.FIREBASE_STORAGE_BUCKET
-    }/o/${encodeURIComponent(nombreCarpeta + "/" + fileName)}?alt=media&token=${tokenArchivo}`;
+    }/o/${encodeURIComponent(nombreCarpeta + "/" + idUsuario)}?alt=media&token=${tokenArchivo}`;
 
     console.log(url)
     return url;
@@ -201,7 +201,7 @@ export class ManejadorArchivos {
   
     return `https://firebasestorage.googleapis.com/v0/b/${
       env.FIREBASE_STORAGE_BUCKET
-    }/o/${encodeURIComponent(nombreCarpeta + "/" + fileName)}?alt=media&token=${tokenArchivo}`;
+    }/o/${encodeURIComponent(nombreCarpeta + "/" + idUsuario)}?alt=media&token=${tokenArchivo}`;
   }
   
 }
