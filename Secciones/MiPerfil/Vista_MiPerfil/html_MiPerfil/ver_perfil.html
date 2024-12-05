@@ -10,7 +10,7 @@
 <body>
 
     <header>
-        <div class="logo" id="home">Nombre Proyecto</div>
+        <a id="home" href="/home"><div class="logo" id="home">Nombre Proyecto</div></a>
         <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
         <nav class="nav-menu">
             <ul>
@@ -40,12 +40,21 @@
             <div id="contenedor_foto" style="background-image: url('<%= it.usuario.direccionURLFotoBackground %>');">
                 <div class="foto">
 
-                    <div id="foto_perfil">
-                        <img src="<%= it.usuario.direccionURLFotoPerfil %>" alt="Foto de perfil">
-                    </div>
+                    <% if (it.usuario.direccionURLFotoPerfil == "") { %>
+                        <div id="contenedor_foto_perfil">
+                            <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" 
+                            alt="Foto de perfil" id="foto_perfil">
+                        </div>
+                    <% } else { %>
+                        <div id="contenedor_foto_perfil">
+                            <img src="<%= it.usuario.direccionURLFotoPerfil %>" 
+                            alt="Foto de perfil" id="foto_perfil">
+                        </div>
+                    <% } %>
+
 
                     <% if (it.esMiPerfil) { %>                 
-                        <div id="btn_editar">
+                        <div id="btn_editar" title="Editar Perfil">
                             <a href="/verEditarDatosPerfil"><img src="../img_MiPerfil/editar.png" alt="Foto de perfil"></a>
                         </div>
                     <% } %>
@@ -74,7 +83,7 @@
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="50" alt="">
-                                <p><%= it.usuario.linksUsuario.linkLinkendin %></p>
+                                <p><a href="<%= it.usuario.linksUsuario.linkLinkendin %>">LinkedIn</a></p>
                             </div>
                         </li>
                     <% } %>
@@ -83,7 +92,7 @@
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" width="50" alt="">
-                                <p><%= it.usuario.linksUsuario.linkGithub %></p>
+                                <p><a href="<%= it.usuario.linksUsuario.linkGithub %>">GitHub</a></p>
                             </div>
                         </li>
                     <% } %>
@@ -92,7 +101,7 @@
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="50" alt="">
-                                <p><%= it.usuario.linksUsuario.linkPortafolioPersonal %></p>
+                                <p><a href="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>">Mi Pagina!</a></p>
                             </div>
                         </li>
                     <% } %>

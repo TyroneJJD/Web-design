@@ -16,46 +16,6 @@ export class ManejadorCorreoElectronico {
     this.domain = env.MAILGUN_DOMAIN;
   }
 
-  public async enviarCorreoNuevaReunionParaEntrevistador(
-    corrreoElectronicoEntrevistador: string,
-    nombreEntrevistado: string,
-    urlReunion: string
-  ): Promise<void> {
-    const plantilla = await this.cargarPlantillaCorreoElectronico(
-      "correo_nueva_reunion_entrevistador.html"
-    );
-    const contenidoHTML = this.rellenarCamposPlantilla(plantilla, {
-      nombreEntrevistado,
-      urlReunion,
-    });
-
-    await this.enviarCorreoElectronico({
-      destinatario: corrreoElectronicoEntrevistador,
-      temaCorreo: "Tienes una nueva reunión programada",
-      contenidoHTML: contenidoHTML,
-    });
-  }
-
-  public async enviarCorreoNuevaReunionParaEntrevistado(
-    corrreoElectronicoEntrevistado: string,
-    nombreEntrevistador: string,
-    urlReunion: string
-  ): Promise<void> {
-    const plantilla = await this.cargarPlantillaCorreoElectronico(
-      "correo_nueva_reunion_entrevistado.html"
-    );
-    const contenidoHTML = this.rellenarCamposPlantilla(plantilla, {
-      nombreEntrevistador,
-      urlReunion,
-    });
-
-    await this.enviarCorreoElectronico({
-      destinatario: corrreoElectronicoEntrevistado,
-      temaCorreo: "Tienes una nueva reunión programada",
-      contenidoHTML: contenidoHTML,
-    });
-  }
-
   private async enviarCorreoElectronico({
     destinatario,
     temaCorreo,
@@ -66,6 +26,7 @@ export class ManejadorCorreoElectronico {
     form.append("to", destinatario);
     form.append("subject", temaCorreo);
     form.append("html", contenidoHTML);
+    //form.append("text", text);
 
     try {
       const response = await fetch(
@@ -79,6 +40,7 @@ export class ManejadorCorreoElectronico {
         }
       );
 
+      // Verificar si la respuesta es exitosa
       if (!response.ok) {
         const errorText = await response.text();
         throw new Error(`Mailgun API error: ${response.status} ${errorText}`);
@@ -91,20 +53,115 @@ export class ManejadorCorreoElectronico {
     }
   }
 
-  private async cargarPlantillaCorreoElectronico(
-    archivo: string
-  ): Promise<string> {
-    return await Deno.readTextFile(archivo);
+  public enviarCorreoNuevaReunionParaEntrevistador(
+    corrreoElectronicoEntrevistador: string,
+    nombreEntrevistado: string,
+    urlReunion: string
+  ): void {
+    this.enviarCorreoElectronico({
+      destinatario: corrreoElectronicoEntrevistador,
+      temaCorreo: "Tienes una nueva reunión programada",
+      contenidoHTML:
+        `
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          color: #333;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          border: 1px solid #ddd;
+          background-color: #f9f9f9;
+        }
+        .button {
+          display: inline-block;
+          padding: 10px 15px;
+          margin-top: 10px;
+          background-color: #007bff;
+          color: white;
+          text-decoration: none;
+          border-radius: 5px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>Reunión programada</h2>
+        <p>Hola,</p>
+        <p><strong> ` +
+        nombreEntrevistado +
+        ` </strong> ha solicitado una sesion de asesoria contigo.</p>
+        <p>Puedes unirte a la reunión haciendo clic en el siguiente enlace:</p>
+        <a href="` +
+        urlReunion +
+        `" class="button">Unirse a la reunión</a>
+        <p>Si tienes alguna pregunta, no dudes en ponerte en contacto.</p>
+        <p>Saludos,<br>El equipo: Umizumi</p>
+      </div>
+    </body>
+    </html>
+    `,
+    });
   }
 
-  private rellenarCamposPlantilla(
-    template: string,
-    variables: Record<string, string>
-  ): string {
-    let resultado = template;
-    for (const [clave, valor] of Object.entries(variables)) {
-      resultado = resultado.replace(new RegExp(`{{${clave}}}`, "g"), valor);
-    }
-    return resultado;
+  public enviarCorreoNuevaReunionParaEntrevistado(
+    corrreoElectronicoEntrevistado: string,
+    nombreEntrevistador: string,
+    urlReunion: string
+  ): void {
+    this.enviarCorreoElectronico({
+      destinatario: corrreoElectronicoEntrevistado,
+      temaCorreo: "Tienes una nueva reunión programada",
+      contenidoHTML:
+        `
+      <!DOCTYPE html>
+      <html>
+      <head>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          color: #333;
+        }
+        .container {
+          max-width: 600px;
+          margin: 0 auto;
+          padding: 20px;
+          border: 1px solid #ddd;
+          background-color: #f9f9f9;
+        }
+        .button {
+          display: inline-block;
+          padding: 10px 15px;
+          margin-top: 10px;
+          background-color: #007bff;
+          color: white;
+          text-decoration: none;
+          border-radius: 5px;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="container">
+        <h2>Reunión programada</h2>
+        <p>Hola,</p>
+        <p><strong> ` +
+        nombreEntrevistador +
+        ` </strong> ha aceptado tu solicitud de asesoria.</p>
+        <p>Puedes unirte a la reunión haciendo clic en el siguiente enlace:</p>
+        <a href="` +
+        urlReunion +
+        `" class="button">Unirse a la reunión</a>
+        <p>Si tienes alguna pregunta, no dudes en ponerte en contacto.</p>
+        <p>Saludos,<br>El equipo: Umizumi</p>
+      </div>
+    </body>
+    </html>
+    `,
+    });
   }
 }

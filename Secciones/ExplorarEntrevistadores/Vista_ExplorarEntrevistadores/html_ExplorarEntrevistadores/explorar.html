@@ -9,7 +9,7 @@
 <body>
 
     <header>
-        <div class="logo" id="home">Nombre Proyecto</div>
+        <a id="home" href="/home"><div class="logo" id="home">Nombre Proyecto</div></a>
         <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
         <nav class="nav-menu">
             <ul>
@@ -50,7 +50,7 @@
     
         <div class="contenedor-coaches">
             <% it.coaches.forEach(coach => { %>
-                <div class="tarjeta-coach" onclick="window.location.href='/perfil_coach/<%= coach._id %>'">
+                <div class="tarjeta-coach" onclick="window.location.href='/verPerfil?perfil=<%= coach._id %>'">
                     <div class="foto-perfil">
                         <img src="<%= coach.direccionURLFotoPerfil %>" alt="Foto de <%= coach.nombreUsuario %>">
                     </div>

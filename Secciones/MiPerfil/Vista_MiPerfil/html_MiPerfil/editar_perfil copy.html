@@ -62,20 +62,12 @@
             <div id="contenedor_selector_imagen">
                 <div>
                     <button id="cambiar_background_btn">Cambiar Background</button>
+                    <input type="file" id="backgroung_img" accept="image/*" style="display: none;">
                     <button id="cambiar_perfil_btn">Cambiar imagen de perfil</button>
-                </div>
-
-                <div id="contenedor_zonas">
-                        <div id="zona_cambio_background" >
-                            Arrastra y suelta una imagen de fondo aquí
-                        </div>
-                
-                        <div id="zona_cambio_perfil" >
-                            Arrastra y suelta una imagen de perfil aquí
-                        </div>
+                    <input type="file" id="perfil_img" accept="image/*" style="display: none;">
                 </div>
             </div>
-            
+
             <h1 id="nombre_usuario"><%= it.usuario.nombreUsuario %></h1>
 
                 <div id="info_personal_inputs">

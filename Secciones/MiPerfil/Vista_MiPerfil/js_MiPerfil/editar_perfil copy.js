@@ -1,12 +1,11 @@
-const contenedorZonas = document.getElementById("contenedor_zonas");
-const zonaCambioBackground = document.getElementById("zona_cambio_background");
-const zonaCambioPerfil = document.getElementById("zona_cambio_perfil");
-
-const cambiarBackgroundBtn = document.getElementById("cambiar_background_btn");
-const cambiarPerfilBtn = document.getElementById("cambiar_perfil_btn");
+const cambiarFotoBackgroundBtn = document.getElementById('cambiar_background_btn');
+const cambiarFotoPerfilBtn = document.getElementById('cambiar_perfil_btn');
 
 const GuardarBtn = document.getElementById("guardar_btn");
 const CancelarBtn = document.getElementById("cancelar_btn");
+
+const backgroundInput = document.getElementById('backgroung_img');
+const perfilInput = document.getElementById('perfil_img');
 
 const elementoConBackground = document.getElementById('contenedor_foto');
 const elementoFoto = document.getElementById('foto_perfil');
@@ -20,78 +19,63 @@ console.log(imagenPerfilInicial);
 let imagenBackground = imagenBackgroundInicial;
 let imagenPerfil = imagenPerfilInicial;
 
-cambiarBackgroundBtn.addEventListener("click", function() {
-    contenedorZonas.style.display = "flex"
-    zonaCambioBackground.style.display = "flex"; 
-    zonaCambioPerfil.style.display = "none"; 
-});
-
-cambiarPerfilBtn.addEventListener("click", function() {
-    contenedorZonas.style.display = "flex"
-    zonaCambioPerfil.style.display = "flex"; 
-    zonaCambioBackground.style.display = "none";
-});
-
-zonaCambioBackground.addEventListener("dragover", permitirDrop);
-zonaCambioBackground.addEventListener("drop", function (event) {
-    manejarDrop(event, "background");
-});
-
-zonaCambioPerfil.addEventListener("dragover", permitirDrop);
-zonaCambioPerfil.addEventListener("drop", function (event) {
-    manejarDrop(event, "perfil");
-});
-
-function permitirDrop(event) {
-    event.preventDefault(); 
-}
-
-window.addEventListener("click", (e) => {
-    if (e.target === contenedorZonas) {
-        contenedorZonas.style.display = "none"
-        zonaCambioBackground.style.display = "none";
-    }
-    if (e.target === zonaCambioPerfil) {
-        contenedorZonas.style.display = "none"
-        zonaCambioPerfil.style.display = "none";
-    }
+document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-function manejarDrop(event, tipo) {
-    event.preventDefault(); 
-    const file = event.dataTransfer.files[0]; 
+cambiarFotoBackgroundBtn.addEventListener('click', () => {
+  backgroundInput.click();
+});
 
+cambiarFotoPerfilBtn.addEventListener('click', () => {
+    perfilInput.click();
+});
+
+backgroundInput.addEventListener('change', function (event) {
+    const file = event.target.files[0]; // Obtén el archivo seleccionado
     if (file) {
         const reader = new FileReader();
 
+        // Cuando el archivo se cargue, asigna su contenido
         reader.onload = function (e) {
             const imageSrc = e.target.result; // Contiene la URL de la imagen
 
-            const imagen = {
+            // Asigna la imagen como fondo de un <div>
+            elementoConBackground.style.backgroundImage = `url(${imageSrc})`;
+
+            imagenBackground = {
                 fileName: file.name,      // Nombre del archivo
-                base64: imageSrc,         // Base64 de la imagen
+                base64: imageSrc,       // Base64 de la imagen
+                //fileSize: file.size,      // Tamaño del archivo en bytes
             };
-
-            if (tipo === "background") {
-                contenedorZonas.style.display = "none"
-                zonaCambioBackground.style.display = "none"; 
-
-                elementoConBackground.style.backgroundImage = `url(${imageSrc})`;
-                imagenBackground = imagen;
-            } else if (tipo === "perfil") {
-                contenedorZonas.style.display = "none"
-                zonaCambioPerfil.style.display = "none"; 
-
-                elementoFoto.src = imageSrc;
-                imagenPerfil = imagen;
-            }
         };
 
+        // Lee el archivo como una URL de datos
         reader.readAsDataURL(file);
     }
-}
+});
 
+perfilInput.addEventListener('change', function (event) {
+    const file = event.target.files[0]; // Obtén el archivo seleccionado
+    if (file) {
+        const reader = new FileReader();
+
+        // Cuando el archivo se cargue, asigna su contenido
+        reader.onload = function (e) {
+            const imageSrc = e.target.result; // Contiene la URL de la imagen
+            elementoFoto.src = imageSrc;
+
+            imagenPerfil = {
+                fileName: file.name,      // Nombre del archivo
+                base64: imageSrc,       // Base64 de la imagen
+                //fileSize: file.size,      // Tamaño del archivo en bytes
+            };
+        };
+
+        // Lee el archivo como una URL de datos
+        reader.readAsDataURL(file);
+    }
+});
 
 GuardarBtn.addEventListener("click",() => {
 
@@ -130,7 +114,7 @@ GuardarBtn.addEventListener("click",() => {
 });
 
 CancelarBtn.addEventListener("click", ()=>{
-    window.location.href = "/verMiPerfil";
+
 });
 
 function EsInfoValida(){

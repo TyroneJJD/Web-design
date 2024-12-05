@@ -10,7 +10,7 @@
 <body>
 
     <header>
-        <div class="logo" id="home">Nombre Proyecto</div>
+        <a id="home" href="/home"><div class="logo" id="home">Nombre Proyecto</div></a>
         <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
         <nav class="nav-menu">
             <ul>
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <!-- Modal de reservacion -->
+    <!-- Modal de reservacion
      <div id="modal-cita" class="modal-cita">
         <div class="modal-cita-content">
             <div class="modal-cita-header">
@@ -46,10 +46,12 @@
                 <span class="close-button" id="cerrar-modal-cita">&times;</span>
             </div>
             <div class="modal-cita-body">
-                <form id="reunion-form">
+                <form id="reunion-form" method="POST" action="/inscribirme-reunion">
+                    <input type="hidden"  id="idSesion" value="<%= it.idSesion %>">
+                    <input type="hidden"  id="idCandidatoRegistrado" value="<%= it.idUsuario %>">
                     <div class="form-group">
                         <label for="tipo-reunion">Tipo de Reunión</label>
-                        <select id="tipo-reunion" name="tipo-reunion">
+                        <select id="tipo-reunion" name="tipoDeReunion">
                             <option value="tecnica">Entrevista Técnica</option>
                             <option value="comportamiento">Entrevista de Comportamiento</option>
                             <option value="revision">Revisión de Resume/CV</option>
@@ -57,63 +59,24 @@
                     </div>
                     <div class="form-group">
                         <label for="motivo">Motivo de la Reunión</label>
-                        <input type="text" id="motivo" name="motivo" placeholder="Escribe el motivo">
+                        <input type="text" id="motivo" name="motivoDeLaReunion" placeholder="Escribe el motivo">
                     </div>
                     <div class="form-group">
                         <label for="archivo-resume">Link Resume (opcional)</label>
-                        <input type="link" id="archivo-resume" name="archivo-resume" placeholder="Link del archivo">
+                        <input type="link" id="archivo-resume" name="linkResume" placeholder="Link del archivo">
                     </div>
                     <div class="form-group">
                         <label for="comentarios">Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Escribe tus comentarios aquí"></textarea>
+                        <textarea id="comentarios" name="comentariosAdicionales" rows="4" placeholder="Escribe tus comentarios aquí"></textarea>
                     </div>
                 </form>
             </div>
             <div class="modal-cita-footer">
                 <button class="cancel" id="cancelar-cita">Cancelar</button>
-                <button class="accept" id="aceptar-cita">Aceptar</button>
+                <button type="submit" form="reunion-form" class="accept" id="aceptar-cita">Aceptar</button>
             </div>
         </div>
-    </div>
-
-    <!-- Modal de horario pendiente -->
-    <div id="modal-cita-pendiente" class="modal-cita-pendiente">
-        <div class="modal-cita-pendiente-content">
-            <div class="modal-cita-pendiente-header">
-                <h2>Detalles de la Reunión</h2>
-                <span class="close-button" id="cerrar-modal-cita-pendiente">&times;</span>
-            </div>
-            <div class="modal-cita-pendiente-body">
-                <form id="reunion-form">
-                    <div class="form-group">
-                        <label for="tipo-reunion">Tipo de Reunión</label>
-                        <select id="tipo-reunion" name="tipo-reunion">
-                            <option value="tecnica">Entrevista Técnica</option>
-                            <option value="comportamiento">Entrevista de Comportamiento</option>
-                            <option value="revision">Revisión de Resume/CV</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="motivo">Motivo de la Reunión</label>
-                        <input type="text" id="motivo" name="motivo" placeholder="Motivo escrito previamente">
-                    </div>
-                    <div class="form-group">
-                        <label for="archivo-resume">Link Resume (opcional)</label>
-                        <input type="link" id="archivo-resume" name="archivo-resume" placeholder="Link del archivo">
-                    </div>
-                    <div class="form-group">
-                        <label for="comentarios">Comentarios Adicionales</label>
-                        <textarea id="comentarios" name="comentarios" rows="4" placeholder="Comentarios escritos previamente"></textarea>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-cita-pendiente-footer">
-                <button class="cancel" id="cancelar-cita-pendiente">Cancelar</button>
-                <button class="delete" id="eliminar-cita-pendiente">Eliminar</button>
-                <button class="accept" id="aceptar-cita-pendiente">Aceptar</button>
-            </div>
-        </div>
-    </div>
+    </div> -->
 
     <!-- Modal de horario confirmado -->
     <div id="modal-cita-confirmado" class="modal-cita-confirmado">
@@ -191,24 +154,111 @@
     
                 <% const reunionesAgrupadas = {}; %>
 
-<% it.reuniones.forEach(reunion => { 
-    const fechaInicio = new Date(reunion.horaInicio);
+                <% it.reuniones.forEach(reunion => { 
+                    //infoReunion;
+                    const idSesion = reunion._id;
+                    
 
-    // Formatear los elementos de la fecha
-    const diaSemana = fechaInicio.toLocaleDateString("es-ES", { weekday: "long" });
-    const diaNumero = fechaInicio.getDate();
-    const mesCompleto = fechaInicio.toLocaleDateString("es-ES", { month: "long" });
-
-    // Construir el formato final
-    const diaCompleto = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)} ${diaNumero} de ${mesCompleto}`;
-
-    const hora = fechaInicio.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: true });
-
-    if (!reunionesAgrupadas[diaCompleto]) reunionesAgrupadas[diaCompleto] = {};
-    if (!reunionesAgrupadas[diaCompleto][hora]) reunionesAgrupadas[diaCompleto][hora] = [];
-
-    reunionesAgrupadas[diaCompleto][hora].push(reunion);
-}); %>
+                    const fechaInicio = new Date(reunion.horaInicio);
+                
+                    // Formatear los elementos de la fecha
+                    const diaSemana = fechaInicio.toLocaleDateString("es-ES", { weekday: "long" });
+                    const diaNumero = fechaInicio.getDate();
+                    const mesCompleto = fechaInicio.toLocaleDateString("es-ES", { month: "long" });
+                
+                    // Construir el formato final
+                    const diaCompleto = `${diaSemana.charAt(0).toUpperCase() + diaSemana.slice(1)} ${diaNumero} de ${mesCompleto}`;
+                    const hora = fechaInicio.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit", hour12: true });
+                
+                    if (!reunionesAgrupadas[diaCompleto]) reunionesAgrupadas[diaCompleto] = {};
+                    if (!reunionesAgrupadas[diaCompleto][hora]) reunionesAgrupadas[diaCompleto][hora] = [];
+                
+                    reunionesAgrupadas[diaCompleto][hora].push(reunion);
+                %>
+                
+                <!-- Modal único para esta reunión -->
+                <div id="modal-cita-<%= idSesion %>" class="modal-cita" style="display: none;">
+                    <div class="modal-cita-content">
+                        <div class="modal-cita-header">
+                            <h2>Detalles de la Reunión</h2>
+                            <span class="close-button" id="cerrar-modal-cita-<%= idSesion %>" data-modal-id="modal-cita-<%= idSesion %>">&times;</span>
+                        </div>
+                        <div class="modal-cita-body">
+                            <form id="reunion-form-<%= idSesion %>" method="POST" action="/inscribirme-reunion">
+                                <input type="hidden" name="idCoach" value="<%= it.coachInfo._id %>">
+                                <input type="hidden" name="idSesion" value="<%= idSesion %>">
+                                <input type="hidden" name="idCandidatoRegistrado" value="<%= it.idUsuario %>">
+                                <div class="form-group">
+                                    <label for="tipo-reunion-<%= idSesion %>">Tipo de Reunión</label>
+                                    <select id="tipo-reunion-<%= idSesion %>" name="tipoDeReunion">
+                                        <option value="tecnica">Entrevista Técnica</option>
+                                        <option value="comportamiento">Entrevista de Comportamiento</option>
+                                        <option value="revision">Revisión de Resume/CV</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="motivo-<%= idSesion %>">Motivo de la Reunión</label>
+                                    <input type="text" id="motivo-<%= idSesion %>" name="motivoDeLaReunion" placeholder="Escribe el motivo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="archivo-resume-<%= idSesion %>">Link Resume (opcional)</label>
+                                    <input type="link" id="archivo-resume-<%= idSesion %>" name="linkResume" placeholder="Link del archivo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="comentarios-<%= idSesion %>">Comentarios Adicionales</label>
+                                    <textarea id="comentarios-<%= idSesion %>" name="comentariosAdicionales" rows="4" placeholder="Escribe tus comentarios aquí"></textarea>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-cita-footer">
+                            <button class="cancel" id="cancelar-cita-<%= idSesion %>" data-modal-id="modal-cita-<%= idSesion %>">Cancelar</button>
+                            <button type="submit" form="reunion-form-<%= idSesion %>" class="accept" id="aceptar-cita-<%= idSesion %>">Aceptar</button>
+                        </div>
+                    </div>
+                </div>
+    <!-- Modal de horario pendiente -->
+    <div id="modal-cita-pendiente-<%= idSesion %>" class="modal-cita-pendiente">
+        <div class="modal-cita-pendiente-content">
+            <div class="modal-cita-pendiente-header">
+                <h2>Detalles de la Reunión</h2>
+                <span class="close-button" id="cerrar-modal-cita-pendiente-<%= idSesion %>">&times;</span>
+            </div>
+            <div class="modal-cita-pendiente-body">
+                <form id="reunion-form-<%= idSesion %>">
+                    <input type="hidden" name="idCoach" value="<%= it.coachInfo._id %>">
+                    <input type="hidden" name="idSesion" value="<%= idSesion %>">
+                    <input type="hidden" name="idCandidatoRegistrado" value="<%= it.idUsuario %>">
+                    <div class="form-group">
+                        <label for="tipo-reunion">Tipo de Reunión</label>
+                        <select id="tipo-reunion-<%= idSesion %>" name="tipo-reunion">
+                            <option value="tecnica">Entrevista Técnica</option>
+                            <option value="comportamiento">Entrevista de Comportamiento</option>
+                            <option value="revision">Revisión de Resume/CV</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="motivo">Motivo de la Reunión</label>
+                        <input type="text" id="motivo-<%= idSesion %>" name="motivo" placeholder="Motivo escrito previamente">
+                    </div>
+                    <div class="form-group">
+                        <label for="archivo-resume">Link Resume (opcional)</label>
+                        <input type="link" id="archivo-resume-<%= idSesion %>" name="archivo-resume" placeholder="Link del archivo">
+                    </div>
+                    <div class="form-group">
+                        <label for="comentarios">Comentarios Adicionales</label>
+                        <textarea id="comentarios-<%= idSesion %>" name="comentarios" rows="4" placeholder="Comentarios escritos previamente"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-cita-pendiente-footer">
+                <button class="cancel" id="cancelar-cita-pendiente-<%= idSesion %>">Cancelar</button>
+                <button class="delete" id="eliminar-cita-pendiente-<%= idSesion %>">Eliminar</button>
+                <button class="accept" id="aceptar-cita-pendiente-<%= idSesion %>">Aceptar</button>
+            </div>
+        </div>
+    </div>
+                <% }); %>
+                
 
 <div class="dias-semana">
     <% Object.entries(reunionesAgrupadas).forEach(([diaCompleto, horarios]) => { %>
@@ -218,14 +268,10 @@
                 <h4><%= diaCompleto %></h4>
             </div>
             <% Object.entries(horarios).forEach(([hora, reuniones]) => { %>
-                <div 
-                    class="horario" 
-                    data-reuniones='<%= JSON.stringify(reuniones) %>'
-                >
-                    <span><%= hora %></span>
 
                     <!--SOLO HAY UNA REUNION X HORARIO (HORA)-->
-                    <div class="<% 
+                    
+                    <!-- <div class="<% 
                         if (reuniones[0].candidatosRegistrados.some(item => item.estadoReunion === 'pendiente' && item.idCandidatoRegistrado === it.idUsuario)) { 
                     %> 
                             horario_pendiente 
@@ -243,10 +289,14 @@
                             horario 
                     <% 
                         } 
-                    %>">
-
+                    %>" -->
+                    <div class="horario"
+                    data-reuniones='<%= JSON.stringify(reuniones) %>'
+                    data-id = '<%= reuniones[0]._id %>'
+                    >
+                    <span><%= hora %></span>
                         👤 x <span><%= reuniones.reduce((total, r) => total + r.candidatosRegistrados.length, 0) %></span>
-                    </div>
+                    
                 </div>
             <% }); %>
         </div>

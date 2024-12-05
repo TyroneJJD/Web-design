@@ -23,6 +23,8 @@ export class PerfilPropio {
     this.editarDatosPerfil = this.editarDatosPerfil.bind(this);
     this.mostrarPaginaVerMiPerfil = this.mostrarPaginaVerMiPerfil.bind(this);
     this.mostrarPaginaVerPerfil = this.mostrarPaginaVerPerfil.bind(this);
+    this.editarDatosPerfil = this.editarDatosPerfil.bind(this);
+
   }
 
   public async mostrarPaginaVerMiPerfil(context: Context) 
@@ -108,10 +110,10 @@ export class PerfilPropio {
         return;
       }
 
-      const body = context.request.body({ type: "json" });
-      const formData = await body.value;
-      const infoTexto = formData.get("infoCampos");
-      const infoImagenes = formData.get("infoImagenes");
+      const body = await context.request.body({ type: "json" }).value;
+      const infoTexto = body.infoCampos; // Accede a infoCampos del objeto JSON
+      const infoImagenes = body.infoImagenes;
+      console.log(infoImagenes);
 
       const idUsuario = await obtenerIdUsuario(context);
 
@@ -165,22 +167,21 @@ export class PerfilPropio {
     return idPerfil;
   }
 
-  private async ActualizaImagenes(archivoJSON: {
-    fileName: string;
-    base64: string;
-    }[], idUsuario: string){
-
+  private async ActualizaImagenes(archivoJSON:any, idUsuario: string){
       const manejadorArchivos = new ManejadorArchivos();
       let urlNuevaFotoPerfil;
       let urlNuevaFotoBackground;
 
-      const FotoPerfil = archivoJSON[0];
-      const FotoBackground = archivoJSON[1];
+      const FotoPerfil = archivoJSON.imagenPerfil;
+      const FotoBackground = archivoJSON.imagenBackground;
+
+      console.log(FotoPerfil)
+      console.log(FotoBackground)
 
       let FotoPerfilProcesada;
       let FotoBackgroundProcesada;
 
-      if(FotoPerfil.fileName != ""){
+      if(FotoPerfil.fileName == ""){
         FotoPerfilProcesada = true;
       }else{
         urlNuevaFotoPerfil = await manejadorArchivos.guardarFotoDePerfil(FotoPerfil, idUsuario);
@@ -197,10 +198,10 @@ export class PerfilPropio {
       }
 
       
-      if(FotoBackground.fileName != ""){
+      if(FotoBackground.fileName == ""){
         FotoBackgroundProcesada = true;
       }else{
-        urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDePerfil(FotoPerfil, idUsuario);
+        urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDeBackground(FotoPerfil, idUsuario);
         const result = await this.collection.updateOne(
           { _id: new ObjectId(idUsuario) },
           {
@@ -213,6 +214,7 @@ export class PerfilPropio {
         FotoBackgroundProcesada = (result.modifiedCount !== 0);
       }
 
+      console.log({FotoPerfilProcesada,FotoBackgroundProcesada})
       return {FotoPerfilProcesada,FotoBackgroundProcesada};
 
   }
@@ -241,6 +243,5 @@ export class PerfilPropio {
     );
 
     return (result.modifiedCount !== 0);
-
   }
 }

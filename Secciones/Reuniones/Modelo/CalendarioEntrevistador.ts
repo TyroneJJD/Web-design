@@ -161,14 +161,10 @@ export class CalendarioEntrevistador {
     if (context.request.hasBody) {
       const body = await context.request.body({ type: "form" }).value;
 
-      const idCoach = "xxxxxxxxxx";
+      const idCoach = await obtenerIdUsuario(context);
       const fechaReunionStr = body.get("fechaReunion")?.trim() || "";
       const horaInicioStr = body.get("horaInicio")?.trim() || "";
       const horaFinStr = body.get("horaFin")?.trim() || "";
-      console.log(fechaReunionStr);
-      console.log(horaInicioStr);
-      console.log(horaFinStr);
-      console.log("-----------");
 
       if (!idCoach || !fechaReunionStr || !horaInicioStr || !horaFinStr) {
         context.response.status = 400;
@@ -220,7 +216,7 @@ export class CalendarioEntrevistador {
 
         // Redirigir con un mensaje de éxito
         context.response.status = 303;
-        context.response.headers.set("Location", `/login`);
+        context.response.headers.set("Location", `/calendarioEntrevistador`);
       } catch (error) {
         console.error("Error procesando los datos:", error);
         context.response.status = 500;
