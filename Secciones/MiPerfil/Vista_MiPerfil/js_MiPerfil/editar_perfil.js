@@ -89,7 +89,7 @@ GuardarBtn.addEventListener("click",() => {
         infoCampos.titularUsuario = document.getElementById('rol').value;
         infoCampos.descripcionUsuario = document.getElementById('sobre_mi').value;
 
-        infoCampos.linkLinkedin = document.getElementById('linkLinkendin').value;
+        infoCampos.linkLinkendin = document.getElementById('linkLinkendin').value;
         infoCampos.linkGithub = document.getElementById('linkGithub').value;
         infoCampos.linkPortafolioPersonal = document.getElementById('linkPortafolioPersonal').value;
 
@@ -135,12 +135,12 @@ function EsInfoValida(){
         return false;
     }
 
-    if(!EsImagenValida(imagenBackground)){
+    if( imagenBackground != imagenBackgroundInicial && !EsImagenValida(imagenBackground)){
         alert("Ingrese la imagen de background");
         return false;
     }
 
-    if(!EsImagenValida(imagenPerfil)){
+    if(imagenPerfil != imagenPerfilInicial && !EsImagenValida(imagenPerfil)){
         alert("Ingrese la imagen de perfil");
         return false;
     }
@@ -238,5 +238,9 @@ function EnviaDatosGuardados(infoPerfil){
             'Content-Type': 'application/json', // Tipo de contenido
         },
         body: JSON.stringify(infoPerfil), // Convertir el objeto a JSON
+    }).then(data => {
+        alert("Perfil guardado con exito!");
+        window.location.href = "/verMiPerfil";
     })
+
 }
