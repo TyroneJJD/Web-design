@@ -201,7 +201,7 @@ export class PerfilPropio {
       if(FotoBackground.fileName == ""){
         FotoBackgroundProcesada = true;
       }else{
-        urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDeBackground(FotoPerfil, idUsuario);
+        urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDeBackground(FotoBackground, idUsuario);
         const result = await this.collection.updateOne(
           { _id: new ObjectId(idUsuario) },
           {
