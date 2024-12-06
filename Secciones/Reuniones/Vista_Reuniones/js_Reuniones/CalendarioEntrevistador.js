@@ -165,27 +165,29 @@ horarios.forEach((horario) => {
     // Generar contenido dinámico
     if (reuniones.length > 0) {
       reuniones.forEach((reunion) => {
-        reunion.candidatosRegistrados.forEach((candidato) => {
+        const candidatos = reunion.candidatosRegistrados || [];
+        candidatos.forEach((candidato) => {
+          const nombre = candidato.nombreCandidato || "Nombre no disponible";
+          const tipo = candidato.tipoDeReuinion || "Sin tipo";
+          const motivo = candidato.motivoDeLaReunion || "Sin motivo";
+          const comentarios = candidato.comentariosAdicionales || "Sin comentarios";
+          const link = candidato.linkResume || "No disponible";
+    
           const solicitudDiv = document.createElement("div");
           solicitudDiv.classList.add("solicitud");
           solicitudDiv.innerHTML = `
-    <div class="info-candidato">
-        <p><strong>Nombre Candidato:</strong> ${candidato.nombreCandidato}</p>
-        <p><strong>Tipo de reunion:</strong> ${candidato.tipoDeReunion}</p>
-        <p><strong>Motivo de la reunion:</strong> ${
-          candidato.motivoDeLaReunion
-        }</p>
-        <p><strong>Comentarios Adicionales:</strong> ${
-          candidato.comentariosAdicionales
-        }</p>
-        <p><strong>Link Resume:</strong> ${candidato.linkResume}</p>
-    </div>
-    <input type="radio" name="candidato-seleccionado" value='${JSON.stringify(
-      candidato
-    ).replace(/'/g, "&apos;")}' 
-           data-id-reunion="${reunion._id}" class="candidato-radio">
-`;
-
+            <div class="info-candidato">
+                <p><strong>Nombre Candidato:</strong> ${nombre}</p>
+                <p><strong>Tipo de reunión:</strong> ${tipo}</p>
+                <p><strong>Motivo de la reunión:</strong> ${motivo}</p>
+                <p><strong>Comentarios Adicionales:</strong> ${comentarios}</p>
+                <p><strong>Link Resume:</strong> ${link}</p>
+            </div>
+            <input type="radio" name="candidato-seleccionado" value='${JSON.stringify(
+            candidato
+            ).replace(/'/g, "&apos;")}' 
+            data-id-reunion="${reunion._id}" class="candidato-radio">`
+          ;
           listaSolicitudes.appendChild(solicitudDiv);
         });
       });
