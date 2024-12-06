@@ -172,6 +172,7 @@ export class ManejadorArchivos {
     const { fileName, base64 } = archivoJSON;
     const nombreCarpeta = "FotosBackground";
   
+    console.log(base64.split(",")[1]);
     const datosArchivo = new Uint8Array(
       atob(base64.split(",")[1]).split("").map((char) => char.charCodeAt(0))
     );

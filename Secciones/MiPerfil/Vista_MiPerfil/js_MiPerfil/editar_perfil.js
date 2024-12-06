@@ -68,7 +68,7 @@ function manejarDrop(event, tipo) {
         reader.onload = function (e) {
             const imageSrc = e.target.result; // Contiene la URL de la imagen
 
-            const imagen = {
+            let imagen = {
                 fileName: file.name,      // Nombre del archivo
                 base64: imageSrc,         // Base64 de la imagen
             };
@@ -79,6 +79,7 @@ function manejarDrop(event, tipo) {
 
                 elementoConBackground.style.backgroundImage = `url(${imageSrc})`;
                 imagenBackground = imagen;
+                
             } else if (tipo === "perfil") {
                 contenedorZonas.style.display = "none"
                 zonaCambioPerfil.style.display = "none"; 

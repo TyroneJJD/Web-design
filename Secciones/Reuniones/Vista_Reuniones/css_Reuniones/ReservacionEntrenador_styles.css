@@ -147,6 +147,8 @@ main {
 
 #home{
     cursor: pointer;
+    text-decoration: none;
+    color: white;
 }
 
 .container {
