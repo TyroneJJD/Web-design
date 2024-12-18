@@ -8,10 +8,10 @@ import { inicializarLogin } from "./Secciones/Login/Controlador/Controlador.ts";
 import { inicializarMiPerfil } from "./Secciones/MiPerfil/Controlador/Controlador.ts";
 import { inicializarPaginaInicio } from "./Secciones/PaginaInicio/Controlador/Controlador.ts";
 import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Controlador/ControladorPermisos.ts";
-import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
+//import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
 import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
 import { inicializarReuniones } from "./Secciones/Reuniones/Controlador/Controlador.ts";
-import { inicializarPanelAdmin_ProblemasCompetitiva } from "./Secciones/PanelAdministrador/Controlador/ControladorProblemasCompetitiva.ts";
+//import { inicializarPanelAdmin_ProblemasCompetitiva } from "./Secciones/PanelAdministrador/Controlador/ControladorProblemasCompetitiva.ts";
 
 import {
   verificarVariablesDeEntornoDefinidas,
@@ -39,10 +39,10 @@ inicializarBuscadorInterships(router, app);
 inicializarLandingPage(router, app);
 inicializarMiPerfil(router, app);
 inicializarPanelAdministrador(router, app);
-inicializarProblemasProgramacionCompetitiva(router, app);
+//inicializarProblemasProgramacionCompetitiva(router, app);
 inicializarExplorarEntrevistadores(router, app);
 inicializarReuniones(router, app);
-inicializarPanelAdmin_ProblemasCompetitiva(router, app);
+//inicializarPanelAdmin_ProblemasCompetitiva(router, app);
 
 app.use(paginaNoEncontrada());
 app.use(router.routes());

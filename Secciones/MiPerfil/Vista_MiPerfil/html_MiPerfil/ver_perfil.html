@@ -40,14 +40,14 @@
             <div id="contenedor_foto" style="background-image: url('<%= it.usuario.direccionURLFotoBackground %>');">
                 <div class="foto">
 
-                    <% if (it.usuario.direccionURLFotoPerfil == "") { %>
+                    <% if (it.usuario.datosPersonalesUsuario.direccionURLFotoPerfil == "") { %>
                         <div id="contenedor_foto_perfil">
                             <img src="https://static.vecteezy.com/system/resources/previews/005/544/718/non_2x/profile-icon-design-free-vector.jpg" 
                             alt="Foto de perfil" id="foto_perfil">
                         </div>
                     <% } else { %>
                         <div id="contenedor_foto_perfil">
-                            <img src="<%= it.usuario.direccionURLFotoPerfil %>" 
+                            <img src="<%= it.usuario.datosPersonalesUsuario.direccionURLFotoPerfil %>" 
                             alt="Foto de perfil" id="foto_perfil">
                         </div>
                     <% } %>
@@ -62,8 +62,8 @@
                 </div>
             </div>
             <h1><%= it.usuario.nombreUsuario %> <%= it.usuario.apellidoUsuario %></h1>
-            <h2 class="sobre_mi" id="rol"><%= it.usuario.titularUsuario %></h2>
-            <p class="sobre_mi" id="sobre_mi"><%= it.usuario.descripcionUsuario %></p>
+            <h2 class="sobre_mi" id="rol"><%= it.usuario.datosPersonalesUsuario.titularUsuario %></h2>
+            <p class="sobre_mi" id="sobre_mi"><%= it.usuario.datosPersonalesUsuario.descripcionUsuario %></p>
             <p class="puntuacion">Puntuación: 4.5</p>
 
             
@@ -79,29 +79,29 @@
                 <h3>Links</h3>
                 <ul id="mis_redes">
 
-                    <% if (it.usuario.linksUsuario.linkLinkendin !== "") { %>                 
+                    <% if (it.usuario.datosPersonalesUsuario.linksUsuario.linkLinkendin !== "") { %>                 
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://cdn-icons-png.flaticon.com/512/174/174857.png" width="50" alt="">
-                                <p><a href="<%= it.usuario.linksUsuario.linkLinkendin %>">LinkedIn</a></p>
+                                <p><a href="<%= it.usuario.datosPersonalesUsuario.linksUsuario.linkLinkendin %>">LinkedIn</a></p>
                             </div>
                         </li>
                     <% } %>
 
-                    <% if (it.usuario.linksUsuario.linkGithub !== "") { %>                 
+                    <% if (it.usuario.datosPersonalesUsuario.linksUsuario.linkGithub !== "") { %>                 
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" width="50" alt="">
-                                <p><a href="<%= it.usuario.linksUsuario.linkGithub %>">GitHub</a></p>
+                                <p><a href="<%= it.usuario.datosPersonalesUsuario.linksUsuario.linkGithub %>">GitHub</a></p>
                             </div>
                         </li>
                     <% } %>
 
-                    <% if (it.usuario.linksUsuario.linkPortafolioPersonal !== "") { %>                 
+                    <% if (it.usuario.datosPersonalesUsuario.linksUsuario.linkPortafolioPersonal !== "") { %>                 
                         <li class="red_social">
                             <div class="elemento">
                                 <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="50" alt="">
-                                <p><a href="<%= it.usuario.linksUsuario.linkPortafolioPersonal %>">Mi Pagina!</a></p>
+                                <p><a href="<%= it.usuario.datosPersonalesUsuario.linksUsuario.linkPortafolioPersonal %>">Mi Pagina!</a></p>
                             </div>
                         </li>
                     <% } %>

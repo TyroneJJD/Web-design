@@ -86,10 +86,10 @@ export class IniciarSession {
             apellidoUsuario: userDataExists.apellidoUsuario,
             correoElectronicoUsuario: userDataExists.correoElectronicoInstitucionalUsuario,
 
-            esAdministrador: userDataExists.esAdministrador,
-            esCoach: userDataExists.esCoach,
-            puedePublicarEnElBlog: userDataExists.puedePublicarEnElBlog,
-            puedePublicarProblemas: userDataExists.puedePublicarProblemas,
+            esAdministrador: userDataExists.permisosUsuario.esAdministrador,
+            esCoach: userDataExists.permisosUsuario.esCoach,
+            puedePublicarEnElBlog: userDataExists.permisosUsuario.puedePublicarEnElBlog,
+            puedePublicarProblemas: userDataExists.permisosUsuario.puedePublicarProblemas,
 
           },
           key

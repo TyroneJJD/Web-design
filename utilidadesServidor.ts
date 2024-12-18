@@ -45,13 +45,7 @@ function verificarVariableDeEntorno(
   return true;
 }
 
-export async function renderizarVista(
-  template: string,
-  data: object,
-  viewsPath: string
-) {
-  return await renderFile(template, data, { views: viewsPath });
-}
+
 
 async function leerHTMLDesdeArchivo(ruta: string): Promise<string> {
   try {
@@ -63,7 +57,15 @@ async function leerHTMLDesdeArchivo(ruta: string): Promise<string> {
   }
 }
 
-export async function renderizarVistaV2(
+/*export async function renderizarVista(
+  template: string,
+  data: object,
+  viewsPath: string
+) {
+  return await renderFile(template, data, { views: viewsPath });
+}*/
+
+export async function renderizarVista(
   template: string,
   data: object,
   viewsPath: string

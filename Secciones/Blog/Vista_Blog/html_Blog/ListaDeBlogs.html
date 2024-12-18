@@ -10,33 +10,9 @@
 </head>
 <body>
 
-    <header>
-        <div class="logo" id="home">Nombre Proyecto</div>
-        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
-        <nav class="nav-menu">
-            <ul>
-                <li><a href="/BuscadorIntershipsV2">Interns</a></li>
-                <li><a href="/verMiPerfil">Mi Perfil</a></li>
-                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
-                <li><a href="/ExplorarEntrevistadores">Explorar</a></li>
-                <li><a href="/listaPublicaciones">Blog</a></li>
-                <li><a href="/ProblemasProgramacionCompetitiva">Problemas</a></li>
-            </ul>
-        </nav>
-    </header>
+    <%= it.navbar %>
 
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="cerrar-modal">&times;</span>
-            <h2>Avisos</h2>
-            <div id="avisos_contenedor">
-                <p>Este es el contenido del modal de avisos.</p>
-            </div>
-        </div>
-    </div>
 
-    <main id="main-content">
         <div class="titulo">Lista de Blogs</div>
         <div class="contenedor-blogs">
             <!-- Inicio del bloque dinámico -->
@@ -60,8 +36,8 @@
             <% }); %>
             <!-- Fin del bloque dinámico -->
         </div>
-    </main>
+        <%= it.footer %>
 
-    <script src="../js/basic.js"></script>
+
 </body>
 </html>
