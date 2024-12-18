@@ -11,15 +11,16 @@ export class GestorPermisos {
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
     this.candidatosACoach = this.candidatosACoach.bind(this);
-    this.mostrarPanelPermisosUsuarios =
-      this.mostrarPanelPermisosUsuarios.bind(this);
+    this.mostrarPanelPermisosUsuarios = this.mostrarPanelPermisosUsuarios.bind(
+      this,
+    );
     this.actualizarPermisos = this.actualizarPermisos.bind(this);
   }
 
-    // <!----------> Reparar debido al cambio en el modelo de datos
+  // <!----------> Reparar debido al cambio en el modelo de datos
   private async candidatosACoach(): Promise<IUsuario[]> {
     const usuariosCoach = await this.collection
       .find({ quiereSerCoach: true })
@@ -32,7 +33,7 @@ export class GestorPermisos {
     const html = await renderizarVista(
       "panelPermisosUsuarios.html",
       { usuarios: usuariosX },
-      directorioVistaSeccionActual + `/html_PanelAdministrador`
+      directorioVistaSeccionActual + `/html_PanelAdministrador`,
     );
 
     context.response.body = html || "Error al renderizar la página";
@@ -41,7 +42,7 @@ export class GestorPermisos {
   public async actualizarPermisos(
     idUsuario: string,
     permiso: string,
-    estado: boolean
+    estado: boolean,
   ): Promise<string> {
     try {
       if (!ObjectId.isValid(idUsuario)) {
@@ -50,7 +51,7 @@ export class GestorPermisos {
 
       const updateResult = await this.collection.updateOne(
         { _id: new ObjectId(idUsuario) },
-        { $set: { [permiso]: estado } }
+        { $set: { [permiso]: estado } },
       );
 
       if (updateResult.modifiedCount > 0) {

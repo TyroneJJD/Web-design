@@ -25,7 +25,7 @@ export function verificarVariablesDeEntornoDefinidas(): void {
   for (const variable of variablesRequeridas) {
     if (!verificarVariableDeEntorno(variable, env)) {
       throw new Error(
-        `La variable de entorno ${variable} no está definida o está vacía.`
+        `La variable de entorno ${variable} no está definida o está vacía.`,
       );
     }
   }
@@ -33,23 +33,23 @@ export function verificarVariablesDeEntornoDefinidas(): void {
 
 function verificarVariableDeEntorno(
   variable: string,
-  env: Record<string, string>
+  env: Record<string, string>,
 ): boolean {
   const valor = env[variable] ?? Deno.env.get(variable);
   if (!valor || valor.trim() === "") {
     console.error(
-      `La variable de entorno ${variable} no está definida o está vacía.`
+      `La variable de entorno ${variable} no está definida o está vacía.`,
     );
     return false;
   }
   return true;
 }
 
-
-
 async function leerHTMLDesdeArchivo(ruta: string): Promise<string> {
   try {
-    const contenido = await Deno.readTextFile(Deno.cwd() + "/ComponentesComunes/plantillasGenerales/" + ruta);
+    const contenido = await Deno.readTextFile(
+      Deno.cwd() + "/ComponentesComunes/plantillasGenerales/" + ruta,
+    );
     return contenido;
   } catch (error) {
     console.error("Error al leer el archivo HTML:", error);
@@ -57,18 +57,10 @@ async function leerHTMLDesdeArchivo(ruta: string): Promise<string> {
   }
 }
 
-/*export async function renderizarVista(
-  template: string,
-  data: object,
-  viewsPath: string
-) {
-  return await renderFile(template, data, { views: viewsPath });
-}*/
-
 export async function renderizarVista(
   template: string,
   data: object,
-  viewsPath: string
+  viewsPath: string,
 ): Promise<string> {
   const navbar = await leerHTMLDesdeArchivo("navbar.html");
   const footer = await leerHTMLDesdeArchivo("footer.html");
@@ -86,14 +78,14 @@ export async function renderizarVista(
     });
     if (!rendered) {
       throw new Error(
-        "No se pudo renderizar la vista. Verifica la plantilla y los datos."
+        "No se pudo renderizar la vista. Verifica la plantilla y los datos.",
       );
     }
     return rendered;
   } catch (error) {
     console.error("Error al renderizar la vista:", error);
     throw new Error(
-      "No se pudo renderizar la vista. Verifica la plantilla y los datos."
+      "No se pudo renderizar la vista. Verifica la plantilla y los datos.",
     );
   }
 }

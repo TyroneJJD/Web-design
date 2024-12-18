@@ -14,7 +14,6 @@ export class CalendarioTrainee {
   private db: BaseDeDatosMongoDB;
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
-
     this.mostrarCalendarioTrainee = this.mostrarCalendarioTrainee.bind(this);
   }
 
@@ -33,7 +32,7 @@ export class CalendarioTrainee {
         datosUsuario: datosUsuario,
         reuniones: reuniones,
       },
-      directorioVistaSeccionActual + `/html_Reuniones`
+      directorioVistaSeccionActual + `/html_Reuniones`,
     );
 
     context.response.body = html || "Error al renderizar la página";
@@ -41,7 +40,7 @@ export class CalendarioTrainee {
 
   public async obtenerUsuarioPorId(id: string): Promise<IUsuario> {
     const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
 
     const usuario = await collection.findOne({ _id: new ObjectId(id) });
@@ -51,27 +50,26 @@ export class CalendarioTrainee {
     return usuario;
   }
 
-    // <!----------> reparar debido al cambio en el modelo de datos
+  // <!----------> reparar debido al cambio en el modelo de datos
   public async obtenerReunionesPorCandidato(
-    idCandidato: string
+    idCandidato: string,
   ): Promise<ISesionEntrevista[]> {
     // Obtener la referencia a la colección de reuniones
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones"
+      "Reuniones",
     ) as unknown as Collection<ISesionEntrevista>;
-  
+
     // Buscar reuniones donde el candidato esté registrado
     const reuniones = await collection
       .find({ "candidatosRegistrados.idCandidatoRegistrado": idCandidato })
       .toArray();
-  
+
     // Si no se encuentran reuniones, devolver un arreglo vacío
     if (!reuniones || reuniones.length === 0) {
       return [];
     }
-  
+
     // Retornar las reuniones encontradas
     return reuniones;
   }
-  
 }

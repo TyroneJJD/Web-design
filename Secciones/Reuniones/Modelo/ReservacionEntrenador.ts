@@ -6,13 +6,13 @@ import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { ObjectId } from "npm:mongodb";
 import {
-  ISesionEntrevista,
   IDetallesCandidatosRegistrado,
+  ISesionEntrevista,
 } from "../../../Servicios/BaseDeDatos/Entrevistas.ts";
-import { 
+import {
+  obtenerApellidoUsuario,
   obtenerIdUsuario,
   obtenerNombresUsuario,
-  obtenerApellidoUsuario
 } from "../../../Servicios/GestorPermisos.ts";
 
 // <!!!!!----------!!!!!> ZONA DE GUERRA
@@ -21,11 +21,12 @@ export class ReservacionEntrenador {
   private db: BaseDeDatosMongoDB;
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.obtenerTodosLosDatosDeLaReunionPorID =
-      this.obtenerTodosLosDatosDeLaReunionPorID.bind(this);
+    this.obtenerTodosLosDatosDeLaReunionPorID = this
+      .obtenerTodosLosDatosDeLaReunionPorID.bind(this);
     this.agregarCandidatoAReunion = this.agregarCandidatoAReunion.bind(this);
-    this.mostrarReservacionEntrenador =
-      this.mostrarReservacionEntrenador.bind(this);
+    this.mostrarReservacionEntrenador = this.mostrarReservacionEntrenador.bind(
+      this,
+    );
     this.inscribirmeASesion = this.inscribirmeASesion.bind(this);
   }
 
@@ -35,7 +36,9 @@ export class ReservacionEntrenador {
     const apellidoUsuario = await obtenerApellidoUsuario(context);
     const IdSolicitado = this.obtenerIdSolicitado(context);
     const InfoDelCoach = await this.obtenerEntrevistadorPorId(IdSolicitado);
-    const reunionesDelCoach = await this.obtenerReunionesCreadasPorElEntrenador(IdSolicitado);
+    const reunionesDelCoach = await this.obtenerReunionesCreadasPorElEntrenador(
+      IdSolicitado,
+    );
     const nombresCandidato = nombreUsuario + " " + apellidoUsuario;
 
     const html = await renderizarVista(
@@ -44,9 +47,9 @@ export class ReservacionEntrenador {
         idUsuario: idMiUsuario,
         nombreCandidato: nombresCandidato,
         reuniones: reunionesDelCoach,
-        coachInfo:InfoDelCoach
+        coachInfo: InfoDelCoach,
       },
-      directorioVistaSeccionActual + `/html_Reuniones`
+      directorioVistaSeccionActual + `/html_Reuniones`,
     );
 
     context.response.body = html || "Error al renderizar la página";
@@ -56,10 +59,11 @@ export class ReservacionEntrenador {
     if (context.request.hasBody) {
       const body = await context.request.body({ type: "form" }).value;
 
-      // Recuperar los datos del 
+      // Recuperar los datos del
       const idEntrevistador = body.get("idCoach")?.trim() || "";
       const idSesionReunion = body.get("idSesion")?.trim() || "";
-      const idCandidatoRegistrado = body.get("idCandidatoRegistrado")?.trim() || "";
+      const idCandidatoRegistrado = body.get("idCandidatoRegistrado")?.trim() ||
+        "";
       const nombreCandidato = body.get("nombreCandidato")?.trim() || "";
       const tipoDeReunion = body.get("tipoDeReunion")?.trim() || "";
       const motivoDeLaReunion = body.get("motivoDeLaReunion")?.trim() || "";
@@ -73,7 +77,7 @@ export class ReservacionEntrenador {
         tipoDeReunion,
         motivoDeLaReunion,
         comentariosAdicionales,
-        linkResume
+        linkResume,
       );
 
       if (
@@ -103,7 +107,7 @@ export class ReservacionEntrenador {
 
         // Buscar la sesión en la base de datos
         const registroReunion = await this.obtenerTodosLosDatosDeLaReunionPorID(
-          idSesionReunion
+          idSesionReunion,
         );
         console.log(registroReunion);
         if (!registroReunion) {
@@ -121,7 +125,9 @@ export class ReservacionEntrenador {
         // Responder con éxito
         context.response.status = 200;
         context.response.body = { message: "Candidato agregado exitosamente." };
-        context.response.redirect("/reservacionEntrenador?perfil="+idEntrevistador);
+        context.response.redirect(
+          "/reservacionEntrenador?perfil=" + idEntrevistador,
+        );
       } catch (error) {
         console.error("Error agregando el candidato:", error);
         context.response.status = 500;
@@ -136,11 +142,11 @@ export class ReservacionEntrenador {
   }
 
   public async obtenerTodosLosDatosDeLaReunionPorID(
-    idSesion: string
+    idSesion: string,
   ): Promise<ISesionEntrevista> {
     const collection =
       (await this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-        "Reuniones"
+        "Reuniones",
       )) as unknown as Collection<ISesionEntrevista>;
     const dato = await collection.findOne({ _id: new ObjectId(idSesion) });
     console.log(dato);
@@ -152,11 +158,12 @@ export class ReservacionEntrenador {
 
   private async agregarCandidatoAReunion(
     idSesion: string,
-    sesion: ISesionEntrevista
+    sesion: ISesionEntrevista,
   ): Promise<void> {
     // Obtener la colección con el tipo definido
-    const collection =
-      this.db.obtenerReferenciaColeccion<ISesionEntrevista>("Reuniones");
+    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
+      "Reuniones",
+    );
 
     try {
       // Convertir idSesion a ObjectId si es necesario
@@ -164,7 +171,7 @@ export class ReservacionEntrenador {
       // Actualizar el registro en la base de datos
       const resultado = await collection.updateOne(
         { _id: new ObjectId(idSesion) }, // Usar el ObjectId en el filtro
-        { $set: { candidatosRegistrados: sesion.candidatosRegistrados } } // Actualizar el campo
+        { $set: { candidatosRegistrados: sesion.candidatosRegistrados } }, // Actualizar el campo
       );
 
       // Verificar si se actualizó el documento
@@ -181,7 +188,7 @@ export class ReservacionEntrenador {
 
   private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
     const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
 
     const usuario = await collection.findOne({ _id: new ObjectId(id) });
@@ -191,18 +198,18 @@ export class ReservacionEntrenador {
     return usuario;
   }
 
-  private obtenerIdSolicitado(context:Context):string {
-    const url = context.request.url; 
-    const params = url.searchParams; 
-    const idPerfil = params.get("perfil")?? "";
+  private obtenerIdSolicitado(context: Context): string {
+    const url = context.request.url;
+    const params = url.searchParams;
+    const idPerfil = params.get("perfil") ?? "";
     return idPerfil;
   }
 
   private async obtenerReunionesCreadasPorElEntrenador(
-    idEntrevistador: string
+    idEntrevistador: string,
   ): Promise<ISesionEntrevista[]> {
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones"
+      "Reuniones",
     ) as unknown as Collection<ISesionEntrevista>;
 
     return await collection

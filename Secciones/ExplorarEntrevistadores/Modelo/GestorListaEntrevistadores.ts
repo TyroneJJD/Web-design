@@ -13,11 +13,11 @@ export class GestorListaEntrevistadores {
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
     this.obtenerEntrevistadores = this.obtenerEntrevistadores.bind(this);
-    this.visualizarExplorarEntrevistadores =
-      this.visualizarExplorarEntrevistadores.bind(this);
+    this.visualizarExplorarEntrevistadores = this
+      .visualizarExplorarEntrevistadores.bind(this);
   }
 
   // <!----------> Requiere reparacion debido al cambio en el modelo de datos
@@ -34,7 +34,7 @@ export class GestorListaEntrevistadores {
     const html = await renderizarVista(
       "explorar.html",
       { coaches: entrevistadores }, // Asegúrate de que 'coaches' se pasa como una propiedad
-      directorioVistaSeccionActual + `/html_ExplorarEntrevistadores`
+      directorioVistaSeccionActual + `/html_ExplorarEntrevistadores`,
     );
 
     context.response.body = html || "Error al renderizar la página";

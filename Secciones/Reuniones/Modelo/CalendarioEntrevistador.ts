@@ -5,8 +5,8 @@ import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.t
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import {
-  ISesionEntrevista,
   IDetallesCandidatosRegistrado,
+  ISesionEntrevista,
 } from "../../../Servicios/BaseDeDatos/Entrevistas.ts";
 import { obtenerIdUsuario } from "../../../Servicios/GestorPermisos.ts";
 
@@ -20,17 +20,17 @@ export class CalendarioEntrevistador {
     this.insertarNuevaReunion = this.insertarNuevaReunion.bind(this);
     this.generarReuniones = this.generarReuniones.bind(this);
 
-    this.mostrarCalendarioEntrevistador =
-      this.mostrarCalendarioEntrevistador.bind(this);
+    this.mostrarCalendarioEntrevistador = this.mostrarCalendarioEntrevistador
+      .bind(this);
     this.generarReuniones = this.generarReuniones.bind(this);
-    this.obtenerTodosLosDatosDeLaReunionPorID =
-      this.obtenerTodosLosDatosDeLaReunionPorID.bind(this);
+    this.obtenerTodosLosDatosDeLaReunionPorID = this
+      .obtenerTodosLosDatosDeLaReunionPorID.bind(this);
     this.asignarCandidatoAReunion = this.asignarCandidatoAReunion.bind(this);
   }
 
   private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
     const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
 
     const usuario = await collection.findOne({ _id: new ObjectId(id) });
@@ -41,10 +41,10 @@ export class CalendarioEntrevistador {
   }
 
   private async obtenerReunionesCreadasPorElEntrevistador(
-    idEntrevistador: string
+    idEntrevistador: string,
   ): Promise<ISesionEntrevista[]> {
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones"
+      "Reuniones",
     ) as unknown as Collection<ISesionEntrevista>;
 
     return await collection
@@ -54,13 +54,15 @@ export class CalendarioEntrevistador {
   }
 
   public async obtenerTodosLosDatosDeLaReunionPorID(
-    idSesion: string
+    idSesion: string,
   ): Promise<ISesionEntrevista> {
     const collection =
       (await this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-        "Reuniones"
+        "Reuniones",
       )) as unknown as Collection<ISesionEntrevista>;
-    const dato = await collection.findOne({ _id: new ObjectId(idSesion).toString() });
+    const dato = await collection.findOne({
+      _id: new ObjectId(idSesion).toString(),
+    });
     if (!dato) {
       throw new Error(`Sesión con ID ${idSesion} no encontrada`);
     }
@@ -81,20 +83,20 @@ export class CalendarioEntrevistador {
       }
 
       const registroReunion = await this.obtenerTodosLosDatosDeLaReunionPorID(
-        idReunion
+        idReunion,
       );
 
       // Mover el candidato a candidatoSeleccionadoAEntrevistar
-      const [candidatoSeleccionado] =
-        registroReunion.candidatosRegistrados.splice(candidato, 1);
+      const [candidatoSeleccionado] = registroReunion.candidatosRegistrados
+        .splice(candidato, 1);
       registroReunion.candidatoSeleccionadoAEntrevistar = candidatoSeleccionado;
 
       // Marcar la sesión como asignada
       registroReunion.sesionAsignada = true;
       registroReunion.candidatoSeleccionadoAEntrevistar.estadoReunion =
         "aceptado";
-      registroReunion.candidatoSeleccionadoAEntrevistar.respuestaDelEntrevistador =
-        "Por favor checa tu correo electrónico.";
+      registroReunion.candidatoSeleccionadoAEntrevistar
+        .respuestaDelEntrevistador = "Por favor checa tu correo electrónico.";
 
       // Actualizar el estado y la respuesta de los candidatos no seleccionados
       registroReunion.candidatosRegistrados.forEach((candidato) => {
@@ -119,15 +121,17 @@ export class CalendarioEntrevistador {
     }
   }
 
-  public async actualizarReunion(reunionActualizada: ISesionEntrevista): Promise<void> {
+  public async actualizarReunion(
+    reunionActualizada: ISesionEntrevista,
+  ): Promise<void> {
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones"
+      "Reuniones",
     ) as unknown as Collection<ISesionEntrevista>;
     const { _id, ...datosActualizados } = reunionActualizada;
 
     await collection.updateOne(
       { _id }, // Filtro por ID de la reunión
-      { $set: datosActualizados } // Datos a actualizar
+      { $set: datosActualizados }, // Datos a actualizar
     );
   }
 
@@ -139,11 +143,11 @@ export class CalendarioEntrevistador {
       return;
     }
     const datosDelEntrevistadorActual = await this.obtenerEntrevistadorPorId(
-      IDusuarioSacadoDeLasCookies
+      IDusuarioSacadoDeLasCookies,
     );
-    const reunionesQuePropusoElEntrevistador =
-      await this.obtenerReunionesCreadasPorElEntrevistador(
-        IDusuarioSacadoDeLasCookies
+    const reunionesQuePropusoElEntrevistador = await this
+      .obtenerReunionesCreadasPorElEntrevistador(
+        IDusuarioSacadoDeLasCookies,
       );
 
     const html = await renderizarVista(
@@ -152,7 +156,7 @@ export class CalendarioEntrevistador {
         datosUsuario: datosDelEntrevistadorActual,
         reuniones: reunionesQuePropusoElEntrevistador,
       },
-      directorioVistaSeccionActual + `/html_Reuniones`
+      directorioVistaSeccionActual + `/html_Reuniones`,
     );
 
     context.response.body = html || "Error al renderizar la página";
@@ -188,7 +192,7 @@ export class CalendarioEntrevistador {
           mes - 1,
           dia,
           horaInicio,
-          minutosInicio
+          minutosInicio,
         );
         const horaFinDate = new Date(anio, mes - 1, dia, horaFin, minutosFin);
 
@@ -232,10 +236,10 @@ export class CalendarioEntrevistador {
   }
 
   public async insertarNuevaReunion(
-    nuevaReunion: Omit<ISesionEntrevista, "_id">
+    nuevaReunion: Omit<ISesionEntrevista, "_id">,
   ): Promise<ISesionEntrevista> {
     const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones"
+      "Reuniones",
     ) as unknown as Collection<ISesionEntrevista>;
     const result = await collection.insertOne(nuevaReunion);
     return { _id: result.toString(), ...nuevaReunion };

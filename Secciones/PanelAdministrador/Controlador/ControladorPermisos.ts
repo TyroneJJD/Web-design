@@ -2,24 +2,27 @@ import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { GestorPermisos } from "../Modelo/GestorPermisos.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import { verificadorAutenticacion, verificarSiEsAdministrador } from "../../../Servicios/GestorPermisos.ts";
+import {
+  verificadorAutenticacion,
+  verificarSiEsAdministrador,
+} from "../../../Servicios/GestorPermisos.ts";
 
-export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
+export const directorioVistaSeccionActual =
+  `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
 
 export function inicializarPanelAdministrador(
   router: Router,
-  app: Application
+  app: Application,
 ) {
   const gestorPermisos = new GestorPermisos();
   router.get(
     "/panelPermisosUsuarios",
     verificadorAutenticacion,
     verificarSiEsAdministrador,
-    gestorPermisos.mostrarPanelPermisosUsuarios
+    gestorPermisos.mostrarPanelPermisosUsuarios,
   );
 
-  
-// <!----------> No debe haber logica de negocio en los controladores
+  // <!----------> No debe haber logica de negocio en los controladores
   router.post("/api/actualizar-permisos", async (ctx: Context) => {
     const { idUsuario, permiso, estado } = await ctx.request.body().value;
 
@@ -32,7 +35,7 @@ export function inicializarPanelAdministrador(
     const resultado = await gestorPermisos.actualizarPermisos(
       idUsuario,
       permiso,
-      estado
+      estado,
     );
 
     if (resultado === "Permiso actualizado correctamente") {
@@ -46,13 +49,13 @@ export function inicializarPanelAdministrador(
   app.use(
     cargarArchivosEstaticos(
       "/css_PanelAdministrador",
-      directorioVistaSeccionActual + `/css_PanelAdministrador`
-    )
+      directorioVistaSeccionActual + `/css_PanelAdministrador`,
+    ),
   );
   app.use(
     cargarArchivosEstaticos(
       "/js_PanelAdministrador",
-      directorioVistaSeccionActual + `/js_PanelAdministrador`
-    )
+      directorioVistaSeccionActual + `/js_PanelAdministrador`,
+    ),
   );
 }

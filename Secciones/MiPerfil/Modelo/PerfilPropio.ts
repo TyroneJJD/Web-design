@@ -7,19 +7,20 @@ import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { obtenerIdUsuario } from "../../../Servicios/GestorPermisos.ts";
 import { ManejadorArchivos } from "../../../Servicios/ManejadorArchivos.ts";
 
-  // <!----------> Esta clase se deben separar en tres clases diferentes, para respetar sus ADTs
+// <!----------> Esta clase se deben separar en tres clases diferentes, para respetar sus ADTs
 export class PerfilPropio {
   private collection: Collection<IUsuario>;
   private db: BaseDeDatosMongoDB;
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
 
     this.obtenerUsuarioPorId = this.obtenerUsuarioPorId.bind(this);
-    this.mostrarPaginaEditarMiPerfil =
-      this.mostrarPaginaEditarMiPerfil.bind(this);
+    this.mostrarPaginaEditarMiPerfil = this.mostrarPaginaEditarMiPerfil.bind(
+      this,
+    );
     this.editarDatosPerfil = this.editarDatosPerfil.bind(this);
     this.mostrarPaginaVerMiPerfil = this.mostrarPaginaVerMiPerfil.bind(this);
     this.mostrarPaginaVerPerfil = this.mostrarPaginaVerPerfil.bind(this);
@@ -37,7 +38,7 @@ export class PerfilPropio {
     const html = await renderizarVista(
       "ver_perfil.html",
       { usuario: datosUsuario, esMiPerfil: true },
-      directorioVistaSeccionActual + `/html_MiPerfil`
+      directorioVistaSeccionActual + `/html_MiPerfil`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -67,7 +68,7 @@ export class PerfilPropio {
     const html = await renderizarVista(
       "ver_perfil.html",
       { usuario: datosUsuario, esMiPerfil: esMiPerfil },
-      directorioVistaSeccionActual + `/html_MiPerfil`
+      directorioVistaSeccionActual + `/html_MiPerfil`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -94,7 +95,7 @@ export class PerfilPropio {
     const html = await renderizarVista(
       "editar_perfil.html",
       { usuario: datosUsuario },
-      directorioVistaSeccionActual + `/html_MiPerfil`
+      directorioVistaSeccionActual + `/html_MiPerfil`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -122,11 +123,11 @@ export class PerfilPropio {
 
       const UsuarioActualizado = await this.ActualizaUsuario(
         infoTexto,
-        idUsuario
+        idUsuario,
       );
       const ImagenesActualizadas = await this.ActualizaImagenes(
         infoImagenes,
-        idUsuario
+        idUsuario,
       );
 
       if (!UsuarioActualizado) {
@@ -188,7 +189,7 @@ export class PerfilPropio {
     } else {
       urlNuevaFotoPerfil = await manejadorArchivos.guardarFotoDePerfil(
         FotoPerfil,
-        idUsuario
+        idUsuario,
       );
       const result = await this.collection.updateOne(
         { _id: new ObjectId(idUsuario) },
@@ -196,7 +197,7 @@ export class PerfilPropio {
           $set: {
             direccionURLFotoPerfil: urlNuevaFotoPerfil ?? "",
           },
-        }
+        },
       );
 
       FotoPerfilProcesada = result.modifiedCount !== 0;
@@ -207,7 +208,7 @@ export class PerfilPropio {
     } else {
       urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDeBackground(
         FotoBackground,
-        idUsuario
+        idUsuario,
       );
       const result = await this.collection.updateOne(
         { _id: new ObjectId(idUsuario) },
@@ -215,7 +216,7 @@ export class PerfilPropio {
           $set: {
             direccionURLFotoBackground: urlNuevaFotoBackground ?? "",
           },
-        }
+        },
       );
 
       FotoBackgroundProcesada = result.modifiedCount !== 0;
@@ -233,7 +234,7 @@ export class PerfilPropio {
       linkGithub: string;
       linkPortafolioPersonal: string;
     },
-    idUsuario: string
+    idUsuario: string,
   ) {
     const result = await this.collection.updateOne(
       { _id: new ObjectId(idUsuario) },
@@ -247,7 +248,7 @@ export class PerfilPropio {
             linkPortafolioPersonal: archivoJSON.linkPortafolioPersonal ?? "",
           },
         },
-      }
+      },
     );
 
     return result.modifiedCount !== 0;

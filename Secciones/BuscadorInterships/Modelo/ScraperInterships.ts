@@ -20,14 +20,15 @@ export class ScraperInterships {
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IOfertaIntership>(
-      "Interships"
+      "Interships",
     ) as unknown as Collection<IOfertaIntership>;
 
-    this.obtenerOfertasIntershipsV2 =
-      this.obtenerOfertasIntershipsV2.bind(this);
+    this.obtenerOfertasIntershipsV2 = this.obtenerOfertasIntershipsV2.bind(
+      this,
+    );
     this.visualizarInterships = this.visualizarInterships.bind(this);
-    this.visualizarIntershipsEspecifico =
-      this.visualizarIntershipsEspecifico.bind(this);
+    this.visualizarIntershipsEspecifico = this.visualizarIntershipsEspecifico
+      .bind(this);
     this.obtenerOfertaEspecifica = this.obtenerOfertaEspecifica.bind(this);
   }
 
@@ -45,7 +46,7 @@ export class ScraperInterships {
       const html = await renderizarVista(
         "TablaInterships.html",
         { ofertas: arregloInterships },
-        directorioVistaSeccionActual + `/html_BuscadorInterships`
+        directorioVistaSeccionActual + `/html_BuscadorInterships`,
       );
       context.response.body = html || "Error al renderizar la página";
     } catch (error) {
@@ -58,7 +59,7 @@ export class ScraperInterships {
   }
 
   private async obtenerOfertaEspecifica(
-    nombreCompania: string
+    nombreCompania: string,
   ): Promise<IOfertaIntership[]> {
     const ofertasDB = await this.collection
       .find({
@@ -83,7 +84,7 @@ export class ScraperInterships {
     const html = await renderizarVista(
       "TablaInterships.html",
       { ofertas: ofertaDB },
-      directorioVistaSeccionActual + `/html_BuscadorInterships`
+      directorioVistaSeccionActual + `/html_BuscadorInterships`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -98,7 +99,7 @@ export class ScraperInterships {
   }
 
   private async guardarOfertaIntership(
-    ofertaDeIntership: IOfertaIntership
+    ofertaDeIntership: IOfertaIntership,
   ): Promise<IOfertaIntership | null> {
     try {
       const result = await this.collection.insertOne(ofertaDeIntership);
@@ -112,13 +113,13 @@ export class ScraperInterships {
 
   private async obtenerInterships_SimplifyJobs(): Promise<IOfertaIntership[]> {
     const contenidoObtenido = await this.extraerDatos_SimplifyJobsPage(
-      "https://github.com/SimplifyJobs/Summer2025-Internships"
+      "https://github.com/SimplifyJobs/Summer2025-Internships",
     );
     return this.removerElementosConCamposVacios(contenidoObtenido);
   }
 
   private async extraerDatos_SimplifyJobsPage(
-    url: string
+    url: string,
   ): Promise<IOfertaIntership[]> {
     try {
       const response = await fetch(url);
@@ -158,7 +159,7 @@ export class ScraperInterships {
   }
 
   private removerElementosConCamposVacios(
-    jobPostings: IOfertaIntership[]
+    jobPostings: IOfertaIntership[],
   ): IOfertaIntership[] {
     return jobPostings.filter((posting) => {
       return (

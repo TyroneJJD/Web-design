@@ -12,12 +12,12 @@ export class crearNuevaCuenta {
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
   }
 
   public async crearNuevoUsuario(
-    usuario: Omit<IUsuario, "_id">
+    usuario: Omit<IUsuario, "_id">,
   ): Promise<IUsuario> {
     // Por seguridad todo usuario nuevo inicia con permisos desactivados
     usuario.permisosUsuario.esAdministrador = false;
@@ -33,7 +33,7 @@ export class crearNuevaCuenta {
     const html = await renderizarVista(
       "formulario_registro.html",
       {},
-      directorioVistaSeccionActual + `/html_Login`
+      directorioVistaSeccionActual + `/html_Login`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -42,7 +42,7 @@ export class crearNuevaCuenta {
     const html = await renderizarVista(
       "registro.html",
       {},
-      directorioVistaSeccionActual + `/html_Login`
+      directorioVistaSeccionActual + `/html_Login`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -92,25 +92,22 @@ export class crearNuevaCuenta {
             linkPortafolioPersonal: "",
           },
         },
-       
+
         reseniasUsuario: [],
         permisosUsuario: {
-        
-        quiereSerCoach: quiereSerCoach,
-        esAdministrador: false,
-        esCoach: false,
-        puedePublicarEnElBlog: false,
-        puedePublicarProblemas: false,
-        }
-
-
+          quiereSerCoach: quiereSerCoach,
+          esAdministrador: false,
+          esCoach: false,
+          puedePublicarEnElBlog: false,
+          puedePublicarProblemas: false,
+        },
       };
       this.crearNuevoUsuario(nuevoUsuario);
       context.response.status = 303;
       context.response.status = 303;
       context.response.headers.set(
         "Location",
-        `/login?toast=Usuario creado exitosamente&type=success`
+        `/login?toast=Usuario creado exitosamente&type=success`,
       );
       return;
     }

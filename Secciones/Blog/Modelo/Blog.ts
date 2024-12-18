@@ -5,8 +5,8 @@ import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
 import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 import {
-  obtenerNombresUsuario,
   obtenerApellidoUsuario,
+  obtenerNombresUsuario,
 } from "../../../Servicios/GestorPermisos.ts";
 
 export interface Publicacion {
@@ -24,11 +24,12 @@ export class Blog {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.guardarPost = this.guardarPost.bind(this);
     this.guardarPublicacion = this.guardarPublicacion.bind(this);
-    this.visualizarLecturaPublicacionBlog =
-      this.visualizarLecturaPublicacionBlog.bind(this);
+    this.visualizarLecturaPublicacionBlog = this
+      .visualizarLecturaPublicacionBlog.bind(this);
     this.obtenerPublicacionesBlog = this.obtenerPublicacionesBlog.bind(this);
-    this.visualizarPublicacionesBlog =
-      this.visualizarPublicacionesBlog.bind(this);
+    this.visualizarPublicacionesBlog = this.visualizarPublicacionesBlog.bind(
+      this,
+    );
   }
 
   // <!----------> La obtencion de los datos del formulario deberia estar en una funcion aparte
@@ -81,7 +82,7 @@ export class Blog {
 
   public async visualizarLecturaPublicacionBlog(
     context: Context,
-    postId: string
+    postId: string,
   ) {
     const post = await this.obtenerPostPorId(postId);
     if (post == null) {
@@ -93,7 +94,7 @@ export class Blog {
     const html = await renderizarVista(
       "lecturaPublicacionBlog.html",
       { publicacion: post },
-      directorioVistaSeccionActual + `/html_Blog`
+      directorioVistaSeccionActual + `/html_Blog`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -116,7 +117,7 @@ export class Blog {
     const html = await renderizarVista(
       "ListaDeBlogs.html",
       { publicaciones: publicaciones },
-      directorioVistaSeccionActual + `/html_Blog`
+      directorioVistaSeccionActual + `/html_Blog`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -125,7 +126,7 @@ export class Blog {
     const html = await renderizarVista(
       "editorTexto.html",
       {},
-      directorioVistaSeccionActual + `/html_Blog`
+      directorioVistaSeccionActual + `/html_Blog`,
     );
     context.response.body = html || "Error al renderizar la página";
   }

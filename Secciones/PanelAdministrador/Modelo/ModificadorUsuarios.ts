@@ -2,8 +2,7 @@ import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
 import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 
-
-  // <!----------> Y esto para que sirve???
+// <!----------> Y esto para que sirve???
 export class modificadorUsuarios {
   private db: BaseDeDatosMongoDB;
   private collection: Collection<IUsuario>;
@@ -11,7 +10,7 @@ export class modificadorUsuarios {
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
   }
 
@@ -29,11 +28,11 @@ export class modificadorUsuarios {
 
   public async actualizarUsuarioPorId(
     id: string,
-    datosActualizados: Partial<Omit<IUsuario, "_id">>
+    datosActualizados: Partial<Omit<IUsuario, "_id">>,
   ): Promise<IUsuario | null> {
     const { matchedCount } = await this.collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: datosActualizados }
+      { $set: datosActualizados },
     );
 
     if (matchedCount === 0) {

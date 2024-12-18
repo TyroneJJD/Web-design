@@ -14,7 +14,7 @@ export class IniciarSession {
   constructor() {
     this.db = BaseDeDatosMongoDB.obtenerInstancia();
     this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios"
+      "Usuarios",
     ) as unknown as Collection<IUsuario>;
   }
 
@@ -22,7 +22,7 @@ export class IniciarSession {
     const html = await renderizarVista(
       "login.html",
       {},
-      directorioVistaSeccionActual + `/html_Login`
+      directorioVistaSeccionActual + `/html_Login`,
     );
     context.response.body = html || "Error al renderizar la página";
   }
@@ -37,7 +37,7 @@ export class IniciarSession {
 
   public async obtenerUsuarioPorCredenciales(
     correoElectronico: string,
-    contrasenia: string
+    contrasenia: string,
   ): Promise<IUsuario | null> {
     try {
       const usuario = await this.collection.findOne({
@@ -58,7 +58,7 @@ export class IniciarSession {
 
   public async manejadorInicioSesion(context: Context) {
     const credenciales = await this.obtenerDatosFormularioInicioDeSesion(
-      context
+      context,
     );
 
     if (!credenciales) {
@@ -69,11 +69,10 @@ export class IniciarSession {
 
     const { email, password } = credenciales;
 
-
     if (email && password) {
       const userDataExists = await this.obtenerUsuarioPorCredenciales(
         email,
-        password
+        password,
       );
 
       if (userDataExists) {
@@ -84,15 +83,17 @@ export class IniciarSession {
             _id: userDataExists._id,
             nombreUsuario: userDataExists.nombreUsuario,
             apellidoUsuario: userDataExists.apellidoUsuario,
-            correoElectronicoUsuario: userDataExists.correoElectronicoInstitucionalUsuario,
+            correoElectronicoUsuario:
+              userDataExists.correoElectronicoInstitucionalUsuario,
 
             esAdministrador: userDataExists.permisosUsuario.esAdministrador,
             esCoach: userDataExists.permisosUsuario.esCoach,
-            puedePublicarEnElBlog: userDataExists.permisosUsuario.puedePublicarEnElBlog,
-            puedePublicarProblemas: userDataExists.permisosUsuario.puedePublicarProblemas,
-
+            puedePublicarEnElBlog:
+              userDataExists.permisosUsuario.puedePublicarEnElBlog,
+            puedePublicarProblemas:
+              userDataExists.permisosUsuario.puedePublicarProblemas,
           },
-          key
+          key,
         );
 
         context.cookies.set("auth_token", jwt, {
@@ -102,11 +103,15 @@ export class IniciarSession {
         });
 
         //------------------------------------
-        context.cookies.set("toast", JSON.stringify({
-          message: "Usuario creado exitosamente",
-          type: "success",
-        }), { httpOnly: false, path: "/" });
-    
+        context.cookies.set(
+          "toast",
+          JSON.stringify({
+            message: "Usuario creado exitosamente",
+            type: "success",
+          }),
+          { httpOnly: false, path: "/" },
+        );
+
         context.response.status = 303;
         context.response.headers.set("Location", "/home");
         return;
@@ -116,7 +121,7 @@ export class IniciarSession {
         context.response.body = "Credenciales incorrectas";
         context.response.headers.set(
           "Location",
-          `/login`
+          `/login`,
         );
       }
     } else {
@@ -124,13 +129,13 @@ export class IniciarSession {
       context.response.body = "Username and password must not be null.";
       context.response.headers.set(
         "Location",
-        `/login`
+        `/login`,
       );
     }
   }
 
   private async obtenerDatosFormularioInicioDeSesion(
-    ctx: Context
+    ctx: Context,
   ): Promise<{ email: string | null; password: string | null } | null> {
     const result = await ctx.request.body();
 
@@ -151,7 +156,7 @@ export class IniciarSession {
       new TextEncoder().encode(env.SECRET_JWT_KEY),
       { name: "HMAC", hash: "SHA-256" },
       false,
-      ["sign", "verify"]
+      ["sign", "verify"],
     );
   }
 }

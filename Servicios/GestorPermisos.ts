@@ -2,12 +2,11 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { verify } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 
-
 // <!!!!!----------!!!!!> ZONA DE GUERRA
 
 export const verificadorAutenticacion = async (
   ctx: Context,
-  next: () => Promise<unknown>
+  next: () => Promise<unknown>,
 ) => {
   const token = await ctx.cookies.get("auth_token");
 
@@ -36,7 +35,7 @@ async function obtenerTokenAuth() {
     new TextEncoder().encode(env.SECRET_JWT_KEY),
     { name: "HMAC", hash: "SHA-256" },
     false,
-    ["sign", "verify"]
+    ["sign", "verify"],
   );
 }
 
@@ -56,7 +55,7 @@ export const obtenerDatosToken = async (ctx: Context): Promise<any> => {
 };
 
 export const obtenerIdUsuario = async (
-  ctx: Context
+  ctx: Context,
 ): Promise<string | null> => {
   const token = await ctx.cookies.get("auth_token");
   if (token) {
@@ -73,7 +72,7 @@ export const obtenerIdUsuario = async (
 };
 
 export const obtenerNombresUsuario = async (
-  ctx: Context
+  ctx: Context,
 ): Promise<string | null> => {
   const token = await ctx.cookies.get("auth_token");
   if (token) {
@@ -91,7 +90,7 @@ export const obtenerNombresUsuario = async (
 };
 
 export const obtenerApellidoUsuario = async (
-  ctx: Context
+  ctx: Context,
 ): Promise<string | null> => {
   const token = await ctx.cookies.get("auth_token");
   if (token) {
@@ -110,7 +109,7 @@ export const obtenerApellidoUsuario = async (
 
 export const verificarSiEsAdministrador = async (
   ctx: Context,
-  next: () => Promise<unknown>
+  next: () => Promise<unknown>,
 ) => {
   const token = await ctx.cookies.get("auth_token");
 
@@ -139,7 +138,7 @@ export const verificarSiEsAdministrador = async (
 
 export const verificarSiPuedePublicarEnBlog = async (
   ctx: Context,
-  next: () => Promise<unknown>
+  next: () => Promise<unknown>,
 ) => {
   const token = await ctx.cookies.get("auth_token");
 
@@ -169,7 +168,7 @@ export const verificarSiPuedePublicarEnBlog = async (
 
 export const verificarSiPuedePublicarProblemas = async (
   ctx: Context,
-  next: () => Promise<unknown>
+  next: () => Promise<unknown>,
 ) => {
   const token = await ctx.cookies.get("auth_token");
 
@@ -199,7 +198,7 @@ export const verificarSiPuedePublicarProblemas = async (
 
 export const verificarSiEsCoach = async (
   ctx: Context,
-  next: () => Promise<unknown>
+  next: () => Promise<unknown>,
 ) => {
   const token = await ctx.cookies.get("auth_token");
 

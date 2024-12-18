@@ -3,7 +3,8 @@ import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { PerfilPropio } from "../Modelo/PerfilPropio.ts";
 import { verificadorAutenticacion } from "../../../Servicios/GestorPermisos.ts";
 
-export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/MiPerfil/Vista_MiPerfil`;
+export const directorioVistaSeccionActual =
+  `${Deno.cwd()}/Secciones/MiPerfil/Vista_MiPerfil`;
 
 export function inicializarMiPerfil(router: Router, app: Application) {
   const miPerfil = new PerfilPropio();
@@ -12,42 +13,42 @@ export function inicializarMiPerfil(router: Router, app: Application) {
   router.get(
     "/verMiPerfil",
     verificadorAutenticacion,
-    miPerfil.mostrarPaginaVerMiPerfil
+    miPerfil.mostrarPaginaVerMiPerfil,
   );
   router.get(
     "/verPerfil",
     verificadorAutenticacion,
-    miPerfil.mostrarPaginaVerPerfil
+    miPerfil.mostrarPaginaVerPerfil,
   );
   router.get(
     "/verEditarDatosPerfil",
     verificadorAutenticacion,
-    miPerfil.mostrarPaginaEditarMiPerfil
+    miPerfil.mostrarPaginaEditarMiPerfil,
   );
 
   router.post(
     "/editarDatosPerfil",
     verificadorAutenticacion,
-    miPerfil.editarDatosPerfil
+    miPerfil.editarDatosPerfil,
   );
 
   app.use(
     cargarArchivosEstaticos(
       "/css_MiPerfil",
-      directorioVistaSeccionActual + `/css_MiPerfil`
-    )
+      directorioVistaSeccionActual + `/css_MiPerfil`,
+    ),
   );
   app.use(
     cargarArchivosEstaticos(
       "/js_MiPerfil",
-      directorioVistaSeccionActual + `/js_MiPerfil`
-    )
+      directorioVistaSeccionActual + `/js_MiPerfil`,
+    ),
   );
 
   app.use(
     cargarArchivosEstaticos(
       "/img_MiPerfil",
-      directorioVistaSeccionActual + `/img_MiPerfil`
-    )
+      directorioVistaSeccionActual + `/img_MiPerfil`,
+    ),
   );
 }

@@ -1,8 +1,4 @@
-import {
-  MongoClient,
-  Collection,
-  type Document,
-} from "npm:mongodb@6.1.0";
+import { Collection, type Document, MongoClient } from "npm:mongodb@6.1.0";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
 const env = config();
@@ -35,7 +31,7 @@ export class BaseDeDatosMongoDB {
   }
 
   public obtenerReferenciaColeccion<T extends Document>(
-    name: string
+    name: string,
   ): Collection<T> {
     return this.client.db(this.dbName).collection<T>(name);
   }
@@ -45,15 +41,22 @@ export class BaseDeDatosMongoDB {
   }
 
   public async borrarTodosLosDocumentos<T extends Document>(
-    nombreColeccion: string
+    nombreColeccion: string,
   ): Promise<number> {
     try {
-      const coleccion = this.client.db(this.dbName).collection<T>(nombreColeccion);
+      const coleccion = this.client.db(this.dbName).collection<T>(
+        nombreColeccion,
+      );
       const resultado = await coleccion.deleteMany({});
-      console.log(`Se eliminaron ${resultado.deletedCount} documentos de la colección "${nombreColeccion}".`);
+      console.log(
+        `Se eliminaron ${resultado.deletedCount} documentos de la colección "${nombreColeccion}".`,
+      );
       return resultado.deletedCount || 0;
     } catch (error) {
-      console.error(`Error al borrar documentos de la colección "${nombreColeccion}":`, error);
+      console.error(
+        `Error al borrar documentos de la colección "${nombreColeccion}":`,
+        error,
+      );
       return 0;
     }
   }

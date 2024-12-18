@@ -9,14 +9,14 @@ import { inicializarMiPerfil } from "./Secciones/MiPerfil/Controlador/Controlado
 import { inicializarPaginaInicio } from "./Secciones/PaginaInicio/Controlador/Controlador.ts";
 import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Controlador/ControladorPermisos.ts";
 //import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
-import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
+//import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
 import { inicializarReuniones } from "./Secciones/Reuniones/Controlador/Controlador.ts";
 //import { inicializarPanelAdmin_ProblemasCompetitiva } from "./Secciones/PanelAdministrador/Controlador/ControladorProblemasCompetitiva.ts";
 
 import {
-  verificarVariablesDeEntornoDefinidas,
   cargarArchivosEstaticos,
   paginaNoEncontrada,
+  verificarVariablesDeEntornoDefinidas,
 } from "./utilidadesServidor.ts";
 
 verificarVariablesDeEntornoDefinidas();
@@ -25,11 +25,11 @@ const app = new Application();
 const router = new Router();
 
 app.use(
-  cargarArchivosEstaticos("/css_global/", "./ComponentesComunes/css_General")
+  cargarArchivosEstaticos("/css_global/", "./ComponentesComunes/css_General"),
 );
 
 app.use(
-  cargarArchivosEstaticos("/js_global/", "./ComponentesComunes/js_General")
+  cargarArchivosEstaticos("/js_global/", "./ComponentesComunes/js_General"),
 );
 
 inicializarPaginaInicio(router, app);
