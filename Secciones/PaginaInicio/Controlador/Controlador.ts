@@ -6,7 +6,7 @@ import {
 } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import {
   cargarArchivosEstaticos,
-  renderizarVista,
+  renderizarVistaV2,
 } from "../../../utilidadesServidor.ts";
 import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
 
@@ -22,7 +22,7 @@ export function inicializarPaginaInicio(router: Router, app: Application) {
 }
 
 async function renderizarHome(context: Context) {
-  const html = await renderizarVista(
+  const html = await renderizarVistaV2(
     "home.html",
     {},
     directorioVistaSeccionActual + `/html_PaginaInicio`

@@ -1,5 +1,5 @@
 export interface ISesionEntrevista {
-  _id?: string; //id de la reunion
+  _id?: string;
 
   idCoach: string;
   horaInicio: Date;
@@ -11,11 +11,10 @@ export interface ISesionEntrevista {
 }
 
 export interface IDetallesCandidatosRegistrado {
-
   //------------------- Datos que ingresa el candidato
   idCandidatoRegistrado: string;
-  
   nombreCandidato: string; //Para poder recuperar el nombre del candidato
+
   tipoDeReuinion: string;
   motivoDeLaReunion: string;
   comentariosAdicionales: string;
@@ -23,5 +22,4 @@ export interface IDetallesCandidatosRegistrado {
   //-------------------
   estadoReunion: string;
   respuestaDelEntrevistador: string; // Este horario ya ha sido confirmado para otra persona, si la otra persona cancela la reunión hay posibilidades de que te acepten a ti
-
 }

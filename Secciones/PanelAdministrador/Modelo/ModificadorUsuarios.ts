@@ -1,6 +1,6 @@
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
-import { IUsuario } from "../../DatosUsuario.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 
 
 

@@ -1,6 +1,6 @@
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
-import { IUsuario } from "../../DatosUsuario.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { create } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
@@ -41,7 +41,7 @@ export class IniciarSession {
   ): Promise<IUsuario | null> {
     try {
       const usuario = await this.collection.findOne({
-        correoElectronicoUsuario: correoElectronico,
+        correoElectronicoInstitucionalUsuario: correoElectronico,
         contraseniaUsuario: contrasenia,
       });
 
@@ -84,7 +84,7 @@ export class IniciarSession {
             _id: userDataExists._id,
             nombreUsuario: userDataExists.nombreUsuario,
             apellidoUsuario: userDataExists.apellidoUsuario,
-            correoElectronicoUsuario: userDataExists.correoElectronicoUsuario,
+            correoElectronicoUsuario: userDataExists.correoElectronicoInstitucionalUsuario,
 
             esAdministrador: userDataExists.esAdministrador,
             esCoach: userDataExists.esCoach,

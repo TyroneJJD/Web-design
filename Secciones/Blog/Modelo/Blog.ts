@@ -1,4 +1,4 @@
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
 import { ObjectId } from "npm:mongodb@6.1.0";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";

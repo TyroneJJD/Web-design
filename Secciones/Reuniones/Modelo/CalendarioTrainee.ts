@@ -1,9 +1,9 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
-import { ISesionEntrevista } from "../../Reuniones.ts";
-import { IUsuario } from "../../DatosUsuario.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { ISesionEntrevista } from "../../../Servicios/BaseDeDatos/Reuniones.ts";
+import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { ObjectId } from "npm:mongodb";
 import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";

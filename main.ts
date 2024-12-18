@@ -1,14 +1,13 @@
 /// <reference lib="deno.ns" />
 
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-
 import { inicializarBlog } from "./Secciones/Blog/Controlador/Controlador.ts";
 import { inicializarBuscadorInterships } from "./Secciones/BuscadorInterships/Controlador/Controlador.ts";
 import { inicializarLandingPage } from "./Secciones/LandingPage/Controlador/Controlador.ts";
 import { inicializarLogin } from "./Secciones/Login/Controlador/Controlador.ts";
 import { inicializarMiPerfil } from "./Secciones/MiPerfil/Controlador/Controlador.ts";
 import { inicializarPaginaInicio } from "./Secciones/PaginaInicio/Controlador/Controlador.ts";
-import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Controlador/Controlador.ts";
+import { inicializarPanelAdministrador } from "./Secciones/PanelAdministrador/Controlador/ControladorPermisos.ts";
 import { inicializarProblemasProgramacionCompetitiva } from "./Secciones/ProblemasProgramacionCompetitiva/Controlador/Controlador.ts";
 import { inicializarExplorarEntrevistadores } from "./Secciones/ExplorarEntrevistadores/Controlador/Controlador.ts";
 import { inicializarReuniones } from "./Secciones/Reuniones/Controlador/Controlador.ts";
@@ -17,7 +16,7 @@ import { inicializarPanelAdmin_ProblemasCompetitiva } from "./Secciones/PanelAdm
 import {
   verificarVariablesDeEntornoDefinidas,
   cargarArchivosEstaticos,
-  paginaNoEncontrada
+  paginaNoEncontrada,
 } from "./utilidadesServidor.ts";
 
 verificarVariablesDeEntornoDefinidas();
@@ -26,17 +25,11 @@ const app = new Application();
 const router = new Router();
 
 app.use(
-  cargarArchivosEstaticos(
-    "/css_global/",
-    "./Secciones/ColorYFuente/css_General"
-  )
+  cargarArchivosEstaticos("/css_global/", "./ComponentesComunes/css_General")
 );
 
 app.use(
-  cargarArchivosEstaticos(
-    "/js_global/",
-    "./Secciones/ColorYFuente/js_General"
-  )
+  cargarArchivosEstaticos("/js_global/", "./ComponentesComunes/js_General")
 );
 
 inicializarPaginaInicio(router, app);

@@ -1,10 +1,10 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
-import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
+import { directorioVistaSeccionActual } from "../Controlador/ControladorPermisos.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
 import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { ObjectId } from "npm:bson@^6.0";
-import { IUsuario } from "../../DatosUsuario.ts";
+import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 
 export class GestorPermisos {
   private collection: Collection<IUsuario>;

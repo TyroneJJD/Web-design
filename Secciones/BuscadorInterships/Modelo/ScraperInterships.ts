@@ -1,5 +1,5 @@
 import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
 import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";

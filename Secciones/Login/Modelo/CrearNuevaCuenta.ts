@@ -1,6 +1,6 @@
 import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatosMongoDB.ts";
-import { IUsuario } from "../../DatosUsuario.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
@@ -20,10 +20,10 @@ export class crearNuevaCuenta {
     usuario: Omit<IUsuario, "_id">
   ): Promise<IUsuario> {
     // Por seguridad todo usuario nuevo inicia con permisos desactivados
-    usuario.esAdministrador = false;
-    usuario.esCoach = false;
-    usuario.puedePublicarEnElBlog = false;
-    usuario.puedePublicarProblemas = false;
+    usuario.permisosUsuario.esAdministrador = false;
+    usuario.permisosUsuario.esCoach = false;
+    usuario.permisosUsuario.puedePublicarEnElBlog = false;
+    usuario.permisosUsuario.puedePublicarProblemas = false;
 
     const result = await this.collection.insertOne(usuario);
     return { _id: result, ...usuario };
@@ -76,25 +76,31 @@ export class crearNuevaCuenta {
 
       const nuevoUsuario: Omit<IUsuario, "_id"> = {
         nombreUsuario: nombre,
-        correoElectronicoUsuario: correo,
+        correoElectronicoInstitucionalUsuario: correo,
         apellidoUsuario: apellido,
         contraseniaUsuario: contrasena,
-        titularUsuario: "",
-        descripcionUsuario: "",
-        direccionURLFotoPerfil: "",
-        direccionURLFotoBackground: "",
-        linksUsuario: {
-          linkLinkendin: "",
-          linkGithub: "",
-          linkPortafolioPersonal: "",
+        datosPersonalesUsuario: {
+          correoElectronicoGmailUsuario: "",
+          titularUsuario: "",
+          descripcionUsuario: "",
+          direccionURLFotoPerfil: "",
+          direccionURLFotoBackground: "",
+          linksUsuario: {
+            linkLinkendin: "",
+            linkGithub: "",
+            linkPortafolioPersonal: "",
+          },
         },
+       
         reseniasUsuario: [],
+        permisosUsuario: {
         
         quiereSerCoach: quiereSerCoach,
         esAdministrador: false,
         esCoach: false,
         puedePublicarEnElBlog: false,
         puedePublicarProblemas: false,
+        }
 
 
       };

@@ -1,47 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Mi Proyecto</title>
-    <link rel="stylesheet" href="../css_PaginaInicio/home.css">
-    <link rel="stylesheet" href="/css_global/toast.css" />
-    <script src="/js_global/toast.js" defer></script>
-</head>
-<body>
-
-    <header>
-        <a id="home" href="/home"><div class="logo" id="home">Nombre Proyecto</div></a>
-        <button class="menu-toggle" aria-label="Abrir menú">&#9776;</button> <!-- Icono hamburguesa -->
-        <nav class="nav-menu">
-            <ul>
-                <li><a href="/BuscadorIntershipsV2">Interns</a></li>
-                <li><a href="/verMiPerfil">Mi Perfil</a></li>
-                <li><a href="#avisos" id="abrir-modal">Avisos</a></li> <!-- ID para manejar el evento -->
-                <li><a href="/ExplorarEntrevistadores">Explorar</a></li>
-                <li><a href="/listaPublicaciones">Blog</a></li>
-                <li><a href="/ProblemasProgramacionCompetitiva">Problemas</a></li>
-            </ul>
-        </nav>
-    </header>
-    
-    <!-- Modal -->
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" id="cerrar-modal">&times;</span> <!-- Botón de cierre -->
-            <h2>Avisos</h2>
-            <p>Este es el contenido del modal de avisos.</p>
-        </div>
-    </div>
-
-    <!-- Cuerpo principal -->
-    <main id="main-content">
-        <h1>Bienvenido</h1>
-        <p>Selecciona una página del menú para cargar contenido aquí.</p>
-    </main>
-
-    <script src="../js/home.js"></script>
-    <div id="toast-container"></div>
-</body>
+    <link rel="stylesheet" href="../css_PaginaInicio/home.css" />
+  </head>
+  <body>
+    <%= it.navbar || "Este es el NavBar predeterminado" %>
+    <h1>Bienvenido</h1>
+    <p>Selecciona una página del menú para cargar contenido aquí.</p>
+    <%= it.footer || "Este es el Footer predeterminado" %>
+  </body>
 </html>

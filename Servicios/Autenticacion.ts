@@ -26,8 +26,6 @@ export const verificadorAutenticacion = async (
   }
 };
 
-
-
 async function obtenerTokenAuth() {
   const env = config();
   return await crypto.subtle.importKey(
@@ -54,7 +52,9 @@ export const obtenerDatosToken = async (ctx: Context): Promise<any> => {
   return null; // Si no hay token, retornar null
 };
 
-export const obtenerIdUsuario = async (ctx: Context): Promise<string | null> => {
+export const obtenerIdUsuario = async (
+  ctx: Context
+): Promise<string | null> => {
   const token = await ctx.cookies.get("auth_token");
   if (token) {
     try {
@@ -69,13 +69,15 @@ export const obtenerIdUsuario = async (ctx: Context): Promise<string | null> => 
   return null; // Si no hay token, retornar null
 };
 
-export const obtenerNombresUsuario = async (ctx: Context): Promise<string | null> => {
+export const obtenerNombresUsuario = async (
+  ctx: Context
+): Promise<string | null> => {
   const token = await ctx.cookies.get("auth_token");
   if (token) {
     try {
       const key = await obtenerTokenAuth();
       const payload = await verify(token, key);
-      const nombre =  (payload as { nombreUsuario: string }).nombreUsuario;
+      const nombre = (payload as { nombreUsuario: string }).nombreUsuario;
       return nombre;
     } catch (error) {
       console.error("Error al verificar el token:", error);
@@ -85,14 +87,15 @@ export const obtenerNombresUsuario = async (ctx: Context): Promise<string | null
   return null; // Si no hay token, retornar null
 };
 
-
-export const obtenerApellidoUsuario = async (ctx: Context): Promise<string | null> => {
+export const obtenerApellidoUsuario = async (
+  ctx: Context
+): Promise<string | null> => {
   const token = await ctx.cookies.get("auth_token");
   if (token) {
     try {
       const key = await obtenerTokenAuth();
       const payload = await verify(token, key);
-      const apellido =  (payload as { apellidoUsuario: string }).apellidoUsuario; 
+      const apellido = (payload as { apellidoUsuario: string }).apellidoUsuario;
       return apellido;
     } catch (error) {
       console.error("Error al verificar el token:", error);
@@ -101,7 +104,6 @@ export const obtenerApellidoUsuario = async (ctx: Context): Promise<string | nul
   }
   return null; // Si no hay token, retornar null
 };
-
 
 export const verificarSiEsAdministrador = async (
   ctx: Context,
@@ -132,7 +134,6 @@ export const verificarSiEsAdministrador = async (
   }
 };
 
-
 export const verificarSiPuedePublicarEnBlog = async (
   ctx: Context,
   next: () => Promise<unknown>
@@ -150,7 +151,8 @@ export const verificarSiPuedePublicarEnBlog = async (
         await next();
       } else {
         ctx.response.status = 403;
-        ctx.response.body = "Acceso denegado. No tienes permisos para publicar en el blog.";
+        ctx.response.body =
+          "Acceso denegado. No tienes permisos para publicar en el blog.";
       }
     } catch (error) {
       console.error("Error al verificar el token:", error);
@@ -161,7 +163,6 @@ export const verificarSiPuedePublicarEnBlog = async (
     ctx.response.redirect("/login");
   }
 };
-
 
 export const verificarSiPuedePublicarProblemas = async (
   ctx: Context,
@@ -180,7 +181,8 @@ export const verificarSiPuedePublicarProblemas = async (
         await next();
       } else {
         ctx.response.status = 403;
-        ctx.response.body = "Acceso denegado. No tienes permiso para publicar problemas.";
+        ctx.response.body =
+          "Acceso denegado. No tienes permiso para publicar problemas.";
       }
     } catch (error) {
       console.error("Error al verificar el token:", error);
@@ -208,7 +210,7 @@ export const verificarSiEsCoach = async (
         ctx.state.user = payload;
         await next();
       } else {
-        console.log(payload)
+        console.log(payload);
         ctx.response.status = 403;
         ctx.response.body = "Acceso denegado. No eres un Coach.";
       }
@@ -221,10 +223,3 @@ export const verificarSiEsCoach = async (
     ctx.response.redirect("/login");
   }
 };
-
-
-
-
-
-
-

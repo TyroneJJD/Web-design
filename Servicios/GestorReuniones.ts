@@ -1,12 +1,12 @@
 import { GoogleApis } from "npm:googleapis";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import { BaseDeDatosMongoDB } from "./BaseDeDatosMongoDB.ts";
-import { ISesionEntrevista } from "../Secciones/Reuniones.ts";
+import { BaseDeDatosMongoDB } from "./BaseDeDatos/BaseDeDato.ts";
+import { ISesionEntrevista } from "./BaseDeDatos/Reuniones.ts";
 import { ObjectId } from "npm:mongodb";
 import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
 import { ManejadorCorreoElectronico} from "./CorreoElectronico/ManejadorCorreoElectronico.ts";
-import { IUsuario } from "../Secciones/DatosUsuario.ts";
+import { IUsuario } from "./BaseDeDatos/DatosUsuario.ts";
 
 export function identificacion(context: Context) {
   const env = config();
@@ -102,8 +102,8 @@ export async function generarReunion(context: Context) {
   
   const manejadorCorreoElectronico = new ManejadorCorreoElectronico();
   if (response.data.hangoutLink) {
-    manejadorCorreoElectronico.enviarCorreoNuevaReunionParaEntrevistador(datosDelEntrevistador.correoElectronicoUsuario, datosDelEntrevistador.nombreUsuario + datosDelEntrevistador.apellidoUsuario, response.data.hangoutLink);
-    manejadorCorreoElectronico.enviarCorreoNuevaReunionParaEntrevistado(datosDelEntrevistado.correoElectronicoUsuario, datosDelEntrevistado.nombreUsuario + datosDelEntrevistado.apellidoUsuario, response.data.hangoutLink);
+    manejadorCorreoElectronico.enviarCorreoNuevaReunionParaEntrevistador(datosDelEntrevistador.correoElectronicoInstitucionalUsuario, datosDelEntrevistador.nombreUsuario + datosDelEntrevistador.apellidoUsuario, response.data.hangoutLink);
+    manejadorCorreoElectronico.enviarCorreoNuevaReunionParaEntrevistado(datosDelEntrevistado.correoElectronicoInstitucionalUsuario, datosDelEntrevistado.nombreUsuario + datosDelEntrevistado.apellidoUsuario, response.data.hangoutLink);
   } else {
     console.error("Error: hangoutLink is undefined");
   }

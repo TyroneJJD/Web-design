@@ -1,6 +1,7 @@
 import { Context, send } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { renderFile } from "https://deno.land/x/eta@v1.12.3/mod.ts";
+import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 
 export function verificarVariablesDeEntornoDefinidas(): void {
   const env = config();
@@ -44,8 +45,55 @@ function verificarVariableDeEntorno(
   return true;
 }
 
-export async function renderizarVista(template: string, data: object, viewsPath: string) {
+export async function renderizarVista(
+  template: string,
+  data: object,
+  viewsPath: string
+) {
   return await renderFile(template, data, { views: viewsPath });
+}
+
+async function leerHTMLDesdeArchivo(ruta: string): Promise<string> {
+  try {
+    const contenido = await Deno.readTextFile(Deno.cwd() + "/ComponentesComunes/plantillasGenerales/" + ruta);
+    return contenido;
+  } catch (error) {
+    console.error("Error al leer el archivo HTML:", error);
+    throw new Error("No se pudo leer el archivo HTML.");
+  }
+}
+
+export async function renderizarVistaV2(
+  template: string,
+  data: object,
+  viewsPath: string
+): Promise<string> {
+  const navbar = await leerHTMLDesdeArchivo("navbar.html");
+  const footer = await leerHTMLDesdeArchivo("footer.html");
+
+  try {
+    const datosConHTML = {
+      ...data,
+      navbar,
+      footer,
+    };
+
+    configure({ autoEscape: false });
+    const rendered = await renderFile(template, datosConHTML, {
+      views: viewsPath,
+    });
+    if (!rendered) {
+      throw new Error(
+        "No se pudo renderizar la vista. Verifica la plantilla y los datos."
+      );
+    }
+    return rendered;
+  } catch (error) {
+    console.error("Error al renderizar la vista:", error);
+    throw new Error(
+      "No se pudo renderizar la vista. Verifica la plantilla y los datos."
+    );
+  }
 }
 
 export function cargarArchivosEstaticos(prefix: string, carpetaRaiz: string) {
@@ -66,7 +114,7 @@ export function paginaNoEncontrada() {
     try {
       await next();
       if (context.response.status === 404) {
-        context.response.redirect("/Login");
+        context.response.redirect("/NotFound");
       }
     } catch (err) {
       console.error("Error en el middleware:", err);
