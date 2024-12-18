@@ -4,10 +4,11 @@ import { CalendarioEntrevistador } from "../Modelo/CalendarioEntrevistador.ts";
 import { CalendarioTrainee } from "../Modelo/CalendarioTrainee.ts";
 import { ReservacionEntrenador } from "../Modelo/ReservacionEntrenador.ts";
 import { identificacion,generarReunion  } from "../../../Servicios/GestorReuniones.ts";
-import {verificadorAutenticacion, verificarSiEsCoach} from "../../../Servicios/Autenticacion.ts"
+import {verificadorAutenticacion, verificarSiEsCoach} from "../../../Servicios/GestorPermisos.ts"
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Reuniones/Vista_Reuniones`;
 
+// <!!!!!----------!!!!!> ZONA DE GUERRA
 export function inicializarReuniones(
   router: Router,
   app: Application

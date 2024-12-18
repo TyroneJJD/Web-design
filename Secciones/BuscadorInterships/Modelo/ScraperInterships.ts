@@ -1,6 +1,6 @@
 import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
+import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
@@ -23,11 +23,11 @@ export class ScraperInterships {
       "Interships"
     ) as unknown as Collection<IOfertaIntership>;
 
-    //Por alguna extraña razon si no le pongo esto falla
     this.obtenerOfertasIntershipsV2 =
       this.obtenerOfertasIntershipsV2.bind(this);
     this.visualizarInterships = this.visualizarInterships.bind(this);
-    this.visualizarIntershipsEspecifico = this.visualizarIntershipsEspecifico.bind(this);
+    this.visualizarIntershipsEspecifico =
+      this.visualizarIntershipsEspecifico.bind(this);
     this.obtenerOfertaEspecifica = this.obtenerOfertaEspecifica.bind(this);
   }
 
@@ -57,42 +57,35 @@ export class ScraperInterships {
     }
   }
 
-  private async obtenerOfertaEspecifica(nombreCompania :string ): Promise<IOfertaIntership[]> {
-    
-    const ofertasDB = await this.collection.find({ 
-      compania: { $regex: nombreCompania, $options: "i" } 
-    }).toArray();
-  
+  private async obtenerOfertaEspecifica(
+    nombreCompania: string
+  ): Promise<IOfertaIntership[]> {
+    const ofertasDB = await this.collection
+      .find({
+        compania: { $regex: new RegExp(nombreCompania, "i") },
+      })
+      .toArray();
+
     return ofertasDB;
-    
   }
-   
 
   public async visualizarIntershipsEspecifico(context: Context) {
-  
-      const url = new URL(context.request.url);
-      const nombreCompania = url.searchParams.get("nombreCompania");
-      
+    const url = new URL(context.request.url);
+    const nombreCompania = url.searchParams.get("nombreCompania");
 
-      if (!nombreCompania || nombreCompania.trim() === "") {
-        context.response.headers.set(
-          "Location",
-          "/BuscadorIntershipsV2"
-        );
-        return;
-    
-      }
-      
-      
-      const ofertaDB = await this.obtenerOfertaEspecifica(nombreCompania);
+    if (!nombreCompania || nombreCompania.trim() === "") {
+      context.response.headers.set("Location", "/BuscadorIntershipsV2");
+      return;
+    }
 
-      const html = await renderizarVista(
-        "TablaInterships.html",
-        { ofertas: ofertaDB },
-        directorioVistaSeccionActual + `/html_BuscadorInterships`
-      );
-      context.response.body = html || "Error al renderizar la página";
-    
+    const ofertaDB = await this.obtenerOfertaEspecifica(nombreCompania);
+
+    const html = await renderizarVista(
+      "TablaInterships.html",
+      { ofertas: ofertaDB },
+      directorioVistaSeccionActual + `/html_BuscadorInterships`
+    );
+    context.response.body = html || "Error al renderizar la página";
   }
 
   private async obtenerOfertasIntershipsV2(): Promise<IOfertaIntership[]> {

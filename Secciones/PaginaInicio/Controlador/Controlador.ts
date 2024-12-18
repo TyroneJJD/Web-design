@@ -8,7 +8,7 @@ import {
   cargarArchivosEstaticos,
   renderizarVista,
 } from "../../../utilidadesServidor.ts";
-import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
+import { verificadorAutenticacion } from "../../../Servicios/GestorPermisos.ts";
 
 const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PaginaInicio/Vista_PaginaInicio`;
 
@@ -21,6 +21,7 @@ export function inicializarPaginaInicio(router: Router, app: Application) {
   app.use(cargarArchivosEstaticos("/js_PaginaInicio", directorioVistaSeccionActual + `/js_PaginaInicio`));
 }
 
+// <!----------> Esto deberia ir en el modelo
 async function renderizarHome(context: Context) {
   const html = await renderizarVista(
     "home.html",

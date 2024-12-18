@@ -1,5 +1,5 @@
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { create } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";

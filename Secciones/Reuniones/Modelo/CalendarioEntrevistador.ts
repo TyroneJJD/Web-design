@@ -1,15 +1,16 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
-import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
+import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
-import { ObjectId } from "npm:mongodb";
 import {
   ISesionEntrevista,
   IDetallesCandidatosRegistrado,
-} from "../../../Servicios/BaseDeDatos/Reuniones.ts";
-import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
+} from "../../../Servicios/BaseDeDatos/Entrevistas.ts";
+import { obtenerIdUsuario } from "../../../Servicios/GestorPermisos.ts";
+
+// <!!!!!----------!!!!!> ZONA DE GUERRA
 
 export class CalendarioEntrevistador {
   private db: BaseDeDatosMongoDB;
@@ -59,7 +60,7 @@ export class CalendarioEntrevistador {
       (await this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
         "Reuniones"
       )) as unknown as Collection<ISesionEntrevista>;
-    const dato = await collection.findOne({ _id: new ObjectId(idSesion) });
+    const dato = await collection.findOne({ _id: new ObjectId(idSesion).toString() });
     if (!dato) {
       throw new Error(`Sesión con ID ${idSesion} no encontrada`);
     }

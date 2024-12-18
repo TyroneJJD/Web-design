@@ -1,5 +1,5 @@
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
-import { ObjectId } from "npm:mongodb@6.1.0";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
+import { ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
@@ -7,7 +7,7 @@ import { configure } from "https://deno.land/x/eta@v1.12.3/mod.ts";
 import {
   obtenerNombresUsuario,
   obtenerApellidoUsuario,
-} from "../../../Servicios/Autenticacion.ts";
+} from "../../../Servicios/GestorPermisos.ts";
 
 export interface Publicacion {
   tituloPublicacion: string;
@@ -31,6 +31,7 @@ export class Blog {
       this.visualizarPublicacionesBlog.bind(this);
   }
 
+  // <!----------> La obtencion de los datos del formulario deberia estar en una funcion aparte
   public async guardarPublicacion(context: Context) {
     const result = await context.request.body();
     if (!result.value) {
@@ -44,11 +45,8 @@ export class Blog {
       body.fields.etiquetas?.split(",").map((tag: string) => tag.trim()) || [];
 
     const nombreAutor = await obtenerNombresUsuario(context);
-    const apellidoAutor = await obtenerApellidoUsuario(context);  //Falla en esta línea
+    const apellidoAutor = await obtenerApellidoUsuario(context); //Falla en esta línea
     const autorPublicacion = nombreAutor + " " + apellidoAutor || "";
-    console.log("Autor de la publicación:", autorPublicacion);
-    console.log("Etiquetas de la publicación:", apellidoAutor);
-
     const contenidoPublicacion = body.fields.contenido || "";
 
     const fecha = new Date();
@@ -135,7 +133,7 @@ export class Blog {
   public async obtenerPostPorId(postId: string): Promise<Publicacion | null> {
     if (!ObjectId.isValid(postId)) {
       console.error("ID de post inválido:", postId);
-      return null; // Devuelve null si el ID no es válido
+      return null;
     }
 
     const post = await this.db
@@ -143,9 +141,9 @@ export class Blog {
       .findOne({ _id: new ObjectId(postId) });
 
     if (post) {
-      return post; // Devuelve el post si se encuentra
+      return post;
     } else {
-      return null; // Devuelve null si no se encuentra el post
+      return null;
     }
   }
 }

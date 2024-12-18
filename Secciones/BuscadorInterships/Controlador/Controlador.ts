@@ -1,7 +1,7 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { ScraperInterships } from "../Modelo/ScraperInterships.ts";
-import { verificadorAutenticacion } from "../../../Servicios/Autenticacion.ts";
+import { verificadorAutenticacion } from "../../../Servicios/GestorPermisos.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/BuscadorInterships/Vista_BuscadorInterships`;
 

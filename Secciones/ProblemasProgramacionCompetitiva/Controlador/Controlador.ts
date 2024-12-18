@@ -1,3 +1,5 @@
+// <!----------> FULL REFACTOR PARA MONGODB
+
 /*import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 // import { GestorProblemasProgramacionCompetitiva } from "../Modelo/GestorProblemasProgramacionCompetitiva.ts";

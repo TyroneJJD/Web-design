@@ -2,7 +2,7 @@ import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { GestorPermisos } from "../Modelo/GestorPermisos.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
-import { verificadorAutenticacion, verificarSiEsAdministrador } from "../../../Servicios/Autenticacion.ts";
+import { verificadorAutenticacion, verificarSiEsAdministrador } from "../../../Servicios/GestorPermisos.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/PanelAdministrador/Vista_PanelAdministrador`;
 
@@ -18,6 +18,8 @@ export function inicializarPanelAdministrador(
     gestorPermisos.mostrarPanelPermisosUsuarios
   );
 
+  
+// <!----------> No debe haber logica de negocio en los controladores
   router.post("/api/actualizar-permisos", async (ctx: Context) => {
     const { idUsuario, permiso, estado } = await ctx.request.body().value;
 

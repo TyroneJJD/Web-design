@@ -20,6 +20,7 @@ export function inicializarLandingPage(router: Router, app: Application) {
   app.use(cargarArchivosEstaticos("/js_LandingPage", directorioVistaSeccionActual + `/js_LandingPage`));
 }
 
+// <!----------> Esto deberia ir en el modelo
 async function index(context: Context) {
   const html = await renderizarVista(
     "index.html",
@@ -29,6 +30,7 @@ async function index(context: Context) {
   context.response.body = html || "Error al renderizar la página";
 }
 
+// <!----------> Esto deberia ir en el modelo
 async function visionYMision(context: Context) {
   const html = await renderizarVista(
     "vision_mision.html",

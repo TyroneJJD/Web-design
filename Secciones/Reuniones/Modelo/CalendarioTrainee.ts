@@ -1,12 +1,14 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
-import { ISesionEntrevista } from "../../../Servicios/BaseDeDatos/Reuniones.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
+import { ISesionEntrevista } from "../../../Servicios/BaseDeDatos/Entrevistas.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
-import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { ObjectId } from "npm:mongodb";
-import { obtenerIdUsuario } from "../../../Servicios/Autenticacion.ts";
+import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+
+import { obtenerIdUsuario } from "../../../Servicios/GestorPermisos.ts";
+
+// <!!!!!----------!!!!!> ZONA DE GUERRA
 
 export class CalendarioTrainee {
   private db: BaseDeDatosMongoDB;
@@ -49,6 +51,7 @@ export class CalendarioTrainee {
     return usuario;
   }
 
+    // <!----------> reparar debido al cambio en el modelo de datos
   public async obtenerReunionesPorCandidato(
     idCandidato: string
   ): Promise<ISesionEntrevista[]> {

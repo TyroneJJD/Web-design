@@ -40,7 +40,7 @@ inicializarLandingPage(router, app);
 inicializarMiPerfil(router, app);
 inicializarPanelAdministrador(router, app);
 //inicializarProblemasProgramacionCompetitiva(router, app);
-inicializarExplorarEntrevistadores(router, app);
+//inicializarExplorarEntrevistadores(router, app);
 inicializarReuniones(router, app);
 //inicializarPanelAdmin_ProblemasCompetitiva(router, app);
 

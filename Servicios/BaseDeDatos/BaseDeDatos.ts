@@ -7,6 +7,8 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
 const env = config();
 
+// <!----------> Migrar a from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+
 export class BaseDeDatosMongoDB {
   private static instance: BaseDeDatosMongoDB;
   private client: MongoClient;

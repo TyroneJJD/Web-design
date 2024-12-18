@@ -1,5 +1,5 @@
-import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { Collection } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
@@ -47,6 +47,7 @@ export class crearNuevaCuenta {
     context.response.body = html || "Error al renderizar la página";
   }
 
+  // <!----------> La ontencion de datos del formulario deberia ser una funcion aparte
   public async manejadorCreacionUsuario(context: Context) {
     const url = new URL(context.request.url);
     const tipo = url.searchParams.get("tipo");

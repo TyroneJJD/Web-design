@@ -1,9 +1,9 @@
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDato.ts";
+import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
 import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 
 
-
+  // <!----------> Y esto para que sirve???
 export class modificadorUsuarios {
   private db: BaseDeDatosMongoDB;
   private collection: Collection<IUsuario>;

@@ -1,7 +1,7 @@
 import { Application, Router } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { cargarArchivosEstaticos } from "../../../utilidadesServidor.ts";
 import { Blog } from "../Modelo/Blog.ts";
-import { verificadorAutenticacion , verificarSiPuedePublicarEnBlog} from "../../../Servicios/Autenticacion.ts";
+import { verificadorAutenticacion , verificarSiPuedePublicarEnBlog} from "../../../Servicios/GestorPermisos.ts";
 
 export const directorioVistaSeccionActual = `${Deno.cwd()}/Secciones/Blog/Vista_Blog`;
 
@@ -10,6 +10,8 @@ export function inicializarBlog(router: Router, app: Application) {
   router.get("/BlogV2", verificadorAutenticacion, verificarSiPuedePublicarEnBlog, blog.visualizarEditorTexto);
   router.post("/save-content", verificadorAutenticacion, verificarSiPuedePublicarEnBlog,  blog.guardarPublicacion);
 
+
+  // <!----------> No deberia existir logica de negocio aqui, unicamente incocaciones de metodos
   router.get("/lecturaPublicacionBlog", async (context) => {
 
     const url = new URL(context.request.url);

@@ -4,6 +4,9 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
 const env = config();
 
+
+// <!!!!!----------!!!!!> ZONA DE GUERRA
+
 export class ManejadorArchivos {
   private storageBucketUrl =
     `https://firebasestorage.googleapis.com/v0/b/` +
