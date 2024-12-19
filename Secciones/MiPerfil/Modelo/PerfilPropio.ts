@@ -1,23 +1,15 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
-import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
+import { GestorDatosUsuario } from "../../../Servicios/BaseDeDatos/GestorDatosUsuario.ts";
 import { obtenerIdUsuario } from "../../../Servicios/GestorPermisos.ts";
-import { ManejadorArchivos } from "../../../Servicios/ManejadorArchivos.ts";
 
 // <!----------> Esta clase se deben separar en tres clases diferentes, para respetar sus ADTs
 export class PerfilPropio {
-  private collection: Collection<IUsuario>;
-  private db: BaseDeDatosMongoDB;
+  private gestorDatosUsuario: GestorDatosUsuario;
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios",
-    ) as unknown as Collection<IUsuario>;
+    this.gestorDatosUsuario = new GestorDatosUsuario();
 
-    this.obtenerUsuarioPorId = this.obtenerUsuarioPorId.bind(this);
     this.mostrarPaginaEditarMiPerfil = this.mostrarPaginaEditarMiPerfil.bind(
       this,
     );
@@ -34,7 +26,9 @@ export class PerfilPropio {
       context.response.body = "No se proporcionó un ID de usuario";
       return;
     }
-    const datosUsuario = await this.obtenerUsuarioPorId(idUsuario);
+    const datosUsuario = await this.gestorDatosUsuario.obtenerUsuarioPorId(
+      idUsuario,
+    );
     const html = await renderizarVista(
       "ver_perfil.html",
       { usuario: datosUsuario, esMiPerfil: true },
@@ -64,7 +58,9 @@ export class PerfilPropio {
       esMiPerfil = true;
     }
 
-    const datosUsuario = await this.obtenerUsuarioPorId(idSolicitado);
+    const datosUsuario = await this.gestorDatosUsuario.obtenerUsuarioPorId(
+      idSolicitado,
+    );
     const html = await renderizarVista(
       "ver_perfil.html",
       { usuario: datosUsuario, esMiPerfil: esMiPerfil },
@@ -73,16 +69,6 @@ export class PerfilPropio {
     context.response.body = html || "Error al renderizar la página";
   }
 
-  private obtenerUsuarioPorId = async (id: string) => {
-    try {
-      const usuario = await this.collection.findOne({ _id: new ObjectId(id) });
-      return usuario;
-    } catch (error) {
-      console.error("Error al obtener el usuario:", error);
-      throw error;
-    }
-  };
-
   public async mostrarPaginaEditarMiPerfil(context: Context) {
     const idUsuario = await obtenerIdUsuario(context);
     if (!idUsuario) {
@@ -90,7 +76,9 @@ export class PerfilPropio {
       context.response.body = "No se proporcionó un ID de usuario";
       return;
     }
-    const datosUsuario = await this.obtenerUsuarioPorId(idUsuario);
+    const datosUsuario = await this.gestorDatosUsuario.obtenerUsuarioPorId(
+      idUsuario,
+    );
 
     const html = await renderizarVista(
       "editar_perfil.html",
@@ -121,14 +109,15 @@ export class PerfilPropio {
         return;
       }
 
-      const UsuarioActualizado = await this.ActualizaUsuario(
+      const UsuarioActualizado = await this.gestorDatosUsuario.ActualizaUsuario(
         infoTexto,
         idUsuario,
       );
-      const ImagenesActualizadas = await this.ActualizaImagenes(
-        infoImagenes,
-        idUsuario,
-      );
+      const ImagenesActualizadas = await this.gestorDatosUsuario
+        .ActualizaImagenes(
+          infoImagenes,
+          idUsuario,
+        );
 
       if (!UsuarioActualizado) {
         context.response.status = 404;
@@ -168,89 +157,5 @@ export class PerfilPropio {
     const params = url.searchParams;
     const idPerfil = params.get("perfil");
     return idPerfil;
-  }
-
-  private async ActualizaImagenes(archivoJSON: any, idUsuario: string) {
-    const manejadorArchivos = new ManejadorArchivos();
-    let urlNuevaFotoPerfil;
-    let urlNuevaFotoBackground;
-
-    const FotoPerfil = archivoJSON.imagenPerfil;
-    const FotoBackground = archivoJSON.imagenBackground;
-
-    console.log(FotoPerfil);
-    console.log(FotoBackground);
-
-    let FotoPerfilProcesada;
-    let FotoBackgroundProcesada;
-
-    if (FotoPerfil.fileName == "") {
-      FotoPerfilProcesada = true;
-    } else {
-      urlNuevaFotoPerfil = await manejadorArchivos.guardarFotoDePerfil(
-        FotoPerfil,
-        idUsuario,
-      );
-      const result = await this.collection.updateOne(
-        { _id: new ObjectId(idUsuario) },
-        {
-          $set: {
-            direccionURLFotoPerfil: urlNuevaFotoPerfil ?? "",
-          },
-        },
-      );
-
-      FotoPerfilProcesada = result.modifiedCount !== 0;
-    }
-
-    if (FotoBackground.fileName == "") {
-      FotoBackgroundProcesada = true;
-    } else {
-      urlNuevaFotoBackground = await manejadorArchivos.guardarFotoDeBackground(
-        FotoBackground,
-        idUsuario,
-      );
-      const result = await this.collection.updateOne(
-        { _id: new ObjectId(idUsuario) },
-        {
-          $set: {
-            direccionURLFotoBackground: urlNuevaFotoBackground ?? "",
-          },
-        },
-      );
-
-      FotoBackgroundProcesada = result.modifiedCount !== 0;
-    }
-
-    console.log({ FotoPerfilProcesada, FotoBackgroundProcesada });
-    return { FotoPerfilProcesada, FotoBackgroundProcesada };
-  }
-
-  private async ActualizaUsuario(
-    archivoJSON: {
-      titularUsuario: string;
-      descripcionUsuario: string;
-      linkLinkendin: string;
-      linkGithub: string;
-      linkPortafolioPersonal: string;
-    },
-    idUsuario: string,
-  ) {
-    const result = await this.collection.updateOne(
-      { _id: new ObjectId(idUsuario) },
-      {
-        $set: {
-          titularUsuario: archivoJSON.titularUsuario ?? undefined,
-          descripcionUsuario: archivoJSON.descripcionUsuario ?? undefined,
-          linksUsuario: {
-            linkLinkendin: archivoJSON.linkLinkendin ?? "",
-            linkGithub: archivoJSON.linkGithub ?? "",
-            linkPortafolioPersonal: archivoJSON.linkPortafolioPersonal ?? "",
-          },
-        },
-      },
-    );
-
-    return result.modifiedCount !== 0;
   }
 }

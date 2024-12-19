@@ -5,8 +5,8 @@ const env = config();
 
 // <!----------> Migrar a from "https://deno.land/x/mongo@v0.33.0/mod.ts";
 
-export class BaseDeDatosMongoDB {
-  private static instance: BaseDeDatosMongoDB;
+export class BaseDeDatos {
+  private static instance: BaseDeDatos;
   private client: MongoClient;
   private dbName: string = "PROYECTO_WEB";
 
@@ -19,11 +19,11 @@ export class BaseDeDatosMongoDB {
     this.conectarABaseDeDatos();
   }
 
-  public static obtenerInstancia(): BaseDeDatosMongoDB {
-    if (!BaseDeDatosMongoDB.instance) {
-      BaseDeDatosMongoDB.instance = new BaseDeDatosMongoDB();
+  public static obtenerInstancia(): BaseDeDatos {
+    if (!BaseDeDatos.instance) {
+      BaseDeDatos.instance = new BaseDeDatos();
     }
-    return BaseDeDatosMongoDB.instance;
+    return BaseDeDatos.instance;
   }
 
   private async conectarABaseDeDatos(): Promise<void> {

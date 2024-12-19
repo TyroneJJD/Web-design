@@ -1,33 +1,18 @@
-import { Collection } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
+
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
+import { GestorDatosUsuario } from "../../../Servicios/BaseDeDatos/GestorDatosUsuario.ts";
+import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
 
 export class crearNuevaCuenta {
-  private db: BaseDeDatosMongoDB;
-  private collection: Collection<IUsuario>;
+  private gestorDatosUsuario: GestorDatosUsuario;
 
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios",
-    ) as unknown as Collection<IUsuario>;
+    this.gestorDatosUsuario = new GestorDatosUsuario();
   }
 
-  public async crearNuevoUsuario(
-    usuario: Omit<IUsuario, "_id">,
-  ): Promise<IUsuario> {
-    // Por seguridad todo usuario nuevo inicia con permisos desactivados
-    usuario.permisosUsuario.esAdministrador = false;
-    usuario.permisosUsuario.esCoach = false;
-    usuario.permisosUsuario.puedePublicarEnElBlog = false;
-    usuario.permisosUsuario.puedePublicarProblemas = false;
-
-    const result = await this.collection.insertOne(usuario);
-    return { _id: result, ...usuario };
-  }
+ 
 
   public async mostrarPaginaFormularioRegistro(context: Context) {
     const html = await renderizarVista(
@@ -102,7 +87,7 @@ export class crearNuevaCuenta {
           puedePublicarProblemas: false,
         },
       };
-      this.crearNuevoUsuario(nuevoUsuario);
+      this.gestorDatosUsuario.crearNuevoUsuario(nuevoUsuario);
       context.response.status = 303;
       context.response.status = 303;
       context.response.headers.set(

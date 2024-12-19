@@ -1,6 +1,4 @@
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
+import { GestorDatosUsuario } from "../../../Servicios/BaseDeDatos/GestorDatosUsuario.ts";
 import { create } from "https://deno.land/x/djwt@v3.0.2/mod.ts";
 import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
@@ -8,14 +6,9 @@ import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
 
 export class IniciarSession {
-  private db: BaseDeDatosMongoDB;
-  private collection: Collection<IUsuario>;
-
+  private gestorDatosUsuario: GestorDatosUsuario;
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios",
-    ) as unknown as Collection<IUsuario>;
+    this.gestorDatosUsuario = new GestorDatosUsuario();
   }
 
   public async mostrarPaginaInicioDeSesion(context: Context) {
@@ -25,35 +18,6 @@ export class IniciarSession {
       directorioVistaSeccionActual + `/html_Login`,
     );
     context.response.body = html || "Error al renderizar la página";
-  }
-
-  public async obtenerUsuarioPorId(id: string): Promise<IUsuario> {
-    const usuario = await this.collection.findOne({ _id: new ObjectId(id) });
-    if (!usuario) {
-      throw new Error(`Usuario con ID ${id} no encontrado`);
-    }
-    return usuario;
-  }
-
-  public async obtenerUsuarioPorCredenciales(
-    correoElectronico: string,
-    contrasenia: string,
-  ): Promise<IUsuario | null> {
-    try {
-      const usuario = await this.collection.findOne({
-        correoElectronicoInstitucionalUsuario: correoElectronico,
-        contraseniaUsuario: contrasenia,
-      });
-
-      if (!usuario) {
-        throw new Error("Correo electrónico o contraseña incorrectos.");
-      }
-
-      return usuario;
-    } catch (_error) {
-      // El usuario no existe
-      return null;
-    }
   }
 
   public async manejadorInicioSesion(context: Context) {
@@ -70,10 +34,11 @@ export class IniciarSession {
     const { email, password } = credenciales;
 
     if (email && password) {
-      const userDataExists = await this.obtenerUsuarioPorCredenciales(
-        email,
-        password,
-      );
+      const userDataExists = await this.gestorDatosUsuario
+        .obtenerUsuarioPorCredenciales(
+          email,
+          password,
+        );
 
       if (userDataExists) {
         const key = await this.obtenerTokenAuth();

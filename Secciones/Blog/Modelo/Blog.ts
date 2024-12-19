@@ -1,5 +1,5 @@
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+import { GestorPublicaciones } from "../../../Servicios/BaseDeDatos/GestorPublicaciones.ts";
+import { Publicacion } from "../../../Servicios/BaseDeDatos/Publicacion.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
@@ -9,27 +9,14 @@ import {
   obtenerNombresUsuario,
 } from "../../../Servicios/GestorPermisos.ts";
 
-export interface Publicacion {
-  tituloPublicacion: string;
-  etiquetasPublicacion: string[];
-  autorPublicacion: string;
-  contenidoPublicacion: string;
-  fechaPublicacion: string;
-}
-
 export class Blog {
-  private db: BaseDeDatosMongoDB;
+  private gestorPublicaciones: GestorPublicaciones;
 
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.guardarPost = this.guardarPost.bind(this);
+    this.gestorPublicaciones = new GestorPublicaciones();
     this.guardarPublicacion = this.guardarPublicacion.bind(this);
-    this.visualizarLecturaPublicacionBlog = this
-      .visualizarLecturaPublicacionBlog.bind(this);
-    this.obtenerPublicacionesBlog = this.obtenerPublicacionesBlog.bind(this);
-    this.visualizarPublicacionesBlog = this.visualizarPublicacionesBlog.bind(
-      this,
-    );
+    this.visualizarLecturaPublicacionBlog = this.visualizarLecturaPublicacionBlog.bind(this);
+    this.visualizarPublicacionesBlog = this.visualizarPublicacionesBlog.bind(this);
   }
 
   // <!----------> La obtencion de los datos del formulario deberia estar en una funcion aparte
@@ -71,20 +58,14 @@ export class Blog {
       contenidoPublicacion,
     };
 
-    await this.guardarPost(newPost);
-  }
-
-  private async guardarPost(newPost: Publicacion): Promise<void> {
-    await this.db
-      .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
-      .insertOne(newPost);
+    await this.gestorPublicaciones.guardarPost(newPost);
   }
 
   public async visualizarLecturaPublicacionBlog(
     context: Context,
     postId: string,
   ) {
-    const post = await this.obtenerPostPorId(postId);
+    const post = await this.gestorPublicaciones.obtenerPostPorId(postId);
     if (post == null) {
       context.response.status = 500;
       context.response.body = "Error al obtener las publicaciones";
@@ -99,16 +80,9 @@ export class Blog {
     context.response.body = html || "Error al renderizar la página";
   }
 
-  private async obtenerPublicacionesBlog(): Promise<Publicacion[]> {
-    const publicaciones = await this.db
-      .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
-      .find({})
-      .toArray();
-    return publicaciones;
-  }
-
   public async visualizarPublicacionesBlog(context: Context) {
-    const publicaciones = await this.obtenerPublicacionesBlog();
+    const publicaciones = await this.gestorPublicaciones
+      .obtenerPublicacionesBlog();
     if (publicaciones == null) {
       context.response.status = 500;
       context.response.body = "Error al obtener las publicaciones";
@@ -129,22 +103,5 @@ export class Blog {
       directorioVistaSeccionActual + `/html_Blog`,
     );
     context.response.body = html || "Error al renderizar la página";
-  }
-
-  public async obtenerPostPorId(postId: string): Promise<Publicacion | null> {
-    if (!ObjectId.isValid(postId)) {
-      console.error("ID de post inválido:", postId);
-      return null;
-    }
-
-    const post = await this.db
-      .obtenerReferenciaColeccion<Publicacion>("Publicaciones")
-      .findOne({ _id: new ObjectId(postId) });
-
-    if (post) {
-      return post;
-    } else {
-      return null;
-    }
   }
 }

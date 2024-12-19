@@ -1,13 +1,11 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { Collection } from "https://deno.land/x/mongo@v0.31.2/mod.ts";
-import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
-import { ObjectId } from "npm:mongodb";
+
+import { GestorDatosUsuario } from "../../../Servicios/BaseDeDatos/GestorDatosUsuario.ts";
+import { GestorEntrevista } from "../../../Servicios/BaseDeDatos/GestorEntrevista.ts";
 import {
   IDetallesCandidatosRegistrado,
-  ISesionEntrevista,
 } from "../../../Servicios/BaseDeDatos/Entrevistas.ts";
 import {
   obtenerApellidoUsuario,
@@ -18,12 +16,13 @@ import {
 // <!!!!!----------!!!!!> ZONA DE GUERRA
 
 export class ReservacionEntrenador {
-  private db: BaseDeDatosMongoDB;
+  private gestorDatosUsuario: GestorDatosUsuario;
+  private gestorEntrevista: GestorEntrevista;
+
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.obtenerTodosLosDatosDeLaReunionPorID = this
-      .obtenerTodosLosDatosDeLaReunionPorID.bind(this);
-    this.agregarCandidatoAReunion = this.agregarCandidatoAReunion.bind(this);
+    this.gestorDatosUsuario = new GestorDatosUsuario();
+    this.gestorEntrevista = new GestorEntrevista();
+
     this.mostrarReservacionEntrenador = this.mostrarReservacionEntrenador.bind(
       this,
     );
@@ -35,10 +34,12 @@ export class ReservacionEntrenador {
     const nombreUsuario = await obtenerNombresUsuario(context);
     const apellidoUsuario = await obtenerApellidoUsuario(context);
     const IdSolicitado = this.obtenerIdSolicitado(context);
-    const InfoDelCoach = await this.obtenerEntrevistadorPorId(IdSolicitado);
-    const reunionesDelCoach = await this.obtenerReunionesCreadasPorElEntrenador(
-      IdSolicitado,
-    );
+    const InfoDelCoach = await this.gestorDatosUsuario
+      .obtenerEntrevistadorPorId(IdSolicitado);
+    const reunionesDelCoach = await this.gestorEntrevista
+      .obtenerReunionesCreadasPorElEntrenador(
+        IdSolicitado,
+      );
     const nombresCandidato = nombreUsuario + " " + apellidoUsuario;
 
     const html = await renderizarVista(
@@ -106,9 +107,10 @@ export class ReservacionEntrenador {
         };
 
         // Buscar la sesión en la base de datos
-        const registroReunion = await this.obtenerTodosLosDatosDeLaReunionPorID(
-          idSesionReunion,
-        );
+        const registroReunion = await this.gestorEntrevista
+          .obtenerTodosLosDatosDeLaReunionPorIDV2(
+            idSesionReunion,
+          );
         console.log(registroReunion);
         if (!registroReunion) {
           context.response.status = 404;
@@ -120,7 +122,10 @@ export class ReservacionEntrenador {
         registroReunion.candidatosRegistrados.push(nuevoCandidato);
 
         // Actualizar la sesión en la base de datos
-        await this.agregarCandidatoAReunion(idSesionReunion, registroReunion);
+        await this.gestorEntrevista.agregarCandidatoAReunion(
+          idSesionReunion,
+          registroReunion,
+        );
 
         // Responder con éxito
         context.response.status = 200;
@@ -141,80 +146,10 @@ export class ReservacionEntrenador {
     }
   }
 
-  public async obtenerTodosLosDatosDeLaReunionPorID(
-    idSesion: string,
-  ): Promise<ISesionEntrevista> {
-    const collection =
-      (await this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-        "Reuniones",
-      )) as unknown as Collection<ISesionEntrevista>;
-    const dato = await collection.findOne({ _id: new ObjectId(idSesion) });
-    console.log(dato);
-    if (!dato) {
-      throw new Error(`Sesión con ID ${idSesion} no encontrada`);
-    }
-    return dato;
-  }
-
-  private async agregarCandidatoAReunion(
-    idSesion: string,
-    sesion: ISesionEntrevista,
-  ): Promise<void> {
-    // Obtener la colección con el tipo definido
-    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones",
-    );
-
-    try {
-      // Convertir idSesion a ObjectId si es necesario
-
-      // Actualizar el registro en la base de datos
-      const resultado = await collection.updateOne(
-        { _id: new ObjectId(idSesion) }, // Usar el ObjectId en el filtro
-        { $set: { candidatosRegistrados: sesion.candidatosRegistrados } }, // Actualizar el campo
-      );
-
-      // Verificar si se actualizó el documento
-      if (resultado.matchedCount === 0) {
-        throw new Error(`No se encontró una sesión con _id: ${idSesion}.`);
-      }
-
-      console.log(`Se actualizó correctamente la sesión con _id: ${idSesion}.`);
-    } catch (error) {
-      console.error("Error agregando el candidato:", error);
-      throw new Error("No se pudo agregar el candidato a la reunión.");
-    }
-  }
-
-  private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
-    const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios",
-    ) as unknown as Collection<IUsuario>;
-
-    const usuario = await collection.findOne({ _id: new ObjectId(id) });
-    if (!usuario) {
-      throw new Error(`Usuario con ID ${id} no encontrado`);
-    }
-    return usuario;
-  }
-
   private obtenerIdSolicitado(context: Context): string {
     const url = context.request.url;
     const params = url.searchParams;
     const idPerfil = params.get("perfil") ?? "";
     return idPerfil;
-  }
-
-  private async obtenerReunionesCreadasPorElEntrenador(
-    idEntrevistador: string,
-  ): Promise<ISesionEntrevista[]> {
-    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones",
-    ) as unknown as Collection<ISesionEntrevista>;
-
-    return await collection
-      .find({ idCoach: idEntrevistador })
-      .sort({ horaInicio: 1 }) // 1 para ascendente, -1 para descendente
-      .toArray();
   }
 }

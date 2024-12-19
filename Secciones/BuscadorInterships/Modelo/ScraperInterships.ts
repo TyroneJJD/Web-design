@@ -1,48 +1,25 @@
 import { cheerio } from "https://deno.land/x/cheerio@1.0.7/mod.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
+import { GestorInterships } from "../../../Servicios/BaseDeDatos/GestorInterships.ts";
+import { IOfertaIntership } from "../../../Servicios/BaseDeDatos/DatosIntership.ts";
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
 
-interface IOfertaIntership {
-  _id?: ObjectId;
-  compania: string;
-  rol: string;
-  locacion: string;
-  linkFuentePublicacion: string;
-  fechaPosteado: string;
-}
-
 export class ScraperInterships {
-  private collection: Collection<IOfertaIntership>;
-  private db: BaseDeDatosMongoDB;
-  constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
-    this.collection = this.db.obtenerReferenciaColeccion<IOfertaIntership>(
-      "Interships",
-    ) as unknown as Collection<IOfertaIntership>;
+  private gestorInterships: GestorInterships;
 
-    this.obtenerOfertasIntershipsV2 = this.obtenerOfertasIntershipsV2.bind(
-      this,
-    );
+  constructor() {
+    this.gestorInterships = new GestorInterships();
+
     this.visualizarInterships = this.visualizarInterships.bind(this);
     this.visualizarIntershipsEspecifico = this.visualizarIntershipsEspecifico
       .bind(this);
-    this.obtenerOfertaEspecifica = this.obtenerOfertaEspecifica.bind(this);
-  }
-
-  public async actualizarOfertasInterships(): Promise<void> {
-    await this.db.borrarTodosLosDocumentos("Interships");
-    const interships = await this.obtenerInterships_SimplifyJobs();
-    interships.forEach(async (intership) => {
-      await this.guardarOfertaIntership(intership);
-    });
   }
 
   public async visualizarInterships(context: Context) {
     try {
-      const arregloInterships = await this.obtenerOfertasIntershipsV2();
+      const arregloInterships = await this.gestorInterships
+        .obtenerOfertasIntershipsV2();
       const html = await renderizarVista(
         "TablaInterships.html",
         { ofertas: arregloInterships },
@@ -58,18 +35,6 @@ export class ScraperInterships {
     }
   }
 
-  private async obtenerOfertaEspecifica(
-    nombreCompania: string,
-  ): Promise<IOfertaIntership[]> {
-    const ofertasDB = await this.collection
-      .find({
-        compania: { $regex: new RegExp(nombreCompania, "i") },
-      })
-      .toArray();
-
-    return ofertasDB;
-  }
-
   public async visualizarIntershipsEspecifico(context: Context) {
     const url = new URL(context.request.url);
     const nombreCompania = url.searchParams.get("nombreCompania");
@@ -79,7 +44,9 @@ export class ScraperInterships {
       return;
     }
 
-    const ofertaDB = await this.obtenerOfertaEspecifica(nombreCompania);
+    const ofertaDB = await this.gestorInterships.obtenerOfertaEspecifica(
+      nombreCompania,
+    );
 
     const html = await renderizarVista(
       "TablaInterships.html",
@@ -87,28 +54,6 @@ export class ScraperInterships {
       directorioVistaSeccionActual + `/html_BuscadorInterships`,
     );
     context.response.body = html || "Error al renderizar la página";
-  }
-
-  private async obtenerOfertasIntershipsV2(): Promise<IOfertaIntership[]> {
-    const documentos = await this.collection
-      .aggregate([
-        { $sample: { size: 30 } }, // Obtiene 30 documentos aleatorios
-      ])
-      .toArray();
-    return documentos;
-  }
-
-  private async guardarOfertaIntership(
-    ofertaDeIntership: IOfertaIntership,
-  ): Promise<IOfertaIntership | null> {
-    try {
-      const result = await this.collection.insertOne(ofertaDeIntership);
-
-      return { _id: result, ...ofertaDeIntership };
-    } catch (error) {
-      console.error("Error al guardar la oferta:", error);
-      return null;
-    }
   }
 
   private async obtenerInterships_SimplifyJobs(): Promise<IOfertaIntership[]> {

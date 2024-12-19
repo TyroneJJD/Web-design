@@ -1,9 +1,8 @@
 import { Context } from "https://deno.land/x/oak@v12.4.0/mod.ts";
 import { renderizarVista } from "../../../utilidadesServidor.ts";
 import { directorioVistaSeccionActual } from "../Controlador/Controlador.ts";
-import { BaseDeDatosMongoDB } from "../../../Servicios/BaseDeDatos/BaseDeDatos.ts";
-import { Collection, ObjectId } from "https://deno.land/x/mongo@v0.33.0/mod.ts";
-import { IUsuario } from "../../../Servicios/BaseDeDatos/DatosUsuario.ts";
+import { GestorDatosUsuario } from "../../../Servicios/BaseDeDatos/GestorDatosUsuario.ts";
+import { GestorEntrevista } from "../../../Servicios/BaseDeDatos/GestorEntrevista.ts";
 import {
   IDetallesCandidatosRegistrado,
   ISesionEntrevista,
@@ -13,60 +12,19 @@ import { obtenerIdUsuario } from "../../../Servicios/GestorPermisos.ts";
 // <!!!!!----------!!!!!> ZONA DE GUERRA
 
 export class CalendarioEntrevistador {
-  private db: BaseDeDatosMongoDB;
+  private gestorDatosUsuario: GestorDatosUsuario;
+  private gestorEntrevista: GestorEntrevista;
   constructor() {
-    this.db = BaseDeDatosMongoDB.obtenerInstancia();
+    this.gestorDatosUsuario = new GestorDatosUsuario();
+    this.gestorEntrevista = new GestorEntrevista();
 
-    this.insertarNuevaReunion = this.insertarNuevaReunion.bind(this);
     this.generarReuniones = this.generarReuniones.bind(this);
 
     this.mostrarCalendarioEntrevistador = this.mostrarCalendarioEntrevistador
       .bind(this);
     this.generarReuniones = this.generarReuniones.bind(this);
-    this.obtenerTodosLosDatosDeLaReunionPorID = this
-      .obtenerTodosLosDatosDeLaReunionPorID.bind(this);
+
     this.asignarCandidatoAReunion = this.asignarCandidatoAReunion.bind(this);
-  }
-
-  private async obtenerEntrevistadorPorId(id: string): Promise<IUsuario> {
-    const collection = this.db.obtenerReferenciaColeccion<IUsuario>(
-      "Usuarios",
-    ) as unknown as Collection<IUsuario>;
-
-    const usuario = await collection.findOne({ _id: new ObjectId(id) });
-    if (!usuario) {
-      throw new Error(`Usuario con ID ${id} no encontrado`);
-    }
-    return usuario;
-  }
-
-  private async obtenerReunionesCreadasPorElEntrevistador(
-    idEntrevistador: string,
-  ): Promise<ISesionEntrevista[]> {
-    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones",
-    ) as unknown as Collection<ISesionEntrevista>;
-
-    return await collection
-      .find({ idCoach: idEntrevistador })
-      .sort({ horaInicio: 1 }) // 1 para ascendente, -1 para descendente
-      .toArray();
-  }
-
-  public async obtenerTodosLosDatosDeLaReunionPorID(
-    idSesion: string,
-  ): Promise<ISesionEntrevista> {
-    const collection =
-      (await this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-        "Reuniones",
-      )) as unknown as Collection<ISesionEntrevista>;
-    const dato = await collection.findOne({
-      _id: new ObjectId(idSesion).toString(),
-    });
-    if (!dato) {
-      throw new Error(`Sesión con ID ${idSesion} no encontrada`);
-    }
-    return dato;
   }
 
   public async asignarCandidatoAReunion(context: Context) {
@@ -82,9 +40,10 @@ export class CalendarioEntrevistador {
         return;
       }
 
-      const registroReunion = await this.obtenerTodosLosDatosDeLaReunionPorID(
-        idReunion,
-      );
+      const registroReunion = await this.gestorEntrevista
+        .obtenerTodosLosDatosDeLaReunionPorID(
+          idReunion,
+        );
 
       // Mover el candidato a candidatoSeleccionadoAEntrevistar
       const [candidatoSeleccionado] = registroReunion.candidatosRegistrados
@@ -105,7 +64,7 @@ export class CalendarioEntrevistador {
           "Otro candidato fue seleccionado, mil disculpas.";
       });
 
-      await this.actualizarReunion(registroReunion);
+      await this.gestorEntrevista.actualizarReunion(registroReunion);
 
       context.response.status = 200;
       context.response.body = {
@@ -121,20 +80,6 @@ export class CalendarioEntrevistador {
     }
   }
 
-  public async actualizarReunion(
-    reunionActualizada: ISesionEntrevista,
-  ): Promise<void> {
-    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones",
-    ) as unknown as Collection<ISesionEntrevista>;
-    const { _id, ...datosActualizados } = reunionActualizada;
-
-    await collection.updateOne(
-      { _id }, // Filtro por ID de la reunión
-      { $set: datosActualizados }, // Datos a actualizar
-    );
-  }
-
   public async mostrarCalendarioEntrevistador(context: Context) {
     const IDusuarioSacadoDeLasCookies = await obtenerIdUsuario(context);
     if (!IDusuarioSacadoDeLasCookies) {
@@ -142,10 +87,11 @@ export class CalendarioEntrevistador {
       context.response.body = { message: "Usuario no autenticado." };
       return;
     }
-    const datosDelEntrevistadorActual = await this.obtenerEntrevistadorPorId(
-      IDusuarioSacadoDeLasCookies,
-    );
-    const reunionesQuePropusoElEntrevistador = await this
+    const datosDelEntrevistadorActual = await this.gestorDatosUsuario
+      .obtenerEntrevistadorPorId(
+        IDusuarioSacadoDeLasCookies,
+      );
+    const reunionesQuePropusoElEntrevistador = await this.gestorEntrevista
       .obtenerReunionesCreadasPorElEntrevistador(
         IDusuarioSacadoDeLasCookies,
       );
@@ -217,7 +163,7 @@ export class CalendarioEntrevistador {
         };
 
         // Guardar el nuevo usuario en la base de datos
-        await this.insertarNuevaReunion(nuevoUsuario);
+        await this.gestorEntrevista.insertarNuevaReunion(nuevoUsuario);
 
         // Redirigir con un mensaje de éxito
         context.response.status = 303;
@@ -233,15 +179,5 @@ export class CalendarioEntrevistador {
         message: "No se enviaron datos en el formulario.",
       };
     }
-  }
-
-  public async insertarNuevaReunion(
-    nuevaReunion: Omit<ISesionEntrevista, "_id">,
-  ): Promise<ISesionEntrevista> {
-    const collection = this.db.obtenerReferenciaColeccion<ISesionEntrevista>(
-      "Reuniones",
-    ) as unknown as Collection<ISesionEntrevista>;
-    const result = await collection.insertOne(nuevaReunion);
-    return { _id: result.toString(), ...nuevaReunion };
   }
 }
